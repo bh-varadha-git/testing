@@ -1,6 +1,6 @@
 {
   "created_at": "2026-03-17T08:12:25.359704Z",
-  "updated_at": "2026-03-17T09:18:45.030188Z",
+  "updated_at": "2026-03-17T09:19:02.793102Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -369,24 +369,39 @@
                 "type": "CreateCompute",
                 "depends_on": [],
                 "cluster_name": "Databricks_SV_Local_0303_V1",
-                "aws_conn_id": "",
-                "emr_version": "",
-                "aws_logs_uri": "",
-                "instance_type": "",
-                "worker_count": 1,
-                "ec2_subnet_id": "",
-                "emr_master_security_group": "",
-                "emr_slave_security_group": "",
-                "service_access_security_group": "",
-                "job_flow_role": "",
-                "service_role": "",
-                "ec2_key_name": "",
-                "idle_timeout_seconds": 300,
-                "bh_app_bucket": "bh-dev-utils",
-                "bh_schema_bucket": "bh-dev-schemas",
-                "pipeline_engine_version": "1.0.0",
+                "compute_config": {
+                  "cluster_name": "Databricks_SV_Local_0303_V1",
+                  "spark_version": "15.4.x-scala2.12",
+                  "node_type_id": "Standard_D4s_v3",
+                  "num_workers": 0,
+                  "autoscale": null,
+                  "driver_node_type_id": null,
+                  "runtime_engine": null,
+                  "data_security_mode": null,
+                  "single_user_name": null,
+                  "policy_id": null,
+                  "apply_policy_default_values": true,
+                  "idempotency_token": null,
+                  "aws_attributes": null,
+                  "azure_attributes": null,
+                  "gcp_attributes": null,
+                  "single_node": true,
+                  "autotermination_minutes": 30,
+                  "enable_elastic_disk": true,
+                  "spark_conf": {},
+                  "spark_env_vars": {},
+                  "custom_tags": {},
+                  "cluster_log_conf": null,
+                  "init_scripts": [
+                    "/Workspace/Shared/bh-dev-utils/scripts/bh_databricks_grpc_server.sh"
+                  ],
+                  "libraries": [],
+                  "databricks_region": null,
+                  "bh_tags": []
+                },
                 "cloud_type": "databricks",
-                "compute_type": "DATABRICKS_CLUSTER"
+                "compute_type": "DATABRICKS_CLUSTER",
+                "airflow_connection_id": "databricks_default"
               },
               {
                 "task_id": "Run Jobs",
@@ -394,12 +409,10 @@
                 "depends_on": [
                   "Create Compute"
                 ],
-                "job_flow_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}",
-                "client_airflow_bucket": "",
+                "compute_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}",
                 "cloud_type": "databricks",
                 "compute_type": "DATABRICKS_CLUSTER",
-                "aws_logs_uri": "",
-                "aws_conn_id": "",
+                "airflow_connection_id": "databricks_default",
                 "pipelines": [
                   {
                     "id": 710,
@@ -422,27 +435,15 @@
                 "parallelization_factor": 3
               },
               {
-                "task_id": "Parse Lineage",
-                "type": "LineageParserTask",
-                "depends_on": [
-                  "Create Compute"
-                ],
-                "aws_logs_uri": "",
-                "prefix": "logs/",
-                "suffix": ".json",
-                "task_id_to_watch": "run_job"
-              },
-              {
                 "task_id": "Delete Compute",
                 "type": "DeleteCompute",
                 "depends_on": [
-                  "Run Jobs",
-                  "Parse Lineage"
+                  "Run Jobs"
                 ],
-                "job_flow_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}",
+                "compute_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}",
                 "cloud_type": "databricks",
                 "compute_type": "DATABRICKS_CLUSTER",
-                "aws_conn_id": ""
+                "airflow_connection_id": "databricks_default"
               }
             ],
             "template_parameters": []
