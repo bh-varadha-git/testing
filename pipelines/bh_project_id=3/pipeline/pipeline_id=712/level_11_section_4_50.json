@@ -1,6 +1,6 @@
 {
   "created_at": "2026-03-17T08:12:20.627854Z",
-  "updated_at": "2026-03-17T08:59:12.002345Z",
+  "updated_at": "2026-03-17T09:05:29.568061Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -22,86 +22,57 @@
     "engine_type": "pyspark",
     "parameters": [],
     "connections": {
-      "read_s3_file_connection": {
-        "name": "read_s3_file_connection",
-        "connection_type": "S3",
-        "bucket": "my-test-bucket",
+      "read_azure_blob_file_connection": {
+        "name": "read_azure_blob_file_connection",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
         "file_path_prefix": "",
         "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-localsvazureblob"
       },
-      "write_to_postgresql_connection": {
-        "name": "write_to_postgresql_connection",
-        "connection_type": "PostgreSQL",
-        "database": "default",
+      "local_sv_azure_unity_target": {
+        "name": "local_sv_azure_unity_target",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "default",
         "schema": "public",
         "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
       }
     },
     "sources": {
-      "read_s3_file_source": {
-        "name": "read_s3_file_source",
+      "read_file_source": {
+        "name": "read_file_source",
         "source_type": "File",
         "file_name": "customer-readiness/samples/LEVEL - 11 (Section 4.csv",
         "connection": {
-          "$ref": "#/connections/read_s3_file_connection"
+          "$ref": "#/connections/read_azure_blob_file_connection"
         }
       }
     },
     "targets": {
-      "write_to_postgresql_target": {
-        "name": "write_to_postgresql_target",
+      "write_to_db_target": {
+        "name": "write_to_db_target",
         "target_type": "Relational",
         "table_name": "level_11_section_4",
         "connection": {
-          "$ref": "#/connections/write_to_postgresql_connection"
+          "$ref": "#/connections/local_sv_azure_unity_target"
         },
         "load_mode": "append"
       }
     },
     "transformations": [
       {
-        "name": "read_s3_file",
+        "name": "read_file",
         "transformation": "Reader",
         "source": {
-          "$ref": "#/sources/read_s3_file_source"
+          "$ref": "#/sources/read_file_source"
         },
         "file_type": "CSV",
-        "read_options": {
-          "sep": ",",
-          "encoding": "UTF-8",
-          "header": true,
-          "inferSchema": false,
-          "quote": "\"",
-          "escape": "\\",
-          "comment": "",
-          "preferDate": true,
-          "enforceSchema": true,
-          "ignoreLeadingWhiteSpace": false,
-          "ignoreTrailingWhiteSpace": false,
-          "nullValue": "",
-          "nanValue": "NaN",
-          "positiveInf": "Inf",
-          "negativeInf": "-Inf",
-          "dateFormat": "yyyy-MM-dd",
-          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
-          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
-          "maxColumns": 20480,
-          "maxCharsPerColumn": -1,
-          "columnNameOfCorruptRecord": "_corrupt_record",
-          "multiLine": false,
-          "samplingRatio": 1.0,
-          "emptyValue": "",
-          "locale": "en-US",
-          "lineSep": "\n",
-          "unescapedQuoteHandling": "STOP_AT_DELIMITER"
-        },
         "dependent_on": []
       },
       {
         "name": "add_ingest_metadata",
         "transformation": "Expression",
         "dependent_on": [
-          "read_s3_file"
+          "read_file"
         ],
         "derived_fields": [
           {
@@ -115,17 +86,17 @@
         ]
       },
       {
-        "name": "write_to_postgresql",
+        "name": "write_to_db",
         "transformation": "Writer",
         "dependent_on": [
           "add_ingest_metadata"
         ],
         "target": {
-          "$ref": "#/targets/write_to_postgresql_target"
+          "$ref": "#/targets/write_to_db_target"
         }
       }
     ],
-    "description": "Ingest files from S3 and write to PostgreSQL table"
+    "description": "Ingest files from any supported source and write to any supported database"
   },
   "pipeline_type": "design",
   "engine_type": "pyspark",
@@ -158,86 +129,57 @@
             "engine_type": "pyspark",
             "parameters": [],
             "connections": {
-              "read_s3_file_connection": {
-                "name": "read_s3_file_connection",
-                "connection_type": "S3",
-                "bucket": "my-test-bucket",
+              "read_azure_blob_file_connection": {
+                "name": "read_azure_blob_file_connection",
+                "connection_type": "azure_blob",
+                "container_name": "my-test-bucket",
                 "file_path_prefix": "",
                 "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-localsvazureblob"
               },
-              "write_to_postgresql_connection": {
-                "name": "write_to_postgresql_connection",
-                "connection_type": "PostgreSQL",
-                "database": "default",
+              "local_sv_azure_unity_target": {
+                "name": "local_sv_azure_unity_target",
+                "connection_type": "DatabricksDeltaLake",
+                "catalog": "default",
                 "schema": "public",
                 "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
               }
             },
             "sources": {
-              "read_s3_file_source": {
-                "name": "read_s3_file_source",
+              "read_file_source": {
+                "name": "read_file_source",
                 "source_type": "File",
                 "file_name": "customer-readiness/samples/LEVEL - 11 (Section 4.csv",
                 "connection": {
-                  "$ref": "#/connections/read_s3_file_connection"
+                  "$ref": "#/connections/read_azure_blob_file_connection"
                 }
               }
             },
             "targets": {
-              "write_to_postgresql_target": {
-                "name": "write_to_postgresql_target",
+              "write_to_db_target": {
+                "name": "write_to_db_target",
                 "target_type": "Relational",
                 "table_name": "level_11_section_4",
                 "connection": {
-                  "$ref": "#/connections/write_to_postgresql_connection"
+                  "$ref": "#/connections/local_sv_azure_unity_target"
                 },
                 "load_mode": "append"
               }
             },
             "transformations": [
               {
-                "name": "read_s3_file",
+                "name": "read_file",
                 "transformation": "Reader",
                 "source": {
-                  "$ref": "#/sources/read_s3_file_source"
+                  "$ref": "#/sources/read_file_source"
                 },
                 "file_type": "CSV",
-                "read_options": {
-                  "sep": ",",
-                  "encoding": "UTF-8",
-                  "header": true,
-                  "inferSchema": false,
-                  "quote": "\"",
-                  "escape": "\\",
-                  "comment": "",
-                  "preferDate": true,
-                  "enforceSchema": true,
-                  "ignoreLeadingWhiteSpace": false,
-                  "ignoreTrailingWhiteSpace": false,
-                  "nullValue": "",
-                  "nanValue": "NaN",
-                  "positiveInf": "Inf",
-                  "negativeInf": "-Inf",
-                  "dateFormat": "yyyy-MM-dd",
-                  "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
-                  "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
-                  "maxColumns": 20480,
-                  "maxCharsPerColumn": -1,
-                  "columnNameOfCorruptRecord": "_corrupt_record",
-                  "multiLine": false,
-                  "samplingRatio": 1.0,
-                  "emptyValue": "",
-                  "locale": "en-US",
-                  "lineSep": "\n",
-                  "unescapedQuoteHandling": "STOP_AT_DELIMITER"
-                },
                 "dependent_on": []
               },
               {
                 "name": "add_ingest_metadata",
                 "transformation": "Expression",
                 "dependent_on": [
-                  "read_s3_file"
+                  "read_file"
                 ],
                 "derived_fields": [
                   {
@@ -251,17 +193,17 @@
                 ]
               },
               {
-                "name": "write_to_postgresql",
+                "name": "write_to_db",
                 "transformation": "Writer",
                 "dependent_on": [
                   "add_ingest_metadata"
                 ],
                 "target": {
-                  "$ref": "#/targets/write_to_postgresql_target"
+                  "$ref": "#/targets/write_to_db_target"
                 }
               }
             ],
-            "description": "Ingest files from S3 and write to PostgreSQL table"
+            "description": "Ingest files from any supported source and write to any supported database"
           },
           "pipeline_type": "design",
           "engine_type": "pyspark",
