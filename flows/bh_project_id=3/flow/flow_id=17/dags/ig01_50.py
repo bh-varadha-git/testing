@@ -1,7 +1,6 @@
 
 from airflow import DAG
-from datetime import datetime, timedelta
-from airflow.utils.timezone import utcnow
+from airflow.utils.dates import days_ago
 from airflow_plugins.dag_task_definitions.common_task import CommonTask
 from airflow_plugins.dag_task_definitions.lineage_task import LineageTask
 
@@ -10,7 +9,7 @@ lineage_task = LineageTask(dag_id='ig01_50', dag_params={})
 
 default_args = {
     'owner': 'bh',
-    'start_date':  utcnow() - timedelta(days=1),
+    'start_date': days_ago(1),
     'retries': 0
 }
 
