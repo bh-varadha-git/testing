@@ -75,7 +75,9 @@ with DAG(
                 "autotermination_minutes": 30,
                 "enable_elastic_disk": True,
                 "spark_conf": {},
-                "spark_env_vars": {},
+                "spark_env_vars": {
+                    "SECRET_MANAGER_PROVIDER": "databricks"
+                },
                 "custom_tags": {},
                 "cluster_log_conf": None,
                 "init_scripts": [
@@ -109,33 +111,33 @@ with DAG(
     logger = logging.getLogger(__name__)
 
     def submit_job_to_cluster(**context):
-        ti = context["ti"]
-        compute_id = ti.xcom_pull(task_ids="databricks_create_cluster_task", key="return_value")
+        params = context.get("params") or {}
+        job_config = params.get("job_config")
+        if not job_config:
+            raise ValueError("Missing job_config in params")
+
+        # Prefer compute_id from params (supports Jinja xcom_pull strings), fallback to XCom.
+        compute_id = params.get("compute_id")
         if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
-            params = context.get("params") or {}
-            compute_id = params.get("compute_id")
+            ti = context["ti"]
+            # Most flows normalize the create task_id to 'create_compute'. Keep a legacy fallback.
+            compute_task_id = params.get("compute_task_id") or "create_compute"
+            compute_id = ti.xcom_pull(task_ids=compute_task_id, key="return_value")
+            if not compute_id:
+                compute_id = ti.xcom_pull(task_ids="databricks_create_cluster_task", key="return_value")
+
         if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
-            raise ValueError("No compute_id from XCom task databricks_create_cluster_task or params")
+            raise ValueError("No compute_id from params or XCom")
+
         from airflow.hooks.base import BaseHook
         conn = BaseHook.get_connection('databricks_default')
         workspace_url = (conn.host or '').rstrip('/')
         token = conn.password
         if not workspace_url or not token:
             raise ValueError("Databricks connection must have host and password (token)")
+
         factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
         compute = factory.get_compute(compute_type="databricks")
-        job_config = (
-            {
-                "job_type": "spark_python",
-                "name": "{{ dag.dag_id }}_run_jobs_level_04_section_4_50_{{ ts_nodash }}",
-                "python_file": "/Workspace/Shared/bh-dev-utils/pipelines/main.py",
-                "parameters": [
-                    "/Workspace/Shared/codespace/pipelines/pipelines/3/pipeline/710_level_04_section_4_50.json",
-                    "databricks",
-                    "/Workspace/Shared/bh-dev-utils/schemas"
-                ]
-            }
-        )
         result = compute.execute_job(compute_id, job_config, run_async=False)
         if result.get("status") == "FAILED":
             raise RuntimeError(result.get("error", "Job submission failed"))
@@ -143,8 +145,20 @@ with DAG(
         if run_id:
             context["ti"].xcom_push(key="run_id", value=run_id)
         return result
-
-    _submit_params = {"compute_id": "{{ task_instance.xcom_pull(task_ids='create_compute', key='return_value') }}"}
+    _submit_params = {
+        "compute_task_id": "create_compute",
+        "job_config": {
+            "job_type": "spark_python",
+            "name": "{{ dag.dag_id }}_run_jobs_level_04_section_4_50_{{ ts_nodash }}",
+            "python_file": "/Workspace/Shared/bh-dev-utils/pipelines/main.py",
+            "parameters": [
+                "/Workspace/Shared/codespace/pipelines/bh_project_id=3/pipeline/pipeline_id=710/level_04_section_4_50.json",
+                "databricks",
+                "/Workspace/Shared/bh-dev-utils/schemas"
+            ]
+        },
+        "compute_id": "{{ task_instance.xcom_pull(task_ids='create_compute', key='return_value') }}"
+    }
     run_jobs_level_04_section_4_50 = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
         task_id='run_jobs_level_04_section_4_50',
@@ -154,48 +168,20 @@ with DAG(
         on_success_callback=common_task.success_callback,
         on_failure_callback=common_task.failure_callback,
     )
-    from airflow.operators.python import PythonOperator
-    from airflow_plugins.cloud_factory import CloudFactory
-    import logging
-    logger = logging.getLogger(__name__)
-
-    def submit_job_to_cluster(**context):
-        ti = context["ti"]
-        compute_id = ti.xcom_pull(task_ids="databricks_create_cluster_task", key="return_value")
-        if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
-            params = context.get("params") or {}
-            compute_id = params.get("compute_id")
-        if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
-            raise ValueError("No compute_id from XCom task databricks_create_cluster_task or params")
-        from airflow.hooks.base import BaseHook
-        conn = BaseHook.get_connection('databricks_default')
-        workspace_url = (conn.host or '').rstrip('/')
-        token = conn.password
-        if not workspace_url or not token:
-            raise ValueError("Databricks connection must have host and password (token)")
-        factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
-        compute = factory.get_compute(compute_type="databricks")
-        job_config = (
-            {
-                "job_type": "spark_python",
-                "name": "{{ dag.dag_id }}_run_jobs_level_07_section_4_50_{{ ts_nodash }}",
-                "python_file": "/Workspace/Shared/bh-dev-utils/pipelines/main.py",
-                "parameters": [
-                    "/Workspace/Shared/codespace/pipelines/pipelines/3/pipeline/711_level_07_section_4_50.json",
-                    "databricks",
-                    "/Workspace/Shared/bh-dev-utils/schemas"
-                ]
-            }
-        )
-        result = compute.execute_job(compute_id, job_config, run_async=False)
-        if result.get("status") == "FAILED":
-            raise RuntimeError(result.get("error", "Job submission failed"))
-        run_id = result.get("run_id")
-        if run_id:
-            context["ti"].xcom_push(key="run_id", value=run_id)
-        return result
-
-    _submit_params = {"compute_id": "{{ task_instance.xcom_pull(task_ids='create_compute', key='return_value') }}"}
+    _submit_params = {
+        "compute_task_id": "create_compute",
+        "job_config": {
+            "job_type": "spark_python",
+            "name": "{{ dag.dag_id }}_run_jobs_level_07_section_4_50_{{ ts_nodash }}",
+            "python_file": "/Workspace/Shared/bh-dev-utils/pipelines/main.py",
+            "parameters": [
+                "/Workspace/Shared/codespace/pipelines/bh_project_id=3/pipeline/pipeline_id=711/level_07_section_4_50.json",
+                "databricks",
+                "/Workspace/Shared/bh-dev-utils/schemas"
+            ]
+        },
+        "compute_id": "{{ task_instance.xcom_pull(task_ids='create_compute', key='return_value') }}"
+    }
     run_jobs_level_07_section_4_50 = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
         task_id='run_jobs_level_07_section_4_50',
@@ -205,48 +191,20 @@ with DAG(
         on_success_callback=common_task.success_callback,
         on_failure_callback=common_task.failure_callback,
     )
-    from airflow.operators.python import PythonOperator
-    from airflow_plugins.cloud_factory import CloudFactory
-    import logging
-    logger = logging.getLogger(__name__)
-
-    def submit_job_to_cluster(**context):
-        ti = context["ti"]
-        compute_id = ti.xcom_pull(task_ids="databricks_create_cluster_task", key="return_value")
-        if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
-            params = context.get("params") or {}
-            compute_id = params.get("compute_id")
-        if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
-            raise ValueError("No compute_id from XCom task databricks_create_cluster_task or params")
-        from airflow.hooks.base import BaseHook
-        conn = BaseHook.get_connection('databricks_default')
-        workspace_url = (conn.host or '').rstrip('/')
-        token = conn.password
-        if not workspace_url or not token:
-            raise ValueError("Databricks connection must have host and password (token)")
-        factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
-        compute = factory.get_compute(compute_type="databricks")
-        job_config = (
-            {
-                "job_type": "spark_python",
-                "name": "{{ dag.dag_id }}_run_jobs_level_11_section_4_50_{{ ts_nodash }}",
-                "python_file": "/Workspace/Shared/bh-dev-utils/pipelines/main.py",
-                "parameters": [
-                    "/Workspace/Shared/codespace/pipelines/pipelines/3/pipeline/712_level_11_section_4_50.json",
-                    "databricks",
-                    "/Workspace/Shared/bh-dev-utils/schemas"
-                ]
-            }
-        )
-        result = compute.execute_job(compute_id, job_config, run_async=False)
-        if result.get("status") == "FAILED":
-            raise RuntimeError(result.get("error", "Job submission failed"))
-        run_id = result.get("run_id")
-        if run_id:
-            context["ti"].xcom_push(key="run_id", value=run_id)
-        return result
-
-    _submit_params = {"compute_id": "{{ task_instance.xcom_pull(task_ids='create_compute', key='return_value') }}"}
+    _submit_params = {
+        "compute_task_id": "create_compute",
+        "job_config": {
+            "job_type": "spark_python",
+            "name": "{{ dag.dag_id }}_run_jobs_level_11_section_4_50_{{ ts_nodash }}",
+            "python_file": "/Workspace/Shared/bh-dev-utils/pipelines/main.py",
+            "parameters": [
+                "/Workspace/Shared/codespace/pipelines/bh_project_id=3/pipeline/pipeline_id=712/level_11_section_4_50.json",
+                "databricks",
+                "/Workspace/Shared/bh-dev-utils/schemas"
+            ]
+        },
+        "compute_id": "{{ task_instance.xcom_pull(task_ids='create_compute', key='return_value') }}"
+    }
     run_jobs_level_11_section_4_50 = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
         task_id='run_jobs_level_11_section_4_50',
@@ -256,48 +214,20 @@ with DAG(
         on_success_callback=common_task.success_callback,
         on_failure_callback=common_task.failure_callback,
     )
-    from airflow.operators.python import PythonOperator
-    from airflow_plugins.cloud_factory import CloudFactory
-    import logging
-    logger = logging.getLogger(__name__)
-
-    def submit_job_to_cluster(**context):
-        ti = context["ti"]
-        compute_id = ti.xcom_pull(task_ids="databricks_create_cluster_task", key="return_value")
-        if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
-            params = context.get("params") or {}
-            compute_id = params.get("compute_id")
-        if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
-            raise ValueError("No compute_id from XCom task databricks_create_cluster_task or params")
-        from airflow.hooks.base import BaseHook
-        conn = BaseHook.get_connection('databricks_default')
-        workspace_url = (conn.host or '').rstrip('/')
-        token = conn.password
-        if not workspace_url or not token:
-            raise ValueError("Databricks connection must have host and password (token)")
-        factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
-        compute = factory.get_compute(compute_type="databricks")
-        job_config = (
-            {
-                "job_type": "spark_python",
-                "name": "{{ dag.dag_id }}_run_jobs_level_01_section_1_and_1_1_50_{{ ts_nodash }}",
-                "python_file": "/Workspace/Shared/bh-dev-utils/pipelines/main.py",
-                "parameters": [
-                    "/Workspace/Shared/codespace/pipelines/pipelines/3/pipeline/709_level_01_section_1_and_1_1_50.json",
-                    "databricks",
-                    "/Workspace/Shared/bh-dev-utils/schemas"
-                ]
-            }
-        )
-        result = compute.execute_job(compute_id, job_config, run_async=False)
-        if result.get("status") == "FAILED":
-            raise RuntimeError(result.get("error", "Job submission failed"))
-        run_id = result.get("run_id")
-        if run_id:
-            context["ti"].xcom_push(key="run_id", value=run_id)
-        return result
-
-    _submit_params = {"compute_id": "{{ task_instance.xcom_pull(task_ids='create_compute', key='return_value') }}"}
+    _submit_params = {
+        "compute_task_id": "create_compute",
+        "job_config": {
+            "job_type": "spark_python",
+            "name": "{{ dag.dag_id }}_run_jobs_level_01_section_1_and_1_1_50_{{ ts_nodash }}",
+            "python_file": "/Workspace/Shared/bh-dev-utils/pipelines/main.py",
+            "parameters": [
+                "/Workspace/Shared/codespace/pipelines/bh_project_id=3/pipeline/pipeline_id=709/level_01_section_1_and_1_1_50.json",
+                "databricks",
+                "/Workspace/Shared/bh-dev-utils/schemas"
+            ]
+        },
+        "compute_id": "{{ task_instance.xcom_pull(task_ids='create_compute', key='return_value') }}"
+    }
     run_jobs_level_01_section_1_and_1_1_50 = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
         task_id='run_jobs_level_01_section_1_and_1_1_50',
@@ -315,12 +245,12 @@ with DAG(
 
     def terminate_databricks_resources(**context):
         ti = context["ti"]
-        compute_id = ti.xcom_pull(task_ids="databricks_create_cluster_task", key="return_value")
+        compute_id = ti.xcom_pull(task_ids="create_compute", key="return_value")
         if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
             params = context.get("params") or {}
             compute_id = params.get("compute_id")
         if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
-            logger.warning("No compute_id from XCom task databricks_create_cluster_task or params; skipping terminate")
+            logger.warning("No compute_id from XCom task create_compute or params; skipping terminate")
             return
         from airflow.hooks.base import BaseHook
         conn = BaseHook.get_connection('databricks_default')
