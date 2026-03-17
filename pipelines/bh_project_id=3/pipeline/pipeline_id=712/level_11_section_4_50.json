@@ -1,6 +1,6 @@
 {
   "created_at": "2026-03-17T08:12:20.627854Z",
-  "updated_at": "2026-03-17T11:22:47.390025Z",
+  "updated_at": "2026-03-17T11:32:56.553836Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -33,7 +33,7 @@
         "name": "local_sv_azure_unity_target",
         "connection_type": "DatabricksDeltaLake",
         "catalog": "main",
-        "schema": "public",
+        "schema": "default",
         "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
       }
     },
@@ -140,7 +140,7 @@
                 "name": "local_sv_azure_unity_target",
                 "connection_type": "DatabricksDeltaLake",
                 "catalog": "main",
-                "schema": "public",
+                "schema": "default",
                 "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
               }
             },
