@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-06T11:51:37.627018Z",
-  "updated_at": "2026-04-06T11:51:37.627018Z",
+  "updated_at": "2026-04-06T12:34:09.674464Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -130,7 +130,29 @@
         "dependent_on": [
           "cleanse_rules"
         ],
-        "dq_rules": []
+        "dq_rules": [
+          {
+            "rule_name": "NOT_NULL_member_id",
+            "column": "member_id",
+            "column_type": "string",
+            "action": "warning",
+            "rule_type": "notnull"
+          },
+          {
+            "rule_name": "NOT_NULL_member_phone",
+            "column": "member_phone",
+            "column_type": "string",
+            "action": "warning",
+            "rule_type": "notnull"
+          },
+          {
+            "rule_name": "NOT_NULL_scenario_note",
+            "column": "scenario_note",
+            "column_type": "string",
+            "action": "warning",
+            "rule_type": "notnull"
+          }
+        ]
       },
       {
         "name": "write_to_silver_raw",
