@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-06T11:51:37.627018Z",
-  "updated_at": "2026-04-06T12:34:09.674464Z",
+  "updated_at": "2026-04-06T15:23:13.607164Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -105,11 +105,14 @@
         }
       },
       {
-        "name": "cleanse_rules",
+        "name": "cleanse_ro10_cleanse_member_address_f99e088b9405",
         "transformation": "Mapper",
         "dependent_on": [
           "add_ingest_metadata"
         ],
+        "select_columns": [],
+        "rename_columns": {},
+        "drop_columns": [],
         "derived_fields": [
           {
             "parameters": {
@@ -125,10 +128,31 @@
         ]
       },
       {
+        "name": "cleanse_ro20_catalog__uppercase_scenario_note___scena_f6a3fd1b7a17",
+        "transformation": "Mapper",
+        "dependent_on": [
+          "cleanse_ro10_cleanse_member_address_f99e088b9405"
+        ],
+        "derived_fields": [
+          {
+            "parameters": {
+              "operation": "upper",
+              "input_fields": [
+                "scenario_note"
+              ],
+              "output_fields": [
+                "scenario_note_upper"
+              ]
+            },
+            "function_name": "string_processor"
+          }
+        ]
+      },
+      {
         "name": "dq_checks",
         "transformation": "DataQuality",
         "dependent_on": [
-          "cleanse_rules"
+          "cleanse_ro20_catalog__uppercase_scenario_note___scena_f6a3fd1b7a17"
         ],
         "dq_rules": [
           {
