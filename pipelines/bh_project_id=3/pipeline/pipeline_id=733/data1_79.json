@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-06T11:51:37.627018Z",
-  "updated_at": "2026-04-06T15:23:13.607164Z",
+  "updated_at": "2026-04-06T15:44:59.030942Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -149,10 +149,27 @@
         ]
       },
       {
+        "name": "cleanse_ro30_dedupe_based_on_member_id_take_1st_occur_7e2a07e613b5",
+        "transformation": "Deduplicator",
+        "dependent_on": [
+          "cleanse_ro20_catalog__uppercase_scenario_note___scena_f6a3fd1b7a17"
+        ],
+        "dedup_by": [
+          "member_id"
+        ],
+        "keep": "first",
+        "order_by": [
+          {
+            "column": "member_id",
+            "order": "asc"
+          }
+        ]
+      },
+      {
         "name": "dq_checks",
         "transformation": "DataQuality",
         "dependent_on": [
-          "cleanse_ro20_catalog__uppercase_scenario_note___scena_f6a3fd1b7a17"
+          "cleanse_ro30_dedupe_based_on_member_id_take_1st_occur_7e2a07e613b5"
         ],
         "dq_rules": [
           {
