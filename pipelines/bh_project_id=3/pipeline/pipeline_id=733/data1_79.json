@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-06T11:51:37.627018Z",
-  "updated_at": "2026-04-06T15:44:59.030942Z",
+  "updated_at": "2026-04-06T17:33:30.062480Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -75,6 +75,36 @@
           "$ref": "#/sources/read_file_source"
         },
         "file_type": "CSV",
+        "read_options": {
+          "fetch_size": 10000,
+          "sep": ",",
+          "encoding": "UTF-8",
+          "header": true,
+          "inferSchema": false,
+          "multiLine": false,
+          "quote": "\"",
+          "escape": "\\",
+          "comment": "",
+          "preferDate": true,
+          "enforceSchema": true,
+          "ignoreLeadingWhiteSpace": false,
+          "ignoreTrailingWhiteSpace": false,
+          "nullValue": "",
+          "nanValue": "NaN",
+          "positiveInf": "Inf",
+          "negativeInf": "-Inf",
+          "dateFormat": "yyyy-MM-dd",
+          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
+          "maxColumns": 20480,
+          "maxCharsPerColumn": -1,
+          "columnNameOfCorruptRecord": "_corrupt_record",
+          "samplingRatio": 1.0,
+          "emptyValue": "",
+          "locale": "en-US",
+          "lineSep": "\n",
+          "unescapedQuoteHandling": "STOP_AT_DELIMITER"
+        },
         "dependent_on": []
       },
       {
@@ -110,8 +140,6 @@
         "dependent_on": [
           "add_ingest_metadata"
         ],
-        "select_columns": [],
-        "rename_columns": {},
         "drop_columns": [],
         "derived_fields": [
           {
@@ -125,7 +153,9 @@
             },
             "function_name": "address_parser"
           }
-        ]
+        ],
+        "select_columns": [],
+        "rename_columns": {}
       },
       {
         "name": "cleanse_ro20_catalog__uppercase_scenario_note___scena_f6a3fd1b7a17",
