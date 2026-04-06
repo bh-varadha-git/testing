@@ -1,0 +1,156 @@
+{
+  "created_at": "2026-04-06T11:51:37.627018Z",
+  "updated_at": "2026-04-06T11:51:37.627018Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 2,
+  "pipeline_id": 733,
+  "pipeline_name": "data1_79",
+  "pipeline_key": "data1_79",
+  "bh_project_id": 3,
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "varadha-local-azure",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "name": "data1_79",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "parameters": [],
+    "connections": {
+      "read_azure_blob_file_connection": {
+        "name": "read_azure_blob_file_connection",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-localsvazureblob"
+      },
+      "local_sv_azure_unity_target": {
+        "name": "local_sv_azure_unity_target",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "default",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
+      }
+    },
+    "sources": {
+      "read_file_source": {
+        "name": "read_file_source",
+        "source_type": "File",
+        "file_name": "smaller_data/data1.csv",
+        "connection": {
+          "$ref": "#/connections/read_azure_blob_file_connection"
+        }
+      }
+    },
+    "targets": {
+      "write_to_bronze_target": {
+        "name": "write_to_bronze_target",
+        "target_type": "Relational",
+        "table_name": "data1",
+        "connection": {
+          "$ref": "#/connections/local_sv_azure_unity_target"
+        },
+        "load_mode": "append"
+      },
+      "write_to_silver_raw_target": {
+        "name": "write_to_silver_raw_target",
+        "target_type": "Relational",
+        "table_name": "data1",
+        "connection": {
+          "$ref": "#/connections/local_sv_azure_unity_target"
+        },
+        "load_mode": "append"
+      }
+    },
+    "transformations": [
+      {
+        "name": "read_file",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/read_file_source"
+        },
+        "file_type": "CSV",
+        "dependent_on": []
+      },
+      {
+        "name": "add_ingest_metadata",
+        "transformation": "Expression",
+        "dependent_on": [
+          "read_file"
+        ],
+        "derived_fields": [
+          {
+            "name": "ingest_timestamp",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_date",
+            "expression": "current_date()"
+          }
+        ]
+      },
+      {
+        "name": "write_to_bronze",
+        "transformation": "Writer",
+        "dependent_on": [
+          "add_ingest_metadata"
+        ],
+        "target": {
+          "$ref": "#/targets/write_to_bronze_target"
+        }
+      },
+      {
+        "name": "cleanse_rules",
+        "transformation": "Mapper",
+        "dependent_on": [
+          "add_ingest_metadata"
+        ],
+        "derived_fields": [
+          {
+            "parameters": {
+              "on_error": "null",
+              "separator": ", ",
+              "input_fields": [
+                "member_address"
+              ],
+              "address_prefix": "parsed_address"
+            },
+            "function_name": "address_parser"
+          }
+        ]
+      },
+      {
+        "name": "dq_checks",
+        "transformation": "DataQuality",
+        "dependent_on": [
+          "cleanse_rules"
+        ],
+        "dq_rules": []
+      },
+      {
+        "name": "write_to_silver_raw",
+        "transformation": "Writer",
+        "dependent_on": [
+          "dq_checks"
+        ],
+        "target": {
+          "$ref": "#/targets/write_to_silver_raw_target"
+        }
+      }
+    ],
+    "description": "Ingest files to bronze then cleanse/DQ to silver (medallion) in one Spark job"
+  },
+  "pipeline_type": "design",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
