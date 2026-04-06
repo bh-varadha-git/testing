@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-05T16:33:57.516354Z",
-  "updated_at": "2026-04-05T17:42:31.316914Z",
+  "updated_at": "2026-04-06T00:34:43.959464Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -48,8 +48,17 @@
       }
     },
     "targets": {
-      "write_to_db_target": {
-        "name": "write_to_db_target",
+      "write_to_bronze_target": {
+        "name": "write_to_bronze_target",
+        "target_type": "Relational",
+        "table_name": "large_person",
+        "connection": {
+          "$ref": "#/connections/local_sv_azure_unity_target"
+        },
+        "load_mode": "append"
+      },
+      "write_to_silver_raw_target": {
+        "name": "write_to_silver_raw_target",
         "target_type": "Relational",
         "table_name": "large_person",
         "connection": {
@@ -86,17 +95,85 @@
         ]
       },
       {
-        "name": "write_to_db",
+        "name": "write_to_bronze",
         "transformation": "Writer",
         "dependent_on": [
           "add_ingest_metadata"
         ],
         "target": {
-          "$ref": "#/targets/write_to_db_target"
+          "$ref": "#/targets/write_to_bronze_target"
+        }
+      },
+      {
+        "name": "cleanse_rules",
+        "transformation": "Mapper",
+        "dependent_on": [
+          "add_ingest_metadata"
+        ],
+        "engine_type": "pyspark",
+        "derived_fields": [
+          {
+            "parameters": {
+              "operation": "upper",
+              "input_fields": [
+                "email"
+              ],
+              "output_fields": [
+                "email_upper"
+              ]
+            },
+            "function_name": "string_processor"
+          },
+          {
+            "parameters": {
+              "delimiter": " ",
+              "input_fields": [
+                "address"
+              ],
+              "output_fields": [
+                "address_p1",
+                "address_p2",
+                "address_p3"
+              ],
+              "split_to_columns": true
+            },
+            "function_name": "field_splitter"
+          },
+          {
+            "parameters": {
+              "operation": "upper",
+              "input_fields": [
+                "Country"
+              ],
+              "output_fields": [
+                "Country_upper"
+              ]
+            },
+            "function_name": "string_processor"
+          }
+        ]
+      },
+      {
+        "name": "dq_checks",
+        "transformation": "DataQuality",
+        "dependent_on": [
+          "cleanse_rules"
+        ],
+        "engine_type": "pyspark",
+        "dq_rules": []
+      },
+      {
+        "name": "write_to_silver_raw",
+        "transformation": "Writer",
+        "dependent_on": [
+          "dq_checks"
+        ],
+        "target": {
+          "$ref": "#/targets/write_to_silver_raw_target"
         }
       }
     ],
-    "description": "Ingest files from any supported source and write to any supported database"
+    "description": "Ingest files to bronze then cleanse/DQ to silver (medallion) in one Spark job"
   },
   "pipeline_type": "design",
   "engine_type": "pyspark",
