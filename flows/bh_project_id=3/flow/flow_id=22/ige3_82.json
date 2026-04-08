@@ -1,0 +1,336 @@
+{
+  "created_at": "2026-04-08T05:40:08.837559Z",
+  "updated_at": "2026-04-08T05:40:08.837559Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 2,
+  "flow_id": 22,
+  "flow_name": "IGE3_82",
+  "flow_key": "ige3_82",
+  "recipient_email": {},
+  "notes": null,
+  "tags": null,
+  "bh_project_name": "varadha-local-azure",
+  "bh_project_id": 3,
+  "alert_settings": {
+    "on_job_start": false,
+    "on_job_failure": false,
+    "on_job_success": false,
+    "long_running": false
+  },
+  "_graph": {
+    "root": {
+      "model": "Flow",
+      "pk": 22
+    },
+    "nodes": [
+      {
+        "model": "Flow",
+        "pk": 22,
+        "data": {
+          "flow_id": 22,
+          "flow_name": "IGE3_82",
+          "flow_key": "ige3_82",
+          "bh_project_id": 3,
+          "recipient_email": {},
+          "notes": null,
+          "tags": null,
+          "status": "active",
+          "alert_settings": {
+            "on_job_start": false,
+            "on_job_failure": false,
+            "on_job_success": false,
+            "long_running": false
+          },
+          "bh_bundle_id": null,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
+        "pk": 26,
+        "data": {
+          "flow_pipeline_mapping_id": 26,
+          "flow_id": 22,
+          "pipeline_id": 735,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
+        "pk": 25,
+        "data": {
+          "flow_pipeline_mapping_id": 25,
+          "flow_id": 22,
+          "pipeline_id": 734,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 223,
+        "data": {
+          "flow_parameter_id": 223,
+          "flow_id": 22,
+          "parameter_name": "task_id_to_watch",
+          "parameter_value": "run_job",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 222,
+        "data": {
+          "flow_parameter_id": 222,
+          "flow_id": 22,
+          "parameter_name": "suffix",
+          "parameter_value": ".json",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 221,
+        "data": {
+          "flow_parameter_id": 221,
+          "flow_id": 22,
+          "parameter_name": "prefix",
+          "parameter_value": "logs/",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 220,
+        "data": {
+          "flow_parameter_id": 220,
+          "flow_id": 22,
+          "parameter_name": "parallelization_factor",
+          "parameter_value": 3,
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 219,
+        "data": {
+          "flow_parameter_id": 219,
+          "flow_id": 22,
+          "parameter_name": "execute_in_parallel",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 225,
+        "data": {
+          "flow_parameter_id": 225,
+          "flow_id": 22,
+          "parameter_name": "compute_type",
+          "parameter_value": "DATABRICKS_CLUSTER",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 224,
+        "data": {
+          "flow_parameter_id": 224,
+          "flow_id": 22,
+          "parameter_name": "cloud_type",
+          "parameter_value": "databricks",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDefinition",
+        "pk": 21,
+        "data": {
+          "flow_definition_id": 21,
+          "flow_id": 22,
+          "flow_json": {
+            "$schema": "https://json-schema.org/draft-07/schema#",
+            "name": "ige3_82",
+            "flow_name": "IGE3_82",
+            "flow_id": 22,
+            "flow_key": "ige3_82",
+            "flow_type": "INGESTION",
+            "description": "IGE3",
+            "version": "1.0.0",
+            "project_id": 3,
+            "project_name": "varadha-local-azure",
+            "cron_expression": null,
+            "tenant_id": 2,
+            "flow_tags": [
+              {
+                "key": "drn",
+                "value": "12346"
+              },
+              {
+                "key": "environment",
+                "value": "dev"
+              }
+            ],
+            "parameters": [
+              {
+                "key": "cloud_type",
+                "value": "databricks"
+              },
+              {
+                "key": "compute_type",
+                "value": "DATABRICKS_CLUSTER"
+              },
+              {
+                "key": "execute_in_parallel",
+                "value": true
+              },
+              {
+                "key": "parallelization_factor",
+                "value": 3
+              },
+              {
+                "key": "prefix",
+                "value": "logs/"
+              },
+              {
+                "key": "suffix",
+                "value": ".json"
+              },
+              {
+                "key": "task_id_to_watch",
+                "value": "run_job"
+              }
+            ],
+            "tasks": [
+              {
+                "task_id": "Create Compute",
+                "type": "CreateCompute",
+                "depends_on": [],
+                "cluster_name": "Databricks_SV_Local_0303_V1",
+                "compute_config": {
+                  "cluster_name": "Databricks_SV_Local_0303_V1",
+                  "spark_version": "15.4.x-scala2.12",
+                  "node_type_id": "Standard_D4s_v3",
+                  "num_workers": 0,
+                  "autoscale": null,
+                  "driver_node_type_id": null,
+                  "runtime_engine": null,
+                  "data_security_mode": null,
+                  "single_user_name": null,
+                  "policy_id": null,
+                  "apply_policy_default_values": true,
+                  "idempotency_token": null,
+                  "aws_attributes": null,
+                  "azure_attributes": null,
+                  "gcp_attributes": null,
+                  "single_node": true,
+                  "autotermination_minutes": 30,
+                  "enable_elastic_disk": true,
+                  "spark_conf": {},
+                  "spark_env_vars": {},
+                  "custom_tags": {},
+                  "cluster_log_conf": null,
+                  "init_scripts": [
+                    "/Workspace/Shared/bh-dev-utils/scripts/bh_databricks_grpc_server.sh"
+                  ],
+                  "libraries": [],
+                  "databricks_region": null,
+                  "bh_tags": []
+                },
+                "cloud_type": "databricks",
+                "compute_type": "DATABRICKS_CLUSTER",
+                "airflow_connection_id": "databricks_default"
+              },
+              {
+                "task_id": "Run Jobs",
+                "type": "SubmitMultipleJobs",
+                "depends_on": [
+                  "Create Compute"
+                ],
+                "compute_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}",
+                "cloud_type": "databricks",
+                "compute_type": "DATABRICKS_CLUSTER",
+                "airflow_connection_id": "databricks_default",
+                "pipelines": [
+                  {
+                    "id": 734,
+                    "name": "data_82"
+                  },
+                  {
+                    "id": 735,
+                    "name": "data1_82"
+                  }
+                ],
+                "execute_in_parallel": true,
+                "parallelization_factor": 3
+              },
+              {
+                "task_id": "Delete Compute",
+                "type": "DeleteCompute",
+                "depends_on": [
+                  "Run Jobs"
+                ],
+                "compute_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}",
+                "cloud_type": "databricks",
+                "compute_type": "DATABRICKS_CLUSTER",
+                "airflow_connection_id": "databricks_default"
+              }
+            ],
+            "template_parameters": []
+          },
+          "schema_id": null,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDeployment",
+        "pk": 21,
+        "data": {
+          "flow_deployment_id": 21,
+          "flow_id": 22,
+          "bh_env_id": 7,
+          "bh_airflow_id": null,
+          "flow_version_id": null,
+          "schema_id": null,
+          "cron_expression": null,
+          "last_deployed_at": null,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      }
+    ]
+  }
+}
