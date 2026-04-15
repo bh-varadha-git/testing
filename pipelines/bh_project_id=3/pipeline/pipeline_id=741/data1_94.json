@@ -1,0 +1,332 @@
+{
+  "created_at": "2026-04-15T00:27:37.102310Z",
+  "updated_at": "2026-04-15T00:27:37.102310Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 2,
+  "pipeline_id": 741,
+  "pipeline_name": "data1_94",
+  "pipeline_key": "data1_94",
+  "bh_project_id": 3,
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "varadha-local-azure",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "name": "data1_94",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "parameters": [],
+    "connections": {
+      "landing_data1_file_connection": {
+        "name": "landing_data1_file_connection",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-localsvazureblob"
+      },
+      "bronze_data1_db_connection": {
+        "name": "bronze_data1_db_connection",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "default",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
+      },
+      "silver_raw_data1_db_connection": {
+        "name": "silver_raw_data1_db_connection",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "default",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
+      }
+    },
+    "sources": {
+      "landing_source_data1": {
+        "name": "landing_source_data1",
+        "source_type": "File",
+        "file_name": "smaller_data/data1.csv",
+        "connection": {
+          "$ref": "#/connections/landing_data1_file_connection"
+        }
+      }
+    },
+    "targets": {
+      "bronze_target_data1": {
+        "name": "bronze_target_data1",
+        "target_type": "Relational",
+        "table_name": "data1",
+        "connection": {
+          "$ref": "#/connections/bronze_data1_db_connection"
+        },
+        "load_mode": "append"
+      },
+      "bronze_quarantine_target_data1": {
+        "name": "bronze_quarantine_target_data1",
+        "target_type": "Relational",
+        "table_name": "data1_quarantine_records",
+        "connection": {
+          "$ref": "#/connections/bronze_data1_db_connection"
+        },
+        "load_mode": "append"
+      },
+      "silver_raw_target_data1": {
+        "name": "silver_raw_target_data1",
+        "target_type": "Relational",
+        "table_name": "data1",
+        "connection": {
+          "$ref": "#/connections/silver_raw_data1_db_connection"
+        },
+        "load_mode": "merge",
+        "merge_keys": [
+          "source_system",
+          "source_system_id",
+          "source_system_id_type"
+        ],
+        "stage_table": "data1_stage"
+      }
+    },
+    "transformations": [
+      {
+        "name": "landing_read_data1",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_data1"
+        },
+        "file_type": "CSV",
+        "read_options": {
+          "fetch_size": 10000,
+          "sep": ",",
+          "encoding": "UTF-8",
+          "header": true,
+          "inferSchema": false,
+          "multiLine": false,
+          "quote": "\"",
+          "escape": "\\",
+          "comment": "",
+          "preferDate": true,
+          "enforceSchema": true,
+          "ignoreLeadingWhiteSpace": false,
+          "ignoreTrailingWhiteSpace": false,
+          "nullValue": "",
+          "nanValue": "NaN",
+          "positiveInf": "Inf",
+          "negativeInf": "-Inf",
+          "dateFormat": "yyyy-MM-dd",
+          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
+          "maxColumns": 20480,
+          "maxCharsPerColumn": -1,
+          "columnNameOfCorruptRecord": "_corrupt_record",
+          "samplingRatio": 1.0,
+          "emptyValue": "",
+          "locale": "en-US",
+          "lineSep": "\n",
+          "unescapedQuoteHandling": "STOP_AT_DELIMITER",
+          "mode": "PERMISSIVE"
+        },
+        "schema": [
+          {
+            "name": "member_id",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "member_name",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "member_address",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "member_phone",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "scenario_note",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "_corrupt_record",
+            "type": "string",
+            "nullable": true
+          }
+        ],
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_data1"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'data1'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          }
+        ]
+      },
+      {
+        "name": "bronze_write_data1",
+        "transformation": "Writer",
+        "dependent_on": [
+          "add_lineage_metadata"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_data1"
+        },
+        "write_options": {
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      },
+      {
+        "name": "schema_drift_guard",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "dataset_id": "schema_drift_data1",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "dataquality_4",
+        "transformation": "DataQuality",
+        "dependent_on": [
+          "schema_drift_guard"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "name": "mapper_5",
+        "transformation": "Mapper",
+        "dependent_on": [
+          "dataquality_4"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "name": "bronze_quarantine_write_data1",
+        "transformation": "Writer",
+        "dependent_on": [
+          "dataquality_4"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_quarantine_target_data1"
+        }
+      },
+      {
+        "name": "silver_raw_write_data1",
+        "transformation": "Writer",
+        "dependent_on": [
+          "mapper_5"
+        ],
+        "target": {
+          "$ref": "#/targets/silver_raw_target_data1"
+        }
+      }
+    ],
+    "description": "Cloned from File to DB Ingestion",
+    "batch_control": {
+      "enabled": true,
+      "feed_name": "data1",
+      "business_date": "2026-04-15",
+      "delivery_id": "data1_2026-04-15",
+      "batch_id": 1,
+      "use_existing_batch_id": false,
+      "validate_existing_batch": true,
+      "require_input_acceptance": true,
+      "auto_accept_input_on_batch_init": true,
+      "input_registry_processed_on_stage": "bronze",
+      "seed_stage_rows": true,
+      "stages": [
+        "bronze",
+        "silver_raw"
+      ],
+      "storage": {
+        "connection": {
+          "name": "control_delta",
+          "connection_type": "DatabricksDeltaLake"
+        },
+        "namespace": {
+          "catalog": "main",
+          "schema": "control"
+        }
+      },
+      "stage_to_transformations": {
+        "bronze": [
+          "landing_read_data1",
+          "add_lineage_metadata",
+          "bronze_write_data1",
+          "bronze_quarantine_write_data1"
+        ],
+        "silver_raw": [
+          "schema_drift_guard",
+          "dq_checks",
+          "cleanse_rules",
+          "silver_raw_write_data1"
+        ]
+      },
+      "error_threshold_pct": 50.0
+    }
+  },
+  "pipeline_type": "design",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
