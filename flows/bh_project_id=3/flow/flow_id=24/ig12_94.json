@@ -1,0 +1,323 @@
+{
+  "created_at": "2026-04-15T00:27:37.677941Z",
+  "updated_at": "2026-04-15T00:33:48.535635Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 2,
+  "flow_id": 24,
+  "flow_name": "IG12_94",
+  "flow_key": "ig12_94",
+  "recipient_email": {},
+  "notes": null,
+  "tags": null,
+  "bh_project_name": "varadha-local-azure",
+  "bh_project_id": 3,
+  "alert_settings": {
+    "on_job_start": false,
+    "on_job_failure": false,
+    "on_job_success": false,
+    "long_running": false
+  },
+  "_graph": {
+    "root": {
+      "model": "Flow",
+      "pk": 24
+    },
+    "nodes": [
+      {
+        "model": "Flow",
+        "pk": 24,
+        "data": {
+          "flow_id": 24,
+          "flow_name": "IG12_94",
+          "flow_key": "ig12_94",
+          "bh_project_id": 3,
+          "recipient_email": {},
+          "notes": null,
+          "tags": null,
+          "status": "active",
+          "alert_settings": {
+            "on_job_start": false,
+            "on_job_failure": false,
+            "on_job_success": false,
+            "long_running": false
+          },
+          "bh_bundle_id": null,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
+        "pk": 30,
+        "data": {
+          "flow_pipeline_mapping_id": 30,
+          "flow_id": 24,
+          "pipeline_id": 741,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
+        "pk": 29,
+        "data": {
+          "flow_pipeline_mapping_id": 29,
+          "flow_id": 24,
+          "pipeline_id": 740,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 241,
+        "data": {
+          "flow_parameter_id": 241,
+          "flow_id": 24,
+          "parameter_name": "task_id_to_watch",
+          "parameter_value": "run_job",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 240,
+        "data": {
+          "flow_parameter_id": 240,
+          "flow_id": 24,
+          "parameter_name": "suffix",
+          "parameter_value": ".json",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 239,
+        "data": {
+          "flow_parameter_id": 239,
+          "flow_id": 24,
+          "parameter_name": "prefix",
+          "parameter_value": "logs/",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 238,
+        "data": {
+          "flow_parameter_id": 238,
+          "flow_id": 24,
+          "parameter_name": "parallelization_factor",
+          "parameter_value": 3,
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 237,
+        "data": {
+          "flow_parameter_id": 237,
+          "flow_id": 24,
+          "parameter_name": "execute_in_parallel",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 242,
+        "data": {
+          "flow_parameter_id": 242,
+          "flow_id": 24,
+          "parameter_name": "compute_type",
+          "parameter_value": "emr",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 243,
+        "data": {
+          "flow_parameter_id": 243,
+          "flow_id": 24,
+          "parameter_name": "cloud_type",
+          "parameter_value": "aws",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDefinition",
+        "pk": 23,
+        "data": {
+          "flow_definition_id": 23,
+          "flow_id": 24,
+          "flow_json": {
+            "$schema": "https://json-schema.org/draft-07/schema#",
+            "name": "ig12_94",
+            "flow_name": "IG12_94",
+            "flow_id": 24,
+            "flow_key": "ig12_94",
+            "flow_type": "INGESTION",
+            "description": "IG12",
+            "version": "1.0.0",
+            "project_id": 3,
+            "project_name": "varadha-local-azure",
+            "cron_expression": "0 0 1 * *",
+            "tenant_id": 2,
+            "flow_tags": [
+              {
+                "key": "drn",
+                "value": "12346"
+              },
+              {
+                "key": "environment",
+                "value": "dev"
+              }
+            ],
+            "parameters": [
+              {
+                "key": "cloud_type",
+                "value": "aws"
+              },
+              {
+                "key": "compute_type",
+                "value": "emr"
+              },
+              {
+                "key": "execute_in_parallel",
+                "value": true
+              },
+              {
+                "key": "parallelization_factor",
+                "value": 3
+              },
+              {
+                "key": "prefix",
+                "value": "logs/"
+              },
+              {
+                "key": "suffix",
+                "value": ".json"
+              },
+              {
+                "key": "task_id_to_watch",
+                "value": "run_job"
+              }
+            ],
+            "tasks": [
+              {
+                "task_id": "Create Compute",
+                "type": "CreateCompute",
+                "depends_on": [],
+                "airflow_connection_id": "<<airflow_connection_id>>",
+                "compute_type": "emr",
+                "cloud_type": "aws",
+                "compute_config": "<<compute_config>>",
+                "cluster_name": "<<cluster_name>>"
+              },
+              {
+                "task_id": "Run Jobs",
+                "type": "SubmitMultipleJobs",
+                "depends_on": [
+                  "Create Compute"
+                ],
+                "parallelization_factor": 3,
+                "execute_in_parallel": true,
+                "pipelines": [
+                  {
+                    "id": 740,
+                    "name": "data_94"
+                  },
+                  {
+                    "id": 741,
+                    "name": "data1_94"
+                  }
+                ],
+                "airflow_connection_id": "<<airflow_connection_id>>",
+                "compute_type": "emr",
+                "cloud_type": "aws",
+                "compute_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}"
+              },
+              {
+                "task_id": "Delete Compute",
+                "type": "DeleteCompute",
+                "depends_on": [
+                  "Run Jobs"
+                ],
+                "airflow_connection_id": "<<airflow_connection_id>>",
+                "compute_type": "emr",
+                "cloud_type": "aws",
+                "compute_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}"
+              }
+            ],
+            "template_parameters": [
+              {
+                "key": "airflow_connection_id",
+                "value": "<<airflow_connection_id>>"
+              },
+              {
+                "key": "cluster_name",
+                "value": "<<cluster_name>>"
+              },
+              {
+                "key": "compute_config",
+                "value": "<<compute_config>>"
+              }
+            ]
+          },
+          "schema_id": null,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDeployment",
+        "pk": 23,
+        "data": {
+          "flow_deployment_id": 23,
+          "flow_id": 24,
+          "bh_env_id": null,
+          "bh_airflow_id": null,
+          "flow_version_id": null,
+          "schema_id": null,
+          "cron_expression": {
+            "is_scheduled": true,
+            "cron_expression": "0 0 1 * *"
+          },
+          "last_deployed_at": null,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      }
+    ]
+  }
+}
