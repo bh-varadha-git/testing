@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-17T02:53:02.377405Z",
-  "updated_at": "2026-04-17T05:49:21.588259Z",
+  "updated_at": "2026-04-17T08:18:54.763324Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -163,7 +163,7 @@
           "flow_parameter_id": 249,
           "flow_id": 25,
           "parameter_name": "compute_type",
-          "parameter_value": "emr",
+          "parameter_value": "DATABRICKS_CLUSTER",
           "parameter_type": "USER",
           "tenant_id": 2,
           "is_deleted": false,
@@ -177,7 +177,7 @@
           "flow_parameter_id": 250,
           "flow_id": 25,
           "parameter_name": "cloud_type",
-          "parameter_value": "aws",
+          "parameter_value": "databricks",
           "parameter_type": "USER",
           "tenant_id": 2,
           "is_deleted": false,
@@ -216,11 +216,11 @@
             "parameters": [
               {
                 "key": "cloud_type",
-                "value": "aws"
+                "value": "databricks"
               },
               {
                 "key": "compute_type",
-                "value": "emr"
+                "value": "DATABRICKS_CLUSTER"
               },
               {
                 "key": "execute_in_parallel",
@@ -248,11 +248,40 @@
                 "task_id": "Create Compute",
                 "type": "CreateCompute",
                 "depends_on": [],
-                "airflow_connection_id": "<<airflow_connection_id>>",
-                "compute_type": "emr",
-                "cloud_type": "aws",
-                "compute_config": "<<compute_config>>",
-                "cluster_name": "<<cluster_name>>"
+                "airflow_connection_id": "databricks_default",
+                "compute_type": "DATABRICKS_CLUSTER",
+                "cloud_type": "databricks",
+                "compute_config": {
+                  "cluster_name": "Databricks_SV_Local_0303_V1",
+                  "spark_version": "15.4.x-scala2.12",
+                  "node_type_id": "Standard_D4s_v3",
+                  "num_workers": 0,
+                  "autoscale": null,
+                  "driver_node_type_id": null,
+                  "runtime_engine": null,
+                  "data_security_mode": null,
+                  "single_user_name": null,
+                  "policy_id": null,
+                  "apply_policy_default_values": true,
+                  "idempotency_token": null,
+                  "aws_attributes": null,
+                  "azure_attributes": null,
+                  "gcp_attributes": null,
+                  "single_node": true,
+                  "autotermination_minutes": 30,
+                  "enable_elastic_disk": true,
+                  "spark_conf": {},
+                  "spark_env_vars": {},
+                  "custom_tags": {},
+                  "cluster_log_conf": null,
+                  "init_scripts": [
+                    "/Workspace/Shared/bh-dev-utils/scripts/bh_databricks_grpc_server.sh"
+                  ],
+                  "libraries": [],
+                  "databricks_region": null,
+                  "bh_tags": []
+                },
+                "cluster_name": "Databricks_SV_Local_0303_V1"
               },
               {
                 "task_id": "Run Jobs",
@@ -276,9 +305,9 @@
                     "name": "coverage_ndjson_99"
                   }
                 ],
-                "airflow_connection_id": "<<airflow_connection_id>>",
-                "compute_type": "emr",
-                "cloud_type": "aws",
+                "airflow_connection_id": "databricks_default",
+                "compute_type": "DATABRICKS_CLUSTER",
+                "cloud_type": "databricks",
                 "compute_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}"
               },
               {
@@ -287,26 +316,13 @@
                 "depends_on": [
                   "Run Jobs"
                 ],
-                "airflow_connection_id": "<<airflow_connection_id>>",
-                "compute_type": "emr",
-                "cloud_type": "aws",
+                "airflow_connection_id": "databricks_default",
+                "compute_type": "DATABRICKS_CLUSTER",
+                "cloud_type": "databricks",
                 "compute_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}"
               }
             ],
-            "template_parameters": [
-              {
-                "key": "airflow_connection_id",
-                "value": "<<airflow_connection_id>>"
-              },
-              {
-                "key": "cluster_name",
-                "value": "<<cluster_name>>"
-              },
-              {
-                "key": "compute_config",
-                "value": "<<compute_config>>"
-              }
-            ]
+            "template_parameters": []
           },
           "schema_id": null,
           "tenant_id": 2,
@@ -320,7 +336,7 @@
         "data": {
           "flow_deployment_id": 24,
           "flow_id": 25,
-          "bh_env_id": null,
+          "bh_env_id": 7,
           "bh_airflow_id": null,
           "flow_version_id": null,
           "schema_id": null,
