@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-17T02:52:56.861600Z",
-  "updated_at": "2026-04-17T02:52:56.861600Z",
+  "updated_at": "2026-04-17T03:25:03.469300Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -180,6 +180,11 @@
           "$ref": "#/targets/bronze_target_explanationofbenefit_ndjson"
         },
         "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
           "partitionBy": [
             "ingest_year",
             "ingest_month",
