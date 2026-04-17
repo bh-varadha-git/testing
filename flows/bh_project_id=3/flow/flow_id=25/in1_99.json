@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-17T02:53:02.377405Z",
-  "updated_at": "2026-04-17T04:44:20.608569Z",
+  "updated_at": "2026-04-17T04:50:51.280339Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -264,16 +264,16 @@
                 "execute_in_parallel": true,
                 "pipelines": [
                   {
-                    "id": 742,
-                    "name": "coverage_ndjson_99"
-                  },
-                  {
                     "id": 743,
                     "name": "explanationofbenefit_ndjson_99"
                   },
                   {
                     "id": 744,
                     "name": "patient_ndjson_99"
+                  },
+                  {
+                    "id": 742,
+                    "name": "coverage_ndjson_99"
                   }
                 ],
                 "airflow_connection_id": "<<airflow_connection_id>>",
