@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-17T02:53:00.520382Z",
-  "updated_at": "2026-04-17T02:53:00.520382Z",
+  "updated_at": "2026-04-17T03:25:07.513928Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -180,6 +180,11 @@
           "$ref": "#/targets/bronze_target_patient_ndjson"
         },
         "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
           "partitionBy": [
             "ingest_year",
             "ingest_month",
