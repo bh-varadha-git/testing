@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-17T02:52:53.254281Z",
-  "updated_at": "2026-04-17T04:44:10.353172Z",
+  "updated_at": "2026-04-17T04:50:50.368140Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -33,7 +33,7 @@
         "name": "bronze_coverage_ndjson_db_connection",
         "connection_type": "DatabricksDeltaLake",
         "catalog": "main",
-        "schema": "default",
+        "schema": "claims",
         "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
       }
     },
@@ -56,7 +56,7 @@
           "$ref": "#/connections/bronze_coverage_ndjson_db_connection"
         },
         "load_mode": "append",
-        "schema": "default"
+        "schema": "claims"
       }
     },
     "transformations": [
