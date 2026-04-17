@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-17T02:53:00.520382Z",
-  "updated_at": "2026-04-17T04:07:34.154866Z",
+  "updated_at": "2026-04-17T04:14:50.883723Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -33,7 +33,7 @@
         "name": "bronze_patient_ndjson_db_connection",
         "connection_type": "DatabricksDeltaLake",
         "catalog": "main",
-        "schema": "default",
+        "schema": "default1",
         "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
       }
     },
