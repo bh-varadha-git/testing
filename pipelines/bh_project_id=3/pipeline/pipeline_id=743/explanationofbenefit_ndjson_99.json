@@ -1,6 +1,6 @@
 {
   "created_at": "2026-04-17T02:52:56.861600Z",
-  "updated_at": "2026-04-17T03:54:52.415611Z",
+  "updated_at": "2026-04-17T04:07:27.543531Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -35,13 +35,6 @@
         "catalog": "main",
         "schema": "default",
         "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
-      },
-      "silver_raw_explanationofbenefit_ndjson_db_connection": {
-        "name": "silver_raw_explanationofbenefit_ndjson_db_connection",
-        "connection_type": "DatabricksDeltaLake",
-        "catalog": "main",
-        "schema": "default",
-        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
       }
     },
     "sources": {
@@ -63,30 +56,6 @@
           "$ref": "#/connections/bronze_explanationofbenefit_ndjson_db_connection"
         },
         "load_mode": "append"
-      },
-      "bronze_quarantine_target_explanationofbenefit_ndjson": {
-        "name": "bronze_quarantine_target_explanationofbenefit_ndjson",
-        "target_type": "Relational",
-        "table_name": "explanationofbenefit_quarantine_records",
-        "connection": {
-          "$ref": "#/connections/bronze_explanationofbenefit_ndjson_db_connection"
-        },
-        "load_mode": "append"
-      },
-      "silver_raw_target_explanationofbenefit_ndjson": {
-        "name": "silver_raw_target_explanationofbenefit_ndjson",
-        "target_type": "Relational",
-        "table_name": "explanationofbenefit",
-        "connection": {
-          "$ref": "#/connections/silver_raw_explanationofbenefit_ndjson_db_connection"
-        },
-        "load_mode": "merge",
-        "merge_keys": [
-          "source_system",
-          "source_system_id",
-          "source_system_id_type"
-        ],
-        "stage_table": "explanationofbenefit_stage"
       }
     },
     "transformations": [
@@ -173,9 +142,7 @@
       {
         "name": "bronze_write_explanationofbenefit_ndjson",
         "transformation": "Writer",
-        "dependent_on": [
-          "add_lineage_metadata"
-        ],
+        "dependent_on": [],
         "target": {
           "$ref": "#/targets/bronze_target_explanationofbenefit_ndjson"
         },
@@ -211,42 +178,6 @@
           "type_mismatch_required": "quarantine_record",
           "type_mismatch_optional": "rescue"
         }
-      },
-      {
-        "name": "dataquality_4",
-        "transformation": "DataQuality",
-        "dependent_on": [
-          "schema_drift_guard"
-        ],
-        "version": "1.0.0"
-      },
-      {
-        "name": "mapper_5",
-        "transformation": "Mapper",
-        "dependent_on": [
-          "dataquality_4"
-        ],
-        "version": "1.0.0"
-      },
-      {
-        "name": "bronze_quarantine_write_explanationofbenefit_ndjson",
-        "transformation": "Writer",
-        "dependent_on": [
-          "dataquality_4"
-        ],
-        "target": {
-          "$ref": "#/targets/bronze_quarantine_target_explanationofbenefit_ndjson"
-        }
-      },
-      {
-        "name": "silver_raw_write_explanationofbenefit_ndjson",
-        "transformation": "Writer",
-        "dependent_on": [
-          "mapper_5"
-        ],
-        "target": {
-          "$ref": "#/targets/silver_raw_target_explanationofbenefit_ndjson"
-        }
       }
     ],
     "description": "Cloned from File to DB Ingestion",
@@ -280,14 +211,10 @@
         "bronze": [
           "landing_read_explanationofbenefit_ndjson",
           "add_lineage_metadata",
-          "bronze_write_explanationofbenefit_ndjson",
-          "bronze_quarantine_write_explanationofbenefit_ndjson"
+          "bronze_write_explanationofbenefit_ndjson"
         ],
         "silver_raw": [
-          "schema_drift_guard",
-          "dq_checks",
-          "cleanse_rules",
-          "silver_raw_write_explanationofbenefit_ndjson"
+          "schema_drift_guard"
         ]
       },
       "error_threshold_pct": 50.0
