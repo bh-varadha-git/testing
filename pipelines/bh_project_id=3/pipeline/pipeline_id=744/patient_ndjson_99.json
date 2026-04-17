@@ -1,0 +1,299 @@
+{
+  "created_at": "2026-04-17T02:53:00.520382Z",
+  "updated_at": "2026-04-17T02:53:00.520382Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 2,
+  "pipeline_id": 744,
+  "pipeline_name": "Patient_ndjson_99",
+  "pipeline_key": "patient_ndjson_99",
+  "bh_project_id": 3,
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "varadha-local-azure",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "name": "Patient_ndjson_99",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "parameters": [],
+    "connections": {
+      "landing_patient_ndjson_file_connection": {
+        "name": "landing_patient_ndjson_file_connection",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-localsvazureblob"
+      },
+      "bronze_patient_ndjson_db_connection": {
+        "name": "bronze_patient_ndjson_db_connection",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "default",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
+      },
+      "silver_raw_patient_ndjson_db_connection": {
+        "name": "silver_raw_patient_ndjson_db_connection",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "default",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
+      }
+    },
+    "sources": {
+      "landing_source_patient_ndjson": {
+        "name": "landing_source_patient_ndjson",
+        "source_type": "File",
+        "file_name": "json_data/Patient.ndjson",
+        "connection": {
+          "$ref": "#/connections/landing_patient_ndjson_file_connection"
+        }
+      }
+    },
+    "targets": {
+      "bronze_target_patient_ndjson": {
+        "name": "bronze_target_patient_ndjson",
+        "target_type": "Relational",
+        "table_name": "patient",
+        "connection": {
+          "$ref": "#/connections/bronze_patient_ndjson_db_connection"
+        },
+        "load_mode": "append"
+      },
+      "bronze_quarantine_target_patient_ndjson": {
+        "name": "bronze_quarantine_target_patient_ndjson",
+        "target_type": "Relational",
+        "table_name": "patient_quarantine_records",
+        "connection": {
+          "$ref": "#/connections/bronze_patient_ndjson_db_connection"
+        },
+        "load_mode": "append"
+      },
+      "silver_raw_target_patient_ndjson": {
+        "name": "silver_raw_target_patient_ndjson",
+        "target_type": "Relational",
+        "table_name": "patient",
+        "connection": {
+          "$ref": "#/connections/silver_raw_patient_ndjson_db_connection"
+        },
+        "load_mode": "merge",
+        "merge_keys": [
+          "source_system",
+          "source_system_id",
+          "source_system_id_type"
+        ],
+        "stage_table": "patient_stage"
+      }
+    },
+    "transformations": [
+      {
+        "name": "landing_read_patient_ndjson",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_patient_ndjson"
+        },
+        "read_options": {
+          "fetch_size": 10000,
+          "sep": ":",
+          "encoding": "UTF-8",
+          "header": false,
+          "inferSchema": false,
+          "multiLine": false,
+          "quote": "\"",
+          "escape": "\\",
+          "comment": "",
+          "preferDate": true,
+          "enforceSchema": true,
+          "ignoreLeadingWhiteSpace": false,
+          "ignoreTrailingWhiteSpace": false,
+          "nullValue": "",
+          "nanValue": "NaN",
+          "positiveInf": "Inf",
+          "negativeInf": "-Inf",
+          "dateFormat": "yyyy-MM-dd",
+          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
+          "maxColumns": 20480,
+          "maxCharsPerColumn": -1,
+          "columnNameOfCorruptRecord": "_corrupt_record",
+          "samplingRatio": 1.0,
+          "emptyValue": "",
+          "locale": "en-US",
+          "lineSep": "\n",
+          "unescapedQuoteHandling": "STOP_AT_DELIMITER",
+          "mode": "PERMISSIVE"
+        },
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_patient_ndjson"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'patient_ndjson'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          }
+        ]
+      },
+      {
+        "name": "bronze_write_patient_ndjson",
+        "transformation": "Writer",
+        "dependent_on": [
+          "add_lineage_metadata"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_patient_ndjson"
+        },
+        "write_options": {
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      },
+      {
+        "name": "schema_drift_guard",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "dataset_id": "schema_drift_patient_ndjson",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "dataquality_4",
+        "transformation": "DataQuality",
+        "dependent_on": [
+          "schema_drift_guard"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "name": "mapper_5",
+        "transformation": "Mapper",
+        "dependent_on": [
+          "dataquality_4"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "name": "bronze_quarantine_write_patient_ndjson",
+        "transformation": "Writer",
+        "dependent_on": [
+          "dataquality_4"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_quarantine_target_patient_ndjson"
+        }
+      },
+      {
+        "name": "silver_raw_write_patient_ndjson",
+        "transformation": "Writer",
+        "dependent_on": [
+          "mapper_5"
+        ],
+        "target": {
+          "$ref": "#/targets/silver_raw_target_patient_ndjson"
+        }
+      }
+    ],
+    "description": "Cloned from File to DB Ingestion",
+    "batch_control": {
+      "enabled": true,
+      "feed_name": "patient_ndjson",
+      "business_date": "2026-04-17",
+      "delivery_id": "patient_ndjson_2026-04-17",
+      "batch_id": 1,
+      "use_existing_batch_id": false,
+      "validate_existing_batch": true,
+      "require_input_acceptance": true,
+      "auto_accept_input_on_batch_init": true,
+      "input_registry_processed_on_stage": "bronze",
+      "seed_stage_rows": true,
+      "stages": [
+        "bronze",
+        "silver_raw"
+      ],
+      "storage": {
+        "connection": {
+          "name": "control_delta",
+          "connection_type": "DatabricksDeltaLake"
+        },
+        "namespace": {
+          "catalog": "main",
+          "schema": "control"
+        }
+      },
+      "stage_to_transformations": {
+        "bronze": [
+          "landing_read_patient_ndjson",
+          "add_lineage_metadata",
+          "bronze_write_patient_ndjson",
+          "bronze_quarantine_write_patient_ndjson"
+        ],
+        "silver_raw": [
+          "schema_drift_guard",
+          "dq_checks",
+          "cleanse_rules",
+          "silver_raw_write_patient_ndjson"
+        ]
+      },
+      "error_threshold_pct": 50.0
+    }
+  },
+  "pipeline_type": "design",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
