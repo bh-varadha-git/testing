@@ -16,7 +16,7 @@ default_args = {
 with DAG(
     dag_id='in1_99',
     default_args=default_args,
-    schedule_interval='0 0 1 * *',
+    schedule='0 0 1 * *',
     catchup=False,
     tags=['12346', 'dev']
 ) as dag:
@@ -63,8 +63,8 @@ with DAG(
                 "autoscale": None,
                 "driver_node_type_id": None,
                 "runtime_engine": None,
-                "data_security_mode": None,
-                "single_user_name": None,
+                "data_security_mode": "SINGLE_USER",
+                "single_user_name": "srinivas@bighammer.ai",
                 "policy_id": None,
                 "apply_policy_default_values": True,
                 "idempotency_token": None,
