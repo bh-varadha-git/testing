@@ -1,0 +1,596 @@
+{
+  "created_at": "2026-04-21T17:03:45.864814Z",
+  "updated_at": "2026-04-21T17:03:45.864814Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 2,
+  "pipeline_id": 749,
+  "pipeline_name": "sample_P_D0284_ALGC26_RP_D260313_T1532354__monthly_data_117",
+  "pipeline_key": "sample_p_d0284_algc26_rp_d260313_t1532354_monthly_data_117",
+  "bh_project_id": 3,
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "varadha-local-azure",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "name": "sample_P_D0284_ALGC26_RP_D260313_T1532354__monthly_data_117",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "parameters": [],
+    "connections": {
+      "landing_sample_p_d0284_algc26_rp_d260313_t1532354_1_file_connection": {
+        "name": "landing_sample_p_d0284_algc26_rp_d260313_t1532354_1_file_connection",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-localsvazureblob"
+      },
+      "bronze_sample_p_d0284_algc26_rp_d260313_t1532354_1_db_connection": {
+        "name": "bronze_sample_p_d0284_algc26_rp_d260313_t1532354_1_db_connection",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "default",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
+      }
+    },
+    "sources": {
+      "landing_source_sample_p_d0284_algc26_rp_d260313_t1532354_1": {
+        "name": "landing_source_sample_p_d0284_algc26_rp_d260313_t1532354_1",
+        "source_type": "File",
+        "file_name": "enrollment_d0284/sample_P.D0284.ALGC26.RP.D260313.T1532354.xlsx",
+        "connection": {
+          "$ref": "#/connections/landing_sample_p_d0284_algc26_rp_d260313_t1532354_1_file_connection"
+        }
+      }
+    },
+    "targets": {
+      "bronze_target_sample_p_d0284_algc26_rp_d260313_t1532354_1": {
+        "name": "bronze_target_sample_p_d0284_algc26_rp_d260313_t1532354_1",
+        "target_type": "Relational",
+        "table_name": "sample_p_d0284_algc26_rp_d260313_t1532354_1",
+        "connection": {
+          "$ref": "#/connections/bronze_sample_p_d0284_algc26_rp_d260313_t1532354_1_db_connection"
+        },
+        "load_mode": "append",
+        "schema": "default"
+      }
+    },
+    "transformations": [
+      {
+        "name": "landing_read_sample_p_d0284_algc26_rp_d260313_t1532354_1",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_sample_p_d0284_algc26_rp_d260313_t1532354_1"
+        },
+        "file_type": "Excel",
+        "read_options": {
+          "fetch_size": 10000,
+          "inferSchema": false,
+          "sheetName": "Monthly Data",
+          "useHeader": false,
+          "skiprows": 2,
+          "columnNamesOverride": [
+            "col1",
+            "col2",
+            "col3",
+            "col4",
+            "col5",
+            "col6",
+            "col7",
+            "col8",
+            "col9",
+            "col10",
+            "col11",
+            "col12",
+            "col13",
+            "col14",
+            "col15",
+            "col16",
+            "col17",
+            "col18",
+            "col19",
+            "col20",
+            "col21",
+            "col22",
+            "col23",
+            "col24",
+            "col25",
+            "col26",
+            "col27",
+            "col28",
+            "col29",
+            "col30",
+            "col31",
+            "col32",
+            "col33",
+            "col34",
+            "col35",
+            "col36",
+            "col37",
+            "col38",
+            "col39",
+            "col40",
+            "col41",
+            "col42",
+            "col43",
+            "col44",
+            "col45",
+            "col46",
+            "col47",
+            "col48",
+            "col49",
+            "col50",
+            "col51",
+            "col52",
+            "col53",
+            "col54",
+            "col55",
+            "col56",
+            "col57",
+            "col58",
+            "col59",
+            "col60",
+            "col61",
+            "col62"
+          ],
+          "timestampFormat": "yyyy-MM-dd HH:mm:ss",
+          "treatEmptyValuesAsNulls": true,
+          "addColorColumns": false,
+          "maxRowsInMemory": 20,
+          "excerptSize": 10,
+          "mode": "PERMISSIVE",
+          "columnNameOfCorruptRecord": "_corrupt_record"
+        },
+        "schema": [
+          {
+            "name": "col1",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col2",
+            "type": "timestamp",
+            "nullable": false
+          },
+          {
+            "name": "col3",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col4",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col5",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col6",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col7",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col8",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col9",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col10",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col11",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col12",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col13",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col14",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col15",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col16",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col17",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "col18",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col19",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col20",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col21",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col22",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col23",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col24",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col25",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col26",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col27",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col28",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col29",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col30",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col31",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col32",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col33",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col34",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col35",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col36",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col37",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col38",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col39",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col40",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col41",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col42",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col43",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col44",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col45",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col46",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col47",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col48",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col49",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col50",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col51",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col52",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col53",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col54",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col55",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col56",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col57",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col58",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col59",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col60",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col61",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "col62",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "_corrupt_record",
+            "type": "string",
+            "nullable": true
+          }
+        ],
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_sample_p_d0284_algc26_rp_d260313_t1532354_1"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'sample_p_d0284_algc26_rp_d260313_t1532354_1'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          }
+        ]
+      },
+      {
+        "name": "schema_drift_guard",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "dataset_id": "schema_drift_sample_p_d0284_algc26_rp_d260313_t1532354_1",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "bronze_write_sample_p_d0284_algc26_rp_d260313_t1532354_1",
+        "transformation": "Writer",
+        "dependent_on": [
+          "schema_drift_guard"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_sample_p_d0284_algc26_rp_d260313_t1532354_1"
+        },
+        "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      }
+    ],
+    "description": "Cloned from File to DB Ingestion V2",
+    "batch_control": {
+      "enabled": true,
+      "feed_name": "sample_p_d0284_algc26_rp_d260313_t1532354_1",
+      "business_date": "2026-04-21",
+      "delivery_id": "sample_p_d0284_algc26_rp_d260313_t1532354_1_2026-04-21",
+      "batch_id": 1,
+      "use_existing_batch_id": false,
+      "validate_existing_batch": true,
+      "require_input_acceptance": true,
+      "auto_accept_input_on_batch_init": true,
+      "input_registry_processed_on_stage": "bronze",
+      "seed_stage_rows": true,
+      "stages": [
+        "bronze"
+      ],
+      "storage": {
+        "connection": {
+          "name": "control_delta",
+          "connection_type": "DatabricksDeltaLake"
+        },
+        "namespace": {
+          "catalog": "main",
+          "schema": "control"
+        }
+      },
+      "stage_to_transformations": {
+        "bronze": [
+          "landing_read_sample_p_d0284_algc26_rp_d260313_t1532354_1",
+          "add_lineage_metadata",
+          "schema_drift_guard",
+          "bronze_write_sample_p_d0284_algc26_rp_d260313_t1532354_1"
+        ]
+      },
+      "error_threshold_pct": 50.0
+    }
+  },
+  "pipeline_type": "design",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
