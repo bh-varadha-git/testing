@@ -1,0 +1,924 @@
+{
+  "created_at": "2026-04-22T09:13:51.694107Z",
+  "updated_at": "2026-04-22T09:13:51.694107Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 2,
+  "pipeline_id": 750,
+  "pipeline_name": "ex_5",
+  "pipeline_key": "ex_5",
+  "bh_project_id": 3,
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "varadha-local-azure",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "name": "ex_5",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "parameters": [],
+    "connections": {
+      "landing_sample_p_d0284_algc26_rp_d260313_t1532354_file_connection_obj855": {
+        "name": "landing_sample_p_d0284_algc26_rp_d260313_t1532354_file_connection_obj855",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-localsvazureblob"
+      },
+      "bronze_sample_p_d0284_algc26_rp_d260313_t1532354_db_connection_obj855": {
+        "name": "bronze_sample_p_d0284_algc26_rp_d260313_t1532354_db_connection_obj855",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "default",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
+      },
+      "landing_sample_p_d0284_algc26_rp_d260313_t1532354_1_file_connection_obj856": {
+        "name": "landing_sample_p_d0284_algc26_rp_d260313_t1532354_1_file_connection_obj856",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-localsvazureblob"
+      },
+      "bronze_sample_p_d0284_algc26_rp_d260313_t1532354_1_db_connection_obj856": {
+        "name": "bronze_sample_p_d0284_algc26_rp_d260313_t1532354_1_db_connection_obj856",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "default",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-localsvazureunitytarget"
+      }
+    },
+    "sources": {
+      "landing_source_sample_p_d0284_algc26_rp_d260313_t1532354_obj855": {
+        "name": "landing_source_sample_p_d0284_algc26_rp_d260313_t1532354_obj855",
+        "source_type": "File",
+        "file_name": "enrollment_d0284/sample_P.D0284.ALGC26.RP.D260313.T1532354.xlsx",
+        "connection": {
+          "$ref": "#/connections/landing_sample_p_d0284_algc26_rp_d260313_t1532354_file_connection_obj855"
+        }
+      },
+      "landing_source_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856": {
+        "name": "landing_source_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856",
+        "source_type": "File",
+        "file_name": "enrollment_d0284/sample_P.D0284.ALGC26.RP.D260313.T1532354.xlsx",
+        "connection": {
+          "$ref": "#/connections/landing_sample_p_d0284_algc26_rp_d260313_t1532354_1_file_connection_obj856"
+        }
+      }
+    },
+    "targets": {
+      "bronze_target_sample_p_d0284_algc26_rp_d260313_t1532354_obj855": {
+        "name": "bronze_target_sample_p_d0284_algc26_rp_d260313_t1532354_obj855",
+        "target_type": "Relational",
+        "table_name": "sample_p_d0284_algc26_rp_d260313_t1532354",
+        "connection": {
+          "$ref": "#/connections/bronze_sample_p_d0284_algc26_rp_d260313_t1532354_db_connection_obj855"
+        },
+        "load_mode": "append",
+        "schema": "default"
+      },
+      "bronze_target_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856": {
+        "name": "bronze_target_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856",
+        "target_type": "Relational",
+        "table_name": "sample_p_d0284_algc26_rp_d260313_t1532354_1",
+        "connection": {
+          "$ref": "#/connections/bronze_sample_p_d0284_algc26_rp_d260313_t1532354_1_db_connection_obj856"
+        },
+        "load_mode": "append",
+        "schema": "default"
+      }
+    },
+    "transformations": [
+      {
+        "name": "landing_read_sample_p_d0284_algc26_rp_d260313_t1532354_obj855",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_sample_p_d0284_algc26_rp_d260313_t1532354_obj855"
+        },
+        "file_type": "Excel",
+        "read_options": {
+          "fetch_size": 10000,
+          "inferSchema": false,
+          "sheetName": "Overview",
+          "useHeader": true,
+          "timestampFormat": "yyyy-MM-dd HH:mm:ss",
+          "treatEmptyValuesAsNulls": true,
+          "addColorColumns": false,
+          "maxRowsInMemory": 20,
+          "excerptSize": 10,
+          "mode": "PERMISSIVE",
+          "columnNameOfCorruptRecord": "_corrupt_record"
+        },
+        "schema": [
+          {
+            "name": "Beneficiary MBI ID",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Alignment Effective Start Date",
+            "type": "timestamp",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Alignment Effective Termination Date",
+            "type": "timestamp",
+            "nullable": true
+          },
+          {
+            "name": "Beneficiary First Name",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Last Name",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Line 1 Address",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Line 2 Address",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Line 3 Address",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Line 4 Address",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Line 5 Address",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Line 6 Address",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary City",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary USPS State Code",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Zip 5",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Zip 4",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary State-County of Residence SSA",
+            "type": "integer",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary State-County of Residence FIPS",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Gender",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Race-Ethnicity",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Date of Birth",
+            "type": "timestamp",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Age",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Date of Death",
+            "type": "timestamp",
+            "nullable": true
+          },
+          {
+            "name": "Beneficiary Eligibility Alignment Year 1",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Eligibility Alignment Year 2",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Part D Coverage Alignment Year 1",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Beneficiary Part D Coverage Alignment Year 2",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Newly Aligned Beneficiary Flag",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Prospective Plus Alignment",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Claim Based Alignment Indicator",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Voluntary Alignment Type",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "Mobility Impairment Indicator",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "Frailty Indicator",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "Medium Risk with Unplanned Admissions Indicator",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "High Risk Score Indicator",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "Skilled Nursing",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "Home Health Services",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "_corrupt_record",
+            "type": "string",
+            "nullable": true
+          }
+        ],
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata_obj855",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_sample_p_d0284_algc26_rp_d260313_t1532354_obj855"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'sample_p_d0284_algc26_rp_d260313_t1532354'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          }
+        ]
+      },
+      {
+        "name": "schema_drift_guard_obj855",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata_obj855"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "dataset_id": "schema_drift_sample_p_d0284_algc26_rp_d260313_t1532354",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "bronze_write_sample_p_d0284_algc26_rp_d260313_t1532354_obj855",
+        "transformation": "Writer",
+        "dependent_on": [
+          "schema_drift_guard_obj855"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_sample_p_d0284_algc26_rp_d260313_t1532354_obj855"
+        },
+        "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      },
+      {
+        "name": "landing_read_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856"
+        },
+        "file_type": "Excel",
+        "read_options": {
+          "fetch_size": 10000,
+          "inferSchema": false,
+          "sheetName": "Monthly Data",
+          "useHeader": false,
+          "skiprows": 2,
+          "columnNamesOverride": [
+            "beneficiary_mbi",
+            "beneficiary_date_of_birth",
+            "medical_data_sharing_preference_jan",
+            "administrative_suppression_jan",
+            "partd_prescription_indicator_jan",
+            "supp_insurance_jan",
+            "alignment_status_jan",
+            "medical_data_sharing_preference_feb",
+            "administrative_suppression_feb",
+            "partd_prescription_indicator_feb",
+            "supp_insurance_feb",
+            "alignment_status_feb",
+            "medical_data_sharing_preference_mar",
+            "administrative_suppression_mar",
+            "partd_prescription_indicator_mar",
+            "supp_insurance_mar",
+            "alignment_status_mar",
+            "medical_data_sharing_preference_apr",
+            "administrative_suppression_apr",
+            "partd_prescription_indicator_apr",
+            "supp_insurance_apr",
+            "alignment_status_apr",
+            "medical_data_sharing_preference_may",
+            "administrative_suppression_may",
+            "partd_prescription_indicator_may",
+            "supp_insurance_may",
+            "alignment_status_may",
+            "medical_data_sharing_preference_jun",
+            "administrative_suppression_jun",
+            "partd_prescription_indicator_jun",
+            "supp_insurance_jun",
+            "alignment_status_jun",
+            "medical_data_sharing_preference_jul",
+            "administrative_suppression_jul",
+            "partd_prescription_indicator_jul",
+            "supp_insurance_jul",
+            "alignment_status_jul",
+            "medical_data_sharing_preference_aug",
+            "administrative_suppression_aug",
+            "partd_prescription_indicator_aug",
+            "supp_insurance_aug",
+            "alignment_status_aug",
+            "medical_data_sharing_preference_sep",
+            "administrative_suppression_sep",
+            "partd_prescription_indicator_sep",
+            "supp_insurance_sep",
+            "alignment_status_sep",
+            "medical_data_sharing_preference_oct",
+            "administrative_suppression_oct",
+            "partd_prescription_indicator_oct",
+            "supp_insurance_oct",
+            "alignment_status_oct",
+            "medical_data_sharing_preference_nov",
+            "administrative_suppression_nov",
+            "partd_prescription_indicator_nov",
+            "supp_insurance_nov",
+            "alignment_status_nov",
+            "medical_data_sharing_preference_dec",
+            "administrative_suppression_dec",
+            "partd_prescription_indicator_dec",
+            "supp_insurance_dec",
+            "alignment_status_dec"
+          ],
+          "timestampFormat": "yyyy-MM-dd HH:mm:ss",
+          "treatEmptyValuesAsNulls": true,
+          "addColorColumns": false,
+          "maxRowsInMemory": 20,
+          "excerptSize": 10,
+          "mode": "PERMISSIVE",
+          "columnNameOfCorruptRecord": "_corrupt_record"
+        },
+        "schema": [
+          {
+            "name": "beneficiary_mbi",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "beneficiary_date_of_birth",
+            "type": "timestamp",
+            "nullable": false
+          },
+          {
+            "name": "medical_data_sharing_preference_jan",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "administrative_suppression_jan",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "partd_prescription_indicator_jan",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "supp_insurance_jan",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "alignment_status_jan",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "medical_data_sharing_preference_feb",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "administrative_suppression_feb",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "partd_prescription_indicator_feb",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "supp_insurance_feb",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "alignment_status_feb",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "medical_data_sharing_preference_mar",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "administrative_suppression_mar",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "partd_prescription_indicator_mar",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "supp_insurance_mar",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "alignment_status_mar",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "medical_data_sharing_preference_apr",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "administrative_suppression_apr",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "partd_prescription_indicator_apr",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "supp_insurance_apr",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "alignment_status_apr",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "medical_data_sharing_preference_may",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "administrative_suppression_may",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "partd_prescription_indicator_may",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "supp_insurance_may",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "alignment_status_may",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "medical_data_sharing_preference_jun",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "administrative_suppression_jun",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "partd_prescription_indicator_jun",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "supp_insurance_jun",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "alignment_status_jun",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "medical_data_sharing_preference_jul",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "administrative_suppression_jul",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "partd_prescription_indicator_jul",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "supp_insurance_jul",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "alignment_status_jul",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "medical_data_sharing_preference_aug",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "administrative_suppression_aug",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "partd_prescription_indicator_aug",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "supp_insurance_aug",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "alignment_status_aug",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "medical_data_sharing_preference_sep",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "administrative_suppression_sep",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "partd_prescription_indicator_sep",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "supp_insurance_sep",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "alignment_status_sep",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "medical_data_sharing_preference_oct",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "administrative_suppression_oct",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "partd_prescription_indicator_oct",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "supp_insurance_oct",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "alignment_status_oct",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "medical_data_sharing_preference_nov",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "administrative_suppression_nov",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "partd_prescription_indicator_nov",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "supp_insurance_nov",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "alignment_status_nov",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "medical_data_sharing_preference_dec",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "administrative_suppression_dec",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "partd_prescription_indicator_dec",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "supp_insurance_dec",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "alignment_status_dec",
+            "type": "double",
+            "nullable": true
+          },
+          {
+            "name": "_corrupt_record",
+            "type": "string",
+            "nullable": true
+          }
+        ],
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata_obj856",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'sample_p_d0284_algc26_rp_d260313_t1532354_1'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          }
+        ]
+      },
+      {
+        "name": "schema_drift_guard_obj856",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata_obj856"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "dataset_id": "schema_drift_sample_p_d0284_algc26_rp_d260313_t1532354_1",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "bronze_write_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856",
+        "transformation": "Writer",
+        "dependent_on": [
+          "schema_drift_guard_obj856"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856"
+        },
+        "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      }
+    ],
+    "description": "Cloned from File to DB Ingestion V2",
+    "batch_control": {
+      "enabled": true,
+      "feed_name": "sample_p_d0284_algc26_rp_d260313_t1532354",
+      "business_date": "2026-04-22",
+      "delivery_id": "sample_p_d0284_algc26_rp_d260313_t1532354_2026-04-22",
+      "batch_id": 1,
+      "use_existing_batch_id": false,
+      "validate_existing_batch": true,
+      "require_input_acceptance": true,
+      "auto_accept_input_on_batch_init": true,
+      "input_registry_processed_on_stage": "bronze",
+      "seed_stage_rows": true,
+      "stages": [
+        "bronze"
+      ],
+      "storage": {
+        "connection": {
+          "name": "control_delta",
+          "connection_type": "DatabricksDeltaLake"
+        },
+        "namespace": {
+          "catalog": "main",
+          "schema": "control"
+        }
+      },
+      "stage_to_transformations": {
+        "bronze": [
+          "landing_read_sample_p_d0284_algc26_rp_d260313_t1532354_obj855",
+          "add_lineage_metadata_obj855",
+          "schema_drift_guard_obj855",
+          "bronze_write_sample_p_d0284_algc26_rp_d260313_t1532354_obj855",
+          "landing_read_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856",
+          "add_lineage_metadata_obj856",
+          "schema_drift_guard_obj856",
+          "bronze_write_sample_p_d0284_algc26_rp_d260313_t1532354_1_obj856"
+        ]
+      },
+      "error_threshold_pct": 50.0
+    }
+  },
+  "pipeline_type": "design",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
