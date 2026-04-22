@@ -100,7 +100,6 @@ with DAG(
     create_compute = PythonOperator(
         task_id='create_compute',
         python_callable=create_databricks_cluster_create_compute,
-        provide_context=True,
         on_success_callback=common_task.success_callback,
         on_failure_callback=common_task.failure_callback,
     )
@@ -164,7 +163,6 @@ with DAG(
         task_id='run_jobs_sample_p_d0284_algc26_rp_d260313_t1532354_overview_117',
         python_callable=submit_job_to_cluster,
         params=_submit_params,
-        provide_context=True,
         on_success_callback=common_task.success_callback,
         on_failure_callback=common_task.failure_callback,
     )
@@ -187,7 +185,6 @@ with DAG(
         task_id='run_jobs_sample_p_d0284_algc26_rp_d260313_t1532354_monthly_data_117',
         python_callable=submit_job_to_cluster,
         params=_submit_params,
-        provide_context=True,
         on_success_callback=common_task.success_callback,
         on_failure_callback=common_task.failure_callback,
     )
@@ -225,7 +222,6 @@ with DAG(
         task_id='delete_compute',
         python_callable=terminate_databricks_resources,
         params=_terminate_params,
-        provide_context=True,
         on_success_callback=common_task.success_callback,
         on_failure_callback=common_task.failure_callback,
     )
