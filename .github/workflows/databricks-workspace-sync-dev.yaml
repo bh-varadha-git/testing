@@ -5,28 +5,36 @@
 # to a Databricks workspace folder.
 #
 # Copy this file to your repo as: .github/workflows/databricks-workspace-sync.yaml
-# Then add repository secrets: DATABRICKS_HOST, DATABRICKS_TOKEN.
+# Configure GitHub Environments (Settings > Environments) with secrets DATABRICKS_HOST,
+# DATABRICKS_TOKEN and optional variable DATABRICKS_WORKSPACE_PATH per environment.
+# Manual runs: choose target environment; push to main uses the <github-environment-name> environment.
+# Replace <github-environment-name> with the name of the GitHub environment you want to use.
 #
 # Docs: https://docs.databricks.com/en/dev-tools/cli/sync-commands.html
 
-name: Dev Sync to Databricks workspace
+name: Sync to Databricks workspace
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
-env:
-  # Destination in workspace: /Users/<workspace-user>/<folder-name>
-  # Override via repository variable DATABRICKS_WORKSPACE_PATH if needed.
-  DATABRICKS_WORKSPACE_PATH: ${{ vars.DATABRICKS_WORKSPACE_PATH || '/Workspace/Shared/codespace' }}
+    inputs:
+      target_environment:
+        description: 'GitHub Environment to use (loads env secrets/vars)'
+        required: true
+        type: string
+        default: '<github-environment-name>'
 
 jobs:
   sync-to-workspace:
     name: Sync repo to Databricks workspace
     runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.target_environment }}
     permissions:
       contents: read
+    env:
+      # Resolved per job so environment-scoped vars apply (repo or env variable).
+      DATABRICKS_WORKSPACE_PATH: ${{ vars.DATABRICKS_WORKSPACE_PATH || '/Workspace/Shared/codespace' }}
 
     steps:
       - name: Checkout repository
