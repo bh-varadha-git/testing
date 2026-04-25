@@ -59,6 +59,20 @@
         }
       },
       {
+        "model": "FlowParameter",
+        "pk": 272,
+        "data": {
+          "flow_parameter_id": 272,
+          "flow_id": 31,
+          "parameter_name": "test",
+          "parameter_value": "test",
+          "parameter_type": "USER",
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
         "model": "FlowDefinition",
         "pk": 28,
         "data": {
@@ -81,16 +95,22 @@
               "tenant_id": 2,
               "bh_environment_id": 7,
               "bh_environment_name": "dev_sv_db_local",
-              "parameters": [],
+              "parameters": [
+                {
+                  "key": "test",
+                  "value": "test"
+                }
+              ],
               "tasks": [
                 {
-                  "task_id": "custom__3064b0d57",
+                  "task_id": "custom__8f747c114",
                   "type": "BashOperator",
                   "trigger_rule": "all_success",
                   "bash_command": "test",
                   "depends_on": []
                 }
-              ]
+              ],
+              "template_parameters": []
             }
           },
           "schema_id": null,
@@ -110,7 +130,7 @@
           "flow_version_id": null,
           "schema_id": null,
           "cron_expression": null,
-          "last_deployed_at": null,
+          "last_deployed_at": "2026-04-25 16:28:29.949797+00:00",
           "tenant_id": 2,
           "is_deleted": false,
           "deleted_by": null
