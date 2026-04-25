@@ -1,0 +1,121 @@
+{
+  "created_at": "2026-04-25T15:28:04.771786Z",
+  "updated_at": "2026-04-25T15:28:04.771786Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 2,
+  "flow_id": 31,
+  "flow_name": "f144",
+  "flow_key": "f144",
+  "recipient_email": {
+    "emails": []
+  },
+  "notes": "",
+  "tags": {
+    "tagList": []
+  },
+  "bh_project_name": "varadha-local-azure",
+  "bh_project_id": 3,
+  "alert_settings": {
+    "on_job_start": false,
+    "on_job_failure": false,
+    "on_job_success": false,
+    "long_running": false
+  },
+  "_graph": {
+    "root": {
+      "model": "Flow",
+      "pk": 31
+    },
+    "nodes": [
+      {
+        "model": "Flow",
+        "pk": 31,
+        "data": {
+          "flow_id": 31,
+          "flow_name": "f144",
+          "flow_key": "f144",
+          "bh_project_id": 3,
+          "recipient_email": {
+            "emails": []
+          },
+          "notes": "",
+          "tags": {
+            "tagList": []
+          },
+          "status": "active",
+          "alert_settings": {
+            "on_job_start": false,
+            "on_job_failure": false,
+            "on_job_success": false,
+            "long_running": false
+          },
+          "bh_bundle_id": null,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDefinition",
+        "pk": 28,
+        "data": {
+          "flow_definition_id": 28,
+          "flow_id": 31,
+          "flow_json": {
+            "flowJson": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "name": "f144",
+              "flow_name": "f144",
+              "flow_id": 31,
+              "flow_type": "INGESTION",
+              "flow_key": "f144",
+              "description": "Flow for f144",
+              "version": "1.0.0",
+              "project_id": 3,
+              "project_name": "varadha-local-azure",
+              "cron_expression": null,
+              "flow_tags": [],
+              "tenant_id": 2,
+              "bh_environment_id": 7,
+              "bh_environment_name": "dev_sv_db_local",
+              "parameters": [],
+              "tasks": [
+                {
+                  "task_id": "custom__3064b0d57",
+                  "type": "BashOperator",
+                  "trigger_rule": "all_success",
+                  "bash_command": "test",
+                  "depends_on": []
+                }
+              ]
+            }
+          },
+          "schema_id": null,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDeployment",
+        "pk": 28,
+        "data": {
+          "flow_deployment_id": 28,
+          "flow_id": 31,
+          "bh_env_id": 7,
+          "bh_airflow_id": 9,
+          "flow_version_id": null,
+          "schema_id": null,
+          "cron_expression": null,
+          "last_deployed_at": null,
+          "tenant_id": 2,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      }
+    ]
+  }
+}
