@@ -1,0 +1,1543 @@
+{
+  "created_at": "2026-05-08T04:37:12.059117Z",
+  "updated_at": "2026-05-08T04:42:56.124613Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 1,
+  "pipeline_id": 7,
+  "pipeline_name": "silver_raw_cinqcare_member_file_to_members_enrollment_load_260508_86e5",
+  "pipeline_key": "silver_raw_cinqcare_member_file_to_members_enrollment_load_260508_86e5",
+  "bh_project_id": 2,
+  "notes": "",
+  "tags": {
+    "data_domain_id": 2,
+    "data_domain_name": "enrollement",
+    "source_count": 1,
+    "target_count": 6
+  },
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "local",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "name": "silver_raw_cinqcare_member_file_to_members_enrollment_load_260508_86e5",
+    "description": "Requirement Pipeline",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "mode": "ENGINE",
+    "parameters": [],
+    "connections": {
+      "azure-databricks-local_main": {
+        "connection_config_id": 2,
+        "name": "azure-databricks-local_main",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "public",
+        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureunity-azuredatabrickslocal"
+      },
+      "azure-databricks-local_cinqdev": {
+        "connection_config_id": 2,
+        "name": "azure-databricks-local_cinqdev",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "cinqdev",
+        "schema": "silverods_enrollment",
+        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureunity-azuredatabrickslocal"
+      }
+    },
+    "sources": {
+      "cinqcare_member_file_8_21_25_7nce2": {
+        "data_src_id": 39,
+        "name": "cinqcare_member_file_8_21_25_7nce2",
+        "source_type": "Relational",
+        "table_name": "cinqcare_member_file_8_21_25_7nce2",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_main"
+        },
+        "fields": [
+          "LOB",
+          "MEMBER_KEY",
+          "MEMBER_MEDICARE_Nbr",
+          "MEMBER_NAME",
+          "MEMBER_SEX",
+          "MEMBER_DOB",
+          "MEMBER_ADDRESS_1",
+          "MEMBER_ADDRESS_2",
+          "MEMBER_CITY",
+          "MEMBER_STATE",
+          "MEMBER_ZIP",
+          "MEMBER_REGION",
+          "MEMBER_PRIMARY_PHONE",
+          "MEMBER_HOME_PHONE",
+          "MEMBER_CELL_PHONE",
+          "MEMBER_LANGUAGE",
+          "MEMBER_ELIG_START_DT",
+          "MEMBER_ELIG_END_DT",
+          "MEMBER_ACTIVE_IND",
+          "PCP_IRS_NBR",
+          "PCP_IRS_NAME",
+          "PCP_NPI",
+          "PCP_PROV_KEY",
+          "PCP_FIRST_NAME",
+          "PCP_LAST_NAME",
+          "PCP_ADDRESS1",
+          "PCP_ADDRESS2",
+          "PCP_CITY",
+          "PCP_STATE",
+          "PCP_ZIP",
+          "PCP_PHONE",
+          "PCP_FAX",
+          "ingest_timestamp",
+          "ingest_date"
+        ],
+        "schema": [
+          {
+            "name": "LOB",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_KEY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_MEDICARE_Nbr",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_SEX",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_DOB",
+            "type": "date",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ADDRESS_1",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ADDRESS_2",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_CITY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_STATE",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ZIP",
+            "type": "integer",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_REGION",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_PRIMARY_PHONE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_HOME_PHONE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_CELL_PHONE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_LANGUAGE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_ELIG_START_DT",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ELIG_END_DT",
+            "type": "long",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_ACTIVE_IND",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_IRS_NBR",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_IRS_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_NPI",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_PROV_KEY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_FIRST_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_LAST_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_ADDRESS1",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_ADDRESS2",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_CITY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_STATE",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_ZIP",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "PCP_PHONE",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_FAX",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "ingest_timestamp",
+            "type": "timestamp",
+            "nullable": true
+          },
+          {
+            "name": "ingest_date",
+            "type": "date",
+            "nullable": true
+          }
+        ],
+        "db_schema": "public"
+      }
+    },
+    "targets": {
+      "members": {
+        "data_src_id": 28,
+        "name": "members",
+        "target_type": "Relational",
+        "table_name": "members",
+        "load_mode": "merge",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "silverods_enrollment",
+        "merge_keys": [
+          "cinq_id"
+        ],
+        "process_deletes": false
+      },
+      "members_systemids": {
+        "data_src_id": 29,
+        "name": "members_systemids",
+        "target_type": "Relational",
+        "table_name": "members_systemids",
+        "load_mode": "merge",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "silverods_enrollment",
+        "merge_keys": [
+          "system_record_id"
+        ],
+        "process_deletes": false
+      },
+      "members_addresses": {
+        "data_src_id": 33,
+        "name": "members_addresses",
+        "target_type": "Relational",
+        "table_name": "members_addresses",
+        "load_mode": "merge",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "silverods_enrollment",
+        "merge_keys": [
+          "address_record_id"
+        ],
+        "process_deletes": false
+      },
+      "members_phones": {
+        "data_src_id": 32,
+        "name": "members_phones",
+        "target_type": "Relational",
+        "table_name": "members_phones",
+        "load_mode": "merge",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "silverods_enrollment",
+        "merge_keys": [
+          "phone_record_id"
+        ],
+        "process_deletes": false
+      },
+      "members_enrollment_segments": {
+        "data_src_id": 31,
+        "name": "members_enrollment_segments",
+        "target_type": "Relational",
+        "table_name": "members_enrollment_segments",
+        "load_mode": "merge",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "silverods_enrollment",
+        "merge_keys": [
+          "enrollment_record_id"
+        ],
+        "process_deletes": false
+      },
+      "quarantine_cinqcare_member_file_8_21_25_7nce2": {
+        "data_src_id": 28,
+        "name": "quarantine_cinqcare_member_file_8_21_25_7nce2",
+        "target_type": "Relational",
+        "table_name": "quarantine_cinqcare_member_file_8_21_25_7nce2",
+        "load_mode": "overwrite",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "silverods_enrollment"
+      }
+    },
+    "transformations": [
+      {
+        "name": "cinqcare_member_file_8_21_25_7nce2",
+        "transformation": "Reader",
+        "dependent_on": [],
+        "source": {
+          "$ref": "#/sources/cinqcare_member_file_8_21_25_7nce2"
+        },
+        "rename_columns": {
+          "LOB": "LOB_src_1",
+          "MEMBER_KEY": "MEMBER_KEY_src_1",
+          "MEMBER_MEDICARE_Nbr": "MEMBER_MEDICARE_Nbr_src_1",
+          "MEMBER_NAME": "MEMBER_NAME_src_1",
+          "MEMBER_SEX": "MEMBER_SEX_src_1",
+          "MEMBER_DOB": "MEMBER_DOB_src_1",
+          "MEMBER_ADDRESS_1": "MEMBER_ADDRESS_1_src_1",
+          "MEMBER_ADDRESS_2": "MEMBER_ADDRESS_2_src_1",
+          "MEMBER_CITY": "MEMBER_CITY_src_1",
+          "MEMBER_STATE": "MEMBER_STATE_src_1",
+          "MEMBER_ZIP": "MEMBER_ZIP_src_1",
+          "MEMBER_REGION": "MEMBER_REGION_src_1",
+          "MEMBER_PRIMARY_PHONE": "MEMBER_PRIMARY_PHONE_src_1",
+          "MEMBER_HOME_PHONE": "MEMBER_HOME_PHONE_src_1",
+          "MEMBER_CELL_PHONE": "MEMBER_CELL_PHONE_src_1",
+          "MEMBER_LANGUAGE": "MEMBER_LANGUAGE_src_1",
+          "MEMBER_ELIG_START_DT": "MEMBER_ELIG_START_DT_src_1",
+          "MEMBER_ELIG_END_DT": "MEMBER_ELIG_END_DT_src_1",
+          "MEMBER_ACTIVE_IND": "MEMBER_ACTIVE_IND_src_1",
+          "PCP_IRS_NBR": "PCP_IRS_NBR_src_1",
+          "PCP_IRS_NAME": "PCP_IRS_NAME_src_1",
+          "PCP_NPI": "PCP_NPI_src_1",
+          "PCP_PROV_KEY": "PCP_PROV_KEY_src_1",
+          "PCP_FIRST_NAME": "PCP_FIRST_NAME_src_1",
+          "PCP_LAST_NAME": "PCP_LAST_NAME_src_1",
+          "PCP_ADDRESS1": "PCP_ADDRESS1_src_1",
+          "PCP_ADDRESS2": "PCP_ADDRESS2_src_1",
+          "PCP_CITY": "PCP_CITY_src_1",
+          "PCP_STATE": "PCP_STATE_src_1",
+          "PCP_ZIP": "PCP_ZIP_src_1",
+          "PCP_PHONE": "PCP_PHONE_src_1",
+          "PCP_FAX": "PCP_FAX_src_1",
+          "ingest_timestamp": "ingest_timestamp_src_1",
+          "ingest_date": "ingest_date_src_1"
+        },
+        "read_options": {},
+        "schema": [
+          {
+            "name": "LOB",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_KEY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_MEDICARE_Nbr",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_SEX",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_DOB",
+            "type": "date",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ADDRESS_1",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ADDRESS_2",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_CITY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_STATE",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ZIP",
+            "type": "integer",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_REGION",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_PRIMARY_PHONE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_HOME_PHONE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_CELL_PHONE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_LANGUAGE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_ELIG_START_DT",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ELIG_END_DT",
+            "type": "long",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_ACTIVE_IND",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_IRS_NBR",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_IRS_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_NPI",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_PROV_KEY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_FIRST_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_LAST_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_ADDRESS1",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_ADDRESS2",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_CITY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_STATE",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_ZIP",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "PCP_PHONE",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_FAX",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "ingest_timestamp",
+            "type": "timestamp",
+            "nullable": true
+          },
+          {
+            "name": "ingest_date",
+            "type": "date",
+            "nullable": true
+          }
+        ]
+      },
+      {
+        "name": "dq_checks_cinqcare_member_file_8_21_25_7nce2",
+        "transformation": "DataQuality",
+        "dependent_on": [
+          "cinqcare_member_file_8_21_25_7nce2"
+        ],
+        "dq_rules": [
+          {
+            "rule_name": "NOT_NULL_MEMBER_KEY",
+            "column_type": "string",
+            "action": "error",
+            "column": "MEMBER_KEY_src_1",
+            "rule_type": "notnull",
+            "template_name": "NOT_NULL",
+            "rule_family": "QUALITY",
+            "source_type": "file",
+            "single_column": true
+          }
+        ]
+      },
+      {
+        "name": "DedupByMemberKey",
+        "transformation": "Deduplicator",
+        "dependent_on": [
+          "dq_checks_cinqcare_member_file_8_21_25_7nce2"
+        ],
+        "dedup_by": [
+          "MEMBER_KEY_src_1"
+        ],
+        "keep": "any"
+      },
+      {
+        "name": "ParseMemberName",
+        "transformation": "Expression",
+        "dependent_on": [
+          "DedupByMemberKey"
+        ],
+        "derived_fields": [
+          {
+            "name": "parsed_first_name",
+            "expression": "split(MEMBER_NAME_src_1, ' ')[0]"
+          },
+          {
+            "name": "parsed_last_name",
+            "expression": "CASE WHEN size(split(MEMBER_NAME_src_1, ' ')) > 1 THEN split(MEMBER_NAME_src_1, ' ')[size(split(MEMBER_NAME_src_1, ' ')) - 1] ELSE NULL END"
+          },
+          {
+            "name": "parsed_middle_name",
+            "expression": "CASE WHEN size(split(MEMBER_NAME_src_1, ' ')) > 2 THEN split(MEMBER_NAME_src_1, ' ')[1] ELSE NULL END"
+          },
+          {
+            "name": "parsed_suffix",
+            "expression": "NULL"
+          }
+        ]
+      },
+      {
+        "name": "ParseAddress",
+        "transformation": "Expression",
+        "dependent_on": [
+          "ParseMemberName"
+        ],
+        "derived_fields": [
+          {
+            "name": "parsed_address1",
+            "expression": "MEMBER_ADDRESS_1_src_1"
+          },
+          {
+            "name": "parsed_address2",
+            "expression": "MEMBER_ADDRESS_2_src_1"
+          },
+          {
+            "name": "parsed_city",
+            "expression": "MEMBER_CITY_src_1"
+          },
+          {
+            "name": "parsed_state",
+            "expression": "MEMBER_STATE_src_1"
+          },
+          {
+            "name": "parsed_zip",
+            "expression": "CAST(MEMBER_ZIP_src_1 AS String)"
+          }
+        ]
+      },
+      {
+        "name": "MembersBase",
+        "transformation": "Expression",
+        "dependent_on": [
+          "ParseAddress"
+        ],
+        "derived_fields": [
+          {
+            "name": "cinq_id",
+            "expression": "uuid()"
+          },
+          {
+            "name": "first_name",
+            "expression": "parsed_first_name"
+          },
+          {
+            "name": "last_name",
+            "expression": "parsed_last_name"
+          },
+          {
+            "name": "middle_name",
+            "expression": "parsed_middle_name"
+          },
+          {
+            "name": "suffix",
+            "expression": "parsed_suffix"
+          },
+          {
+            "name": "date_of_birth",
+            "expression": "MEMBER_DOB_src_1"
+          },
+          {
+            "name": "sex",
+            "expression": "CASE WHEN UPPER(MEMBER_SEX_src_1) IN ('M', 'MALE') THEN 'Male' WHEN UPPER(MEMBER_SEX_src_1) IN ('F', 'FEMALE') THEN 'Female' WHEN UPPER(MEMBER_SEX_src_1) = 'U' THEN 'U' WHEN UPPER(MEMBER_SEX_src_1) = 'X' THEN 'X' ELSE NULL END"
+          },
+          {
+            "name": "record_creation_date",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "secure_id",
+            "expression": "uuid()"
+          },
+          {
+            "name": "created_by",
+            "expression": "'enrollment_pipeline'"
+          },
+          {
+            "name": "created_at",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_by",
+            "expression": "'enrollment_pipeline'"
+          },
+          {
+            "name": "updated_at",
+            "expression": "current_timestamp()"
+          }
+        ],
+        "select_columns": [
+          "cinq_id",
+          "first_name",
+          "last_name",
+          "middle_name",
+          "suffix",
+          "date_of_birth",
+          "sex",
+          "record_creation_date",
+          "secure_id",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at",
+          "MEMBER_KEY_src_1",
+          "MEMBER_MEDICARE_Nbr_src_1",
+          "MEMBER_REGION_src_1",
+          "PCP_FIRST_NAME_src_1",
+          "PCP_LAST_NAME_src_1",
+          "PCP_NPI_src_1",
+          "PCP_ZIP_src_1",
+          "PCP_IRS_NBR_src_1",
+          "MEMBER_PRIMARY_PHONE_src_1",
+          "MEMBER_HOME_PHONE_src_1",
+          "MEMBER_CELL_PHONE_src_1",
+          "parsed_address1",
+          "parsed_address2",
+          "parsed_city",
+          "parsed_state",
+          "parsed_zip"
+        ]
+      },
+      {
+        "name": "MembersSystemIds",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersBase"
+        ],
+        "derived_fields": [
+          {
+            "name": "system_record_id",
+            "expression": "uuid()"
+          },
+          {
+            "name": "system_id_type",
+            "expression": "'Member'"
+          },
+          {
+            "name": "entity_resolution_id",
+            "expression": "NULL"
+          },
+          {
+            "name": "source_system_id",
+            "expression": "MEMBER_KEY_src_1"
+          },
+          {
+            "name": "effective_start_date",
+            "expression": "NULL"
+          },
+          {
+            "name": "effective_end_date",
+            "expression": "NULL"
+          },
+          {
+            "name": "is_current_flag",
+            "expression": "TRUE"
+          },
+          {
+            "name": "feed_name",
+            "expression": "'CinqCare Member File 8_21_25'"
+          },
+          {
+            "name": "source_system",
+            "expression": "'CENETENE_GA_MEDICAIRE'"
+          },
+          {
+            "name": "batch_id",
+            "expression": "NULL"
+          }
+        ],
+        "select_columns": [
+          "system_record_id",
+          "system_id_type",
+          "cinq_id",
+          "entity_resolution_id",
+          "source_system_id",
+          "effective_start_date",
+          "effective_end_date",
+          "is_current_flag",
+          "feed_name",
+          "source_system",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at",
+          "batch_id"
+        ]
+      },
+      {
+        "name": "MembersAddresses",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersBase"
+        ],
+        "derived_fields": [
+          {
+            "name": "address_record_id",
+            "expression": "uuid()"
+          },
+          {
+            "name": "address_type",
+            "expression": "'Primary'"
+          },
+          {
+            "name": "address1",
+            "expression": "parsed_address1"
+          },
+          {
+            "name": "address2",
+            "expression": "parsed_address2"
+          },
+          {
+            "name": "city",
+            "expression": "parsed_city"
+          },
+          {
+            "name": "state",
+            "expression": "parsed_state"
+          },
+          {
+            "name": "zip",
+            "expression": "parsed_zip"
+          },
+          {
+            "name": "region",
+            "expression": "NULL"
+          },
+          {
+            "name": "can_contact",
+            "expression": "TRUE"
+          },
+          {
+            "name": "county",
+            "expression": "NULL"
+          },
+          {
+            "name": "zip4",
+            "expression": "NULL"
+          },
+          {
+            "name": "is_zip4",
+            "expression": "NULL"
+          },
+          {
+            "name": "effective_start_date",
+            "expression": "NULL"
+          },
+          {
+            "name": "effective_end_date",
+            "expression": "NULL"
+          },
+          {
+            "name": "is_active",
+            "expression": "TRUE"
+          },
+          {
+            "name": "feed_name",
+            "expression": "'CinqCare Member File 8_21_25'"
+          },
+          {
+            "name": "source_system",
+            "expression": "'CENETENE_GA_MEDICAIRE'"
+          }
+        ],
+        "select_columns": [
+          "address_record_id",
+          "cinq_id",
+          "address_type",
+          "address1",
+          "address2",
+          "city",
+          "state",
+          "zip",
+          "region",
+          "can_contact",
+          "county",
+          "zip4",
+          "is_zip4",
+          "effective_start_date",
+          "effective_end_date",
+          "is_active",
+          "feed_name",
+          "source_system",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at"
+        ]
+      },
+      {
+        "name": "PrimaryPhoneRows",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersBase"
+        ],
+        "derived_fields": [
+          {
+            "name": "phone_type",
+            "expression": "'Primary'"
+          },
+          {
+            "name": "phone_number",
+            "expression": "MEMBER_PRIMARY_PHONE_src_1"
+          }
+        ],
+        "select_columns": [
+          "cinq_id",
+          "phone_type",
+          "phone_number",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at"
+        ]
+      },
+      {
+        "name": "HomePhoneRows",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersBase"
+        ],
+        "derived_fields": [
+          {
+            "name": "phone_type",
+            "expression": "'Home'"
+          },
+          {
+            "name": "phone_number",
+            "expression": "MEMBER_HOME_PHONE_src_1"
+          }
+        ],
+        "select_columns": [
+          "cinq_id",
+          "phone_type",
+          "phone_number",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at"
+        ]
+      },
+      {
+        "name": "CellPhoneRows",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersBase"
+        ],
+        "derived_fields": [
+          {
+            "name": "phone_type",
+            "expression": "'Cell'"
+          },
+          {
+            "name": "phone_number",
+            "expression": "MEMBER_CELL_PHONE_src_1"
+          }
+        ],
+        "select_columns": [
+          "cinq_id",
+          "phone_type",
+          "phone_number",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at"
+        ]
+      },
+      {
+        "name": "UnionAllPhones",
+        "transformation": "Set",
+        "dependent_on": [
+          "PrimaryPhoneRows",
+          "HomePhoneRows",
+          "CellPhoneRows"
+        ],
+        "operation_type": "Union All"
+      },
+      {
+        "name": "FilterNullPhones",
+        "transformation": "Filter",
+        "dependent_on": [
+          "UnionAllPhones"
+        ],
+        "condition": "phone_number IS NOT NULL"
+      },
+      {
+        "name": "MembersPhones",
+        "transformation": "Expression",
+        "dependent_on": [
+          "FilterNullPhones"
+        ],
+        "derived_fields": [
+          {
+            "name": "phone_record_id",
+            "expression": "uuid()"
+          },
+          {
+            "name": "can_contact",
+            "expression": "1"
+          },
+          {
+            "name": "effective_start_date",
+            "expression": "NULL"
+          },
+          {
+            "name": "effective_end_date",
+            "expression": "NULL"
+          },
+          {
+            "name": "is_current_flag",
+            "expression": "TRUE"
+          },
+          {
+            "name": "feed_name",
+            "expression": "'CinqCare Member File 8_21_25'"
+          },
+          {
+            "name": "source_system",
+            "expression": "'CENETENE_GA_MEDICAIRE'"
+          }
+        ],
+        "select_columns": [
+          "phone_record_id",
+          "cinq_id",
+          "phone_type",
+          "phone_number",
+          "can_contact",
+          "effective_start_date",
+          "effective_end_date",
+          "is_current_flag",
+          "feed_name",
+          "source_system",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at"
+        ]
+      },
+      {
+        "name": "MembersEnrollmentSegments",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersBase"
+        ],
+        "derived_fields": [
+          {
+            "name": "enrollment_record_id",
+            "expression": "uuid()"
+          },
+          {
+            "name": "member_payor",
+            "expression": "'Centene'"
+          },
+          {
+            "name": "tin_market",
+            "expression": "'GA'"
+          },
+          {
+            "name": "tin_submarket",
+            "expression": "MEMBER_REGION_src_1"
+          },
+          {
+            "name": "insurance_id",
+            "expression": "MEMBER_MEDICARE_Nbr_src_1"
+          },
+          {
+            "name": "tin",
+            "expression": "PCP_IRS_NBR_src_1"
+          },
+          {
+            "name": "pcp_name",
+            "expression": "TRIM(PCP_FIRST_NAME_src_1) || ' ' || TRIM(PCP_LAST_NAME_src_1)"
+          },
+          {
+            "name": "pcp_npi",
+            "expression": "PCP_NPI_src_1"
+          },
+          {
+            "name": "pay_to_zip",
+            "expression": "CAST(PCP_ZIP_src_1 AS String)"
+          },
+          {
+            "name": "lob",
+            "expression": "'Medicaid'"
+          },
+          {
+            "name": "effective_start_date",
+            "expression": "NULL"
+          },
+          {
+            "name": "effective_end_date",
+            "expression": "NULL"
+          },
+          {
+            "name": "is_current_flag",
+            "expression": "TRUE"
+          },
+          {
+            "name": "feed_name",
+            "expression": "'CinqCare Member File 8_21_25'"
+          },
+          {
+            "name": "source_system",
+            "expression": "'CENETENE_GA_MEDICAIRE'"
+          }
+        ],
+        "select_columns": [
+          "enrollment_record_id",
+          "cinq_id",
+          "member_payor",
+          "tin_market",
+          "tin_submarket",
+          "insurance_id",
+          "tin",
+          "pcp_name",
+          "pcp_npi",
+          "pay_to_zip",
+          "lob",
+          "effective_start_date",
+          "effective_end_date",
+          "is_current_flag",
+          "feed_name",
+          "source_system",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at"
+        ]
+      },
+      {
+        "name": "quarantine_cinqcare_member_file_8_21_25_7nce2",
+        "transformation": "Writer",
+        "dependent_on": [
+          "dq_checks_cinqcare_member_file_8_21_25_7nce2"
+        ],
+        "target": {
+          "$ref": "#/targets/quarantine_cinqcare_member_file_8_21_25_7nce2"
+        },
+        "write_options": {
+          "mode": "overwrite",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        },
+        "input_selection": {
+          "dq_checks_cinqcare_member_file_8_21_25_7nce2": [
+            "dq_checks_cinqcare_member_file_8_21_25_7nce2_err_recs"
+          ]
+        }
+      },
+      {
+        "name": "members_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersBase"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "cinq_id",
+          "first_name",
+          "last_name",
+          "middle_name",
+          "suffix",
+          "date_of_birth",
+          "sex",
+          "record_creation_date",
+          "secure_id",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at",
+          "MEMBER_KEY_src_1",
+          "MEMBER_MEDICARE_Nbr_src_1",
+          "MEMBER_REGION_src_1",
+          "PCP_FIRST_NAME_src_1",
+          "PCP_LAST_NAME_src_1",
+          "PCP_NPI_src_1",
+          "PCP_ZIP_src_1",
+          "PCP_IRS_NBR_src_1",
+          "MEMBER_PRIMARY_PHONE_src_1",
+          "MEMBER_HOME_PHONE_src_1",
+          "MEMBER_CELL_PHONE_src_1",
+          "parsed_address1",
+          "parsed_address2",
+          "parsed_city",
+          "parsed_state",
+          "parsed_zip",
+          "race",
+          "ethnicity",
+          "language",
+          "location",
+          "care_management_program",
+          "last_contact",
+          "dual_status_code",
+          "death_date",
+          "dnc",
+          "record_hash",
+          "batch_id"
+        ],
+        "derived_fields": [
+          {
+            "name": "race",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "ethnicity",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "language",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "location",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "care_management_program",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "last_contact",
+            "expression": "CAST(NULL AS TIMESTAMP)"
+          },
+          {
+            "name": "dual_status_code",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "death_date",
+            "expression": "CAST(NULL AS TIMESTAMP)"
+          },
+          {
+            "name": "dnc",
+            "expression": "CAST(NULL AS BOOLEAN)"
+          },
+          {
+            "name": "record_hash",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "batch_id",
+            "expression": "CAST(NULL AS INTEGER)"
+          }
+        ]
+      },
+      {
+        "name": "members",
+        "transformation": "Writer",
+        "dependent_on": [
+          "members_final"
+        ],
+        "target": {
+          "$ref": "#/targets/members"
+        },
+        "write_options": {
+          "mode": "merge",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        }
+      },
+      {
+        "name": "members_systemids_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersSystemIds"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "system_record_id",
+          "system_id_type",
+          "cinq_id",
+          "entity_resolution_id",
+          "source_system_id",
+          "effective_start_date",
+          "effective_end_date",
+          "is_current_flag",
+          "feed_name",
+          "source_system",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at",
+          "batch_id"
+        ]
+      },
+      {
+        "name": "members_systemids",
+        "transformation": "Writer",
+        "dependent_on": [
+          "members_systemids_final"
+        ],
+        "target": {
+          "$ref": "#/targets/members_systemids"
+        },
+        "write_options": {
+          "mode": "merge",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        }
+      },
+      {
+        "name": "members_addresses_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersAddresses"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "address_record_id",
+          "cinq_id",
+          "address_type",
+          "address1",
+          "address2",
+          "city",
+          "state",
+          "zip",
+          "region",
+          "can_contact",
+          "county",
+          "zip4",
+          "is_zip4",
+          "effective_start_date",
+          "effective_end_date",
+          "is_active",
+          "feed_name",
+          "source_system",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at",
+          "county_ssa",
+          "county_fips",
+          "record_hash",
+          "batch_id"
+        ],
+        "derived_fields": [
+          {
+            "name": "county_ssa",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "county_fips",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "record_hash",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "batch_id",
+            "expression": "CAST(NULL AS INTEGER)"
+          }
+        ]
+      },
+      {
+        "name": "members_addresses",
+        "transformation": "Writer",
+        "dependent_on": [
+          "members_addresses_final"
+        ],
+        "target": {
+          "$ref": "#/targets/members_addresses"
+        },
+        "write_options": {
+          "mode": "merge",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        }
+      },
+      {
+        "name": "members_phones_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersPhones"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "phone_record_id",
+          "cinq_id",
+          "phone_type",
+          "phone_number",
+          "can_contact",
+          "effective_start_date",
+          "effective_end_date",
+          "is_current_flag",
+          "feed_name",
+          "source_system",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at",
+          "record_hash",
+          "batch_id"
+        ],
+        "derived_fields": [
+          {
+            "name": "record_hash",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "batch_id",
+            "expression": "CAST(NULL AS INTEGER)"
+          }
+        ]
+      },
+      {
+        "name": "members_phones",
+        "transformation": "Writer",
+        "dependent_on": [
+          "members_phones_final"
+        ],
+        "target": {
+          "$ref": "#/targets/members_phones"
+        },
+        "write_options": {
+          "mode": "merge",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        }
+      },
+      {
+        "name": "members_enrollment_segments_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "MembersEnrollmentSegments"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "enrollment_record_id",
+          "cinq_id",
+          "member_payor",
+          "tin_market",
+          "tin_submarket",
+          "insurance_id",
+          "tin",
+          "pcp_name",
+          "pcp_npi",
+          "pay_to_zip",
+          "lob",
+          "effective_start_date",
+          "effective_end_date",
+          "is_current_flag",
+          "feed_name",
+          "source_system",
+          "created_by",
+          "created_at",
+          "updated_by",
+          "updated_at",
+          "member_group",
+          "member_plan",
+          "add_reason",
+          "control_number",
+          "control_number_pbp",
+          "record_hash",
+          "batch_id"
+        ],
+        "derived_fields": [
+          {
+            "name": "member_group",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "member_plan",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "add_reason",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "control_number",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "control_number_pbp",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "record_hash",
+            "expression": "CAST(NULL AS STRING)"
+          },
+          {
+            "name": "batch_id",
+            "expression": "CAST(NULL AS INTEGER)"
+          }
+        ]
+      },
+      {
+        "name": "members_enrollment_segments",
+        "transformation": "Writer",
+        "dependent_on": [
+          "members_enrollment_segments_final"
+        ],
+        "target": {
+          "$ref": "#/targets/members_enrollment_segments"
+        },
+        "write_options": {
+          "mode": "merge",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        }
+      }
+    ]
+  },
+  "pipeline_type": "requirement",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
