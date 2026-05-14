@@ -107,7 +107,7 @@ with DAG(
     from airflow.operators.python import PythonOperator
     from airflow.providers.databricks.hooks.databricks import DatabricksHook
 
-    def create_databricks_cluster_create_compute_d0e4e600b(**context):
+    def create_databricks_cluster_create_compute_d0e4e(**context):
         from airflow_plugins.cloud_factory import CloudFactory
         hook = DatabricksHook(databricks_conn_id='databricks_default')
         conn = hook.get_conn()
@@ -160,9 +160,9 @@ with DAG(
             raise ValueError("create_compute did not return cluster_id")
         return cluster_id
 
-    create_compute_d0e4e600b = PythonOperator(
-        task_id='create_compute_d0e4e600b',
-        python_callable=create_databricks_cluster_create_compute_d0e4e600b,
+    create_compute_d0e4e = PythonOperator(
+        task_id='create_compute_d0e4e',
+        python_callable=create_databricks_cluster_create_compute_d0e4e,
         on_success_callback=common_task.success_callback,
         on_failure_callback=common_task.failure_callback,
     )
@@ -176,6 +176,6 @@ with DAG(
         on_failure_callback=common_task.failure_callback
     )
 
-    create_compute_d0e4e600b >> submit_job_bad414254112
-    start_flow_task >> create_compute_d0e4e600b
+    create_compute_d0e4e >> submit_job_bad414254112
+    start_flow_task >> create_compute_d0e4e
     submit_job_bad414254112 >> end_flow_task
