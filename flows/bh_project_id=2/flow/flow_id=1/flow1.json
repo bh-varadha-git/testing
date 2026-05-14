@@ -83,7 +83,7 @@
                   "task_id": "submit_job_bad414254112",
                   "type": "SubmitJob",
                   "depends_on": [
-                    "create_compute_d0e4e600b"
+                    "create_compute_d0e4e"
                   ],
                   "name": "Submit_Job",
                   "nodeId": "Submit Job_1778733171853",
@@ -106,11 +106,12 @@
                   "cloud_type": "databricks"
                 },
                 {
-                  "task_id": "create_compute_d0e4e600b",
+                  "task_id": "create_compute_d0e4e",
                   "type": "CreateCompute",
                   "depends_on": [],
                   "name": "Create_Compute",
                   "nodeId": "Create Compute_1778733185051",
+                  "airflow_connection_id": "databricks_default",
                   "compute_config": {
                     "cluster_name": "Databricks_SV_Local_0303_V1",
                     "spark_version": "15.4.x-scala2.12",
@@ -143,7 +144,6 @@
                   },
                   "cloud_type": "databricks",
                   "compute_type": "DATABRICKS_CLUSTER",
-                  "airflow_connection_id": "databricks_default",
                   "output_variables": [
                     {
                       "id": "create_compute_Create Compute_1778733185051_output_1",
@@ -176,7 +176,7 @@
           "flow_version_id": null,
           "schema_id": null,
           "cron_expression": null,
-          "last_deployed_at": "2026-05-14 05:32:05.568223+00:00",
+          "last_deployed_at": "2026-05-14 05:47:06.616556+00:00",
           "tenant_id": 1,
           "is_deleted": false,
           "deleted_by": null
