@@ -86,7 +86,7 @@ with DAG(
         "compute_task_id": "create_compute",
         "job_config": {
             "job_type": "spark_python",
-            "name": "{{ dag.dag_id }}_submit_job_bad414254_{{ ts_nodash }}",
+            "name": "{{ dag.dag_id }}_submit_job_bad414254112_{{ ts_nodash }}",
             "python_file": "/Workspace/Shared/bh-dev-utils/pipelines/main.py",
             "parameters": [
                 "/Workspace/Shared/codespace/pipelines/flow1/cinqcare_member_file_8_21_25_21.json",
@@ -95,9 +95,9 @@ with DAG(
             ]
         }
     }
-    submit_job_bad414254 = PythonOperator(
+    submit_job_bad414254112 = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
-        task_id='submit_job_bad414254',
+        task_id='submit_job_bad414254112',
         python_callable=submit_job_to_cluster,
         params=_submit_params,
         on_success_callback=common_task.success_callback,
@@ -176,6 +176,6 @@ with DAG(
         on_failure_callback=common_task.failure_callback
     )
 
-    create_compute_d0e4e600b >> submit_job_bad414254
+    create_compute_d0e4e600b >> submit_job_bad414254112
     start_flow_task >> create_compute_d0e4e600b
-    submit_job_bad414254 >> end_flow_task
+    submit_job_bad414254112 >> end_flow_task
