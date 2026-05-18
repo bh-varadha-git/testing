@@ -1,0 +1,640 @@
+{
+  "created_at": "2026-05-18T04:01:47.426937Z",
+  "updated_at": "2026-05-18T04:01:47.426937Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 1,
+  "pipeline_id": 17,
+  "pipeline_name": "cenetegarisk_enrollment_41",
+  "pipeline_key": "cenetegarisk_enrollment_41",
+  "bh_project_id": 2,
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "local",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "name": "cenetegarisk_enrollment_41",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "parameters": [],
+    "connections": {
+      "landing_cenetegarisk_enrollment_file_connection": {
+        "name": "landing_cenetegarisk_enrollment_file_connection",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureblob-azurebloblocal",
+        "connection_config_id": 1
+      },
+      "bronze_cenetegarisk_enrollment_db_connection": {
+        "name": "bronze_cenetegarisk_enrollment_db_connection",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "main",
+        "schema": "bronze_enrollment",
+        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureunity-azuredatabrickslocal",
+        "connection_config_id": 2
+      }
+    },
+    "sources": {
+      "landing_source_cenetegarisk_enrollment": {
+        "name": "landing_source_cenetegarisk_enrollment",
+        "source_type": "File",
+        "file_name": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/CinqCare Member File 8.21.25.csv",
+        "connection": {
+          "$ref": "#/connections/landing_cenetegarisk_enrollment_file_connection"
+        },
+        "data_src_id": 54
+      }
+    },
+    "targets": {
+      "bronze_target_cenetegarisk_enrollment": {
+        "name": "bronze_target_cenetegarisk_enrollment",
+        "target_type": "Relational",
+        "table_name": "cenetegarisk_enrollment",
+        "connection": {
+          "$ref": "#/connections/bronze_cenetegarisk_enrollment_db_connection"
+        },
+        "load_mode": "append",
+        "schema": "bronze_enrollment",
+        "data_src_id": 55
+      }
+    },
+    "transformations": [
+      {
+        "name": "landing_read_cenetegarisk_enrollment",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_cenetegarisk_enrollment"
+        },
+        "file_type": "CSV",
+        "read_options": {
+          "fetch_size": 10000,
+          "sep": ",",
+          "encoding": "UTF-8",
+          "header": true,
+          "inferSchema": false,
+          "multiLine": false,
+          "quote": "\"",
+          "escape": "\\",
+          "comment": "",
+          "preferDate": true,
+          "enforceSchema": true,
+          "ignoreLeadingWhiteSpace": false,
+          "ignoreTrailingWhiteSpace": false,
+          "nullValue": "",
+          "nanValue": "NaN",
+          "positiveInf": "Inf",
+          "negativeInf": "-Inf",
+          "dateFormat": "yyyy-MM-dd",
+          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
+          "maxColumns": 20480,
+          "maxCharsPerColumn": -1,
+          "columnNameOfCorruptRecord": "corrupt_record",
+          "samplingRatio": 1.0,
+          "emptyValue": "",
+          "locale": "en-US",
+          "lineSep": "\r\n",
+          "unescapedQuoteHandling": "STOP_AT_DELIMITER",
+          "mode": "PERMISSIVE"
+        },
+        "schema": [
+          {
+            "name": "LOB",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_KEY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_MEDICARE_Nbr",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_SEX",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_DOB",
+            "type": "date",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ADDRESS_1",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ADDRESS_2",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_CITY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_STATE",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ZIP",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_REGION",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_PRIMARY_PHONE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_HOME_PHONE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_CELL_PHONE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_LANGUAGE",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_ELIG_START_DT",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "MEMBER_ELIG_END_DT",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "MEMBER_ACTIVE_IND",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_IRS_NBR",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_IRS_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_NPI",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_PROV_KEY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_FIRST_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_LAST_NAME",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_ADDRESS1",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_ADDRESS2",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_CITY",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_STATE",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_ZIP",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_PHONE",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "PCP_FAX",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string",
+            "nullable": true
+          }
+        ],
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_cenetegarisk_enrollment"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'cenetegarisk_enrollment'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          }
+        ]
+      },
+      {
+        "name": "schema_drift_guard",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "detect_only": true,
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "expected_schema": [
+          {
+            "name": "LOB",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_KEY",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_MEDICARE_Nbr",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_NAME",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_SEX",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_DOB",
+            "type": "date",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_ADDRESS_1",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_ADDRESS_2",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "MEMBER_CITY",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_STATE",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_ZIP",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_REGION",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_PRIMARY_PHONE",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "MEMBER_HOME_PHONE",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "MEMBER_CELL_PHONE",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "MEMBER_LANGUAGE",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "MEMBER_ELIG_START_DT",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "MEMBER_ELIG_END_DT",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "MEMBER_ACTIVE_IND",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_IRS_NBR",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_IRS_NAME",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_NPI",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_PROV_KEY",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_FIRST_NAME",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_LAST_NAME",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_ADDRESS1",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_ADDRESS2",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_CITY",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_STATE",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_ZIP",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_PHONE",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "PCP_FAX",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "batch_id",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "feed_name",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_ts",
+            "type": "timestamp",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_year",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_month",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_day",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          }
+        ],
+        "dataset_id": "cenetegarisk_enrollment",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "bronze_write_cenetegarisk_enrollment",
+        "transformation": "Writer",
+        "dependent_on": [
+          "schema_drift_guard"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_cenetegarisk_enrollment"
+        },
+        "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      }
+    ],
+    "description": "Cloned from File to DB Ingestion V2",
+    "batch_control": {
+      "enabled": true,
+      "feed_name": "cenetegarisk_enrollment",
+      "business_date": "2026-05-18",
+      "delivery_id": "cenetegarisk_enrollment_2026-05-18",
+      "batch_id": 1,
+      "use_existing_batch_id": false,
+      "validate_existing_batch": true,
+      "require_input_acceptance": true,
+      "auto_accept_input_on_batch_init": true,
+      "input_registry_processed_on_stage": "bronze",
+      "seed_stage_rows": true,
+      "stages": [
+        "bronze"
+      ],
+      "storage": {
+        "connection": {
+          "name": "control_delta",
+          "connection_type": "DatabricksDeltaLake"
+        },
+        "namespace": {
+          "catalog": "main",
+          "schema": "control"
+        }
+      },
+      "stage_to_transformations": {
+        "bronze": [
+          "landing_read_cenetegarisk_enrollment",
+          "add_lineage_metadata",
+          "schema_drift_guard",
+          "bronze_write_cenetegarisk_enrollment"
+        ]
+      },
+      "error_threshold_pct": 50.0
+    }
+  },
+  "pipeline_type": "design",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
