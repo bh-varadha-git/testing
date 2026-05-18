@@ -389,7 +389,7 @@
                     "custom_tags": {},
                     "cluster_log_conf": null,
                     "init_scripts": [
-                      "/Workspace/Shared/bh-dev-utils/scripts/bh_databricks_grpc_server.sh"
+                      "/Workspace/Shared/dev-utils/scripts/bh_databricks_grpc_server.sh"
                     ],
                     "libraries": [],
                     "databricks_region": null,
@@ -516,7 +516,7 @@
           "flow_version_id": null,
           "schema_id": null,
           "cron_expression": null,
-          "last_deployed_at": "2026-05-18 04:27:19.800724+00:00",
+          "last_deployed_at": "2026-05-18 05:14:42.169623+00:00",
           "tenant_id": 1,
           "is_deleted": false,
           "deleted_by": null
