@@ -426,6 +426,7 @@
                   "compute_type": "DATABRICKS_CLUSTER",
                   "cloud_type": "databricks",
                   "airflow_connection_id": "databricks_default",
+                  "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
                   "name": "Submit_Job",
                   "nodeId": "Submit_Job_run_pipelines_cenetegarisk_enrollment_41"
                 },
@@ -446,6 +447,7 @@
                   "compute_type": "DATABRICKS_CLUSTER",
                   "cloud_type": "databricks",
                   "airflow_connection_id": "databricks_default",
+                  "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
                   "name": "Submit_Job_2",
                   "nodeId": "Submit_Job_run_pipelines_silver_raw_fidelis_ny_upstate_members_load_260518_d9fc"
                 },
@@ -458,15 +460,7 @@
                   "bucket_name": "my-test-bucket",
                   "cloud_type": "databricks",
                   "archive_prefix": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/archived/",
-                  "files": [
-                    {
-                      "key": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/CinqCare Member File 8.21.25.csv",
-                      "base_name": "CinqCare Member File 8.21.25.csv",
-                      "source_name": "cinqcare_member_file_8_21_25",
-                      "relative_key": "CinqCare Member File 8.21.25.csv",
-                      "size_bytes": 213108
-                    }
-                  ],
+                  "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
                   "airflow_connection_id": "databricks_default",
                   "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureblob-azurebloblocal",
                   "delete_source": true,
@@ -516,7 +510,7 @@
           "flow_version_id": null,
           "schema_id": null,
           "cron_expression": null,
-          "last_deployed_at": "2026-05-18 06:12:32.415265+00:00",
+          "last_deployed_at": "2026-05-18 06:25:40.154993+00:00",
           "tenant_id": 1,
           "is_deleted": false,
           "deleted_by": null
