@@ -76,6 +76,62 @@
       },
       {
         "model": "FlowParameter",
+        "pk": 11,
+        "data": {
+          "flow_parameter_id": 11,
+          "flow_id": 2,
+          "parameter_name": "bucket_name",
+          "parameter_value": "my-test-bucket",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 8,
+        "data": {
+          "flow_parameter_id": 8,
+          "flow_id": 2,
+          "parameter_name": "delete_source",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 5,
+        "data": {
+          "flow_parameter_id": 5,
+          "flow_id": 2,
+          "parameter_name": "sources",
+          "parameter_value": "[{\"source_name\": \"cinqcare_member_file_8_21_25\", \"prefix\": \"bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/\", \"min_bytes\": 10, \"min_files\": 1}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 2,
+        "data": {
+          "flow_parameter_id": 2,
+          "flow_id": 2,
+          "parameter_name": "parallelization_factor",
+          "parameter_value": 1,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
         "pk": 13,
         "data": {
           "flow_parameter_id": 13,
@@ -104,20 +160,6 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 11,
-        "data": {
-          "flow_parameter_id": 11,
-          "flow_id": 2,
-          "parameter_name": "bucket_name",
-          "parameter_value": "my-test-bucket",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
         "pk": 10,
         "data": {
           "flow_parameter_id": 10,
@@ -137,20 +179,6 @@
           "flow_parameter_id": 9,
           "flow_id": 2,
           "parameter_name": "allow_empty",
-          "parameter_value": true,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 8,
-        "data": {
-          "flow_parameter_id": 8,
-          "flow_id": 2,
-          "parameter_name": "delete_source",
           "parameter_value": true,
           "parameter_type": "USER",
           "tenant_id": 1,
@@ -188,20 +216,6 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 5,
-        "data": {
-          "flow_parameter_id": 5,
-          "flow_id": 2,
-          "parameter_name": "sources",
-          "parameter_value": "[{\"source_name\": \"cinqcare_member_file_8_21_25\", \"prefix\": \"bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/\", \"min_bytes\": 10, \"min_files\": 1}]",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
         "pk": 4,
         "data": {
           "flow_parameter_id": 4,
@@ -222,20 +236,6 @@
           "flow_id": 2,
           "parameter_name": "cloud_type",
           "parameter_value": "databricks",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 2,
-        "data": {
-          "flow_parameter_id": 2,
-          "flow_id": 2,
-          "parameter_name": "parallelization_factor",
-          "parameter_value": 1,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -288,20 +288,12 @@
                   "value": false
                 },
                 {
-                  "key": "parallelization_factor",
-                  "value": 1
-                },
-                {
                   "key": "cloud_type",
                   "value": "databricks"
                 },
                 {
                   "key": "compute_type",
                   "value": "DATABRICKS_CLUSTER"
-                },
-                {
-                  "key": "sources",
-                  "value": "[{\"source_name\": \"cinqcare_member_file_8_21_25\", \"prefix\": \"bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/\", \"min_bytes\": 10, \"min_files\": 1}]"
                 },
                 {
                   "key": "fail_on_invalid",
@@ -312,10 +304,6 @@
                   "value": "[{\"key\": \"bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/CinqCare Member File 8.21.25.csv\", \"base_name\": \"CinqCare Member File 8.21.25.csv\", \"source_name\": \"cinqcare_member_file_8_21_25\", \"relative_key\": \"CinqCare Member File 8.21.25.csv\", \"size_bytes\": 213108}]"
                 },
                 {
-                  "key": "delete_source",
-                  "value": true
-                },
-                {
                   "key": "allow_empty",
                   "value": true
                 },
@@ -324,16 +312,28 @@
                   "value": "[{\"id\": 17, \"name\": \"cenetegarisk_enrollment_41\", \"pipeline_name\": \"cenetegarisk_enrollment_41\"}, {\"id\": 18, \"name\": \"silver_raw_fidelis_ny_upstate_members_load_260518_d9fc\", \"pipeline_name\": \"silver_raw_fidelis_ny_upstate_members_load_260518_d9fc\"}]"
                 },
                 {
-                  "key": "bucket_name",
-                  "value": "my-test-bucket"
-                },
-                {
                   "key": "source_prefix",
                   "value": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/"
                 },
                 {
                   "key": "archive_prefix",
                   "value": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/archived/"
+                },
+                {
+                  "key": "parallelization_factor",
+                  "value": 1
+                },
+                {
+                  "key": "sources",
+                  "value": "[{\"source_name\": \"cinqcare_member_file_8_21_25\", \"prefix\": \"bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/\", \"min_bytes\": 10, \"min_files\": 1}]"
+                },
+                {
+                  "key": "delete_source",
+                  "value": true
+                },
+                {
+                  "key": "bucket_name",
+                  "value": "my-test-bucket"
                 }
               ],
               "tasks": [
@@ -510,7 +510,7 @@
           "flow_version_id": null,
           "schema_id": null,
           "cron_expression": null,
-          "last_deployed_at": "2026-05-18 12:13:01.245214+00:00",
+          "last_deployed_at": "2026-05-18 12:33:28.709145+00:00",
           "tenant_id": 1,
           "is_deleted": false,
           "deleted_by": null
