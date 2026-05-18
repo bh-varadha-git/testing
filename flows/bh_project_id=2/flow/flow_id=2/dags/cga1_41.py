@@ -388,7 +388,6 @@ with DAG(
         conn = hook.get_conn()
         workspace_url = (conn.host or '').rstrip('/')
         token = conn.password
-        user_account = conn.login or 'unknown'
         if not workspace_url or not token:
             raise ValueError("Databricks connection must have host and password (token)")
         factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
@@ -434,13 +433,6 @@ with DAG(
         )
         if not cluster_id:
             raise ValueError("create_compute did not return cluster_id")
-
-        num_workers = payload.get("num_workers", 0)
-        context["ti"].xcom_push(key="bh_audit_metadata", value={
-            "databricks_cluster_id": cluster_id,
-            "databricks_cluster_size": num_workers,
-            "databricks_user_account": user_account
-        })
         return cluster_id
 
     create_compute = PythonOperator(
@@ -481,34 +473,46 @@ with DAG(
         if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
             raise ValueError("No compute_id from params or XCom")
 
+
+        valid_files = params.get("valid_files")
+        if isinstance(valid_files, str) and "{{" in valid_files:
+            valid_files = context["task"].render_template(valid_files, context)
+        if valid_files:
+            import json
+            import os
+            from collections import defaultdict
+            by_source = defaultdict(list)
+            for f in valid_files:
+                if not isinstance(f, dict):
+                    continue
+                key = f.get("key")
+                if not key or str(key).startswith("__"):
+                    continue
+                src_name = (f.get("source_name") or "default").strip() or "default"
+                rel = f.get("relative_key") or os.path.basename(str(key))
+                by_source[src_name].append(str(rel).strip().lstrip("/"))
+            overrides = {sn: ",".join(sorted(set(paths))) for sn, paths in by_source.items() if paths}
+            if overrides:
+                job_config = dict(job_config)
+                args = list(job_config.get("parameters") or [])
+                args.append(json.dumps(overrides, separators=(",", ":")))
+                job_config["parameters"] = args
+
         from airflow.hooks.base import BaseHook
         conn = BaseHook.get_connection('databricks_default')
         workspace_url = (conn.host or '').rstrip('/')
         token = conn.password
-        user_account = conn.login or 'unknown'
         if not workspace_url or not token:
             raise ValueError("Databricks connection must have host and password (token)")
-
-        audit_meta = {
-            "databricks_cluster_id": compute_id,
-            "databricks_user_account": user_account
-        }
 
         factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
         compute = factory.get_compute(compute_type="databricks")
         result = compute.execute_job(compute_id, job_config, run_async=False)
-
-        run_id = result.get("run_id")
-        job_id = result.get("job_id")
-        if run_id:
-            context["ti"].xcom_push(key="run_id", value=run_id)
-            audit_meta["databricks_run_id"] = run_id
-        if job_id:
-            audit_meta["databricks_job_id"] = job_id
-        context["ti"].xcom_push(key="bh_audit_metadata", value=audit_meta)
-
         if result.get("status") == "FAILED":
             raise RuntimeError(result.get("error", "Job submission failed"))
+        run_id = result.get("run_id")
+        if run_id:
+            context["ti"].xcom_push(key="run_id", value=run_id)
         return result
 
     _submit_params = {
@@ -565,34 +569,46 @@ with DAG(
         if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
             raise ValueError("No compute_id from params or XCom")
 
+
+        valid_files = params.get("valid_files")
+        if isinstance(valid_files, str) and "{{" in valid_files:
+            valid_files = context["task"].render_template(valid_files, context)
+        if valid_files:
+            import json
+            import os
+            from collections import defaultdict
+            by_source = defaultdict(list)
+            for f in valid_files:
+                if not isinstance(f, dict):
+                    continue
+                key = f.get("key")
+                if not key or str(key).startswith("__"):
+                    continue
+                src_name = (f.get("source_name") or "default").strip() or "default"
+                rel = f.get("relative_key") or os.path.basename(str(key))
+                by_source[src_name].append(str(rel).strip().lstrip("/"))
+            overrides = {sn: ",".join(sorted(set(paths))) for sn, paths in by_source.items() if paths}
+            if overrides:
+                job_config = dict(job_config)
+                args = list(job_config.get("parameters") or [])
+                args.append(json.dumps(overrides, separators=(",", ":")))
+                job_config["parameters"] = args
+
         from airflow.hooks.base import BaseHook
         conn = BaseHook.get_connection('databricks_default')
         workspace_url = (conn.host or '').rstrip('/')
         token = conn.password
-        user_account = conn.login or 'unknown'
         if not workspace_url or not token:
             raise ValueError("Databricks connection must have host and password (token)")
-
-        audit_meta = {
-            "databricks_cluster_id": compute_id,
-            "databricks_user_account": user_account
-        }
 
         factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
         compute = factory.get_compute(compute_type="databricks")
         result = compute.execute_job(compute_id, job_config, run_async=False)
-
-        run_id = result.get("run_id")
-        job_id = result.get("job_id")
-        if run_id:
-            context["ti"].xcom_push(key="run_id", value=run_id)
-            audit_meta["databricks_run_id"] = run_id
-        if job_id:
-            audit_meta["databricks_job_id"] = job_id
-        context["ti"].xcom_push(key="bh_audit_metadata", value=audit_meta)
-
         if result.get("status") == "FAILED":
             raise RuntimeError(result.get("error", "Job submission failed"))
+        run_id = result.get("run_id")
+        if run_id:
+            context["ti"].xcom_push(key="run_id", value=run_id)
         return result
 
     _submit_params = {
@@ -828,15 +844,8 @@ with DAG(
         conn = BaseHook.get_connection('databricks_default')
         workspace_url = (conn.host or '').rstrip('/')
         token = conn.password
-        user_account = conn.login or 'unknown'
         if not workspace_url or not token:
             raise ValueError("Databricks connection must have host and password (token)")
-
-        ti.xcom_push(key="bh_audit_metadata", value={
-            "databricks_cluster_id": compute_id,
-            "databricks_user_account": user_account
-        })
-
         factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
         compute = factory.get_compute(compute_type="databricks")
         ok = compute.terminate_compute(compute_id, run_async=False)
