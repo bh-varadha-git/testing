@@ -1,6 +1,6 @@
 {
   "created_at": "2026-05-18T04:01:47.426937Z",
-  "updated_at": "2026-05-18T12:33:08.109436Z",
+  "updated_at": "2026-05-18T14:24:13.050646Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -14,8 +14,8 @@
   "tags": null,
   "status": "active",
   "pipeline_version_id": null,
-  "bh_project_name": "local",
-  "bh_github_username": "bh-varadha-git",
+  "bh_project_name": null,
+  "bh_github_username": null,
   "pipeline_json": {
     "name": "cenetegarisk_enrollment_41",
     "version": "1.0.0",
