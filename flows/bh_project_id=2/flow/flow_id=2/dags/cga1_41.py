@@ -654,7 +654,13 @@ with DAG(
         if cloud_type not in ["aws", "gcp", "azure", "databricks"]:
             raise ValueError(f"Unsupported cloud_type '{cloud_type}' for ArchiveProcessedFiles")
 
-        input_files = params.get("files") or []
+        input_files = params.get("files")
+        if isinstance(input_files, str) and "{" in input_files:
+            input_files = context["task"].render_template(input_files, context)
+        if input_files is None:
+            input_files = []
+        elif not isinstance(input_files, list):
+            input_files = [input_files] if input_files else []
         source_prefix = (params.get("source_prefix") or "").lstrip("/")
         airflow_connection_id = params.get("airflow_connection_id", "aws_default")
         delete_source = params.get("delete_source", True)
@@ -801,14 +807,14 @@ with DAG(
 
     _archive_params = {
         "bucket_name": "my-test-bucket",
-        "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
         "source_prefix": "",
         "archive_prefix": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/archived/",
         "cloud_type": "databricks",
         "airflow_connection_id": "databricks_default",
         "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureblob-azurebloblocal",
         "delete_source": True,
-        "allow_empty": True
+        "allow_empty": True,
+        "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}"
     }
     archive_processed_files = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
