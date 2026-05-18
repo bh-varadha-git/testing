@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 from airflow_plugins.dag_task_definitions.common_task import CommonTask
 from airflow_plugins.dag_task_definitions.lineage_task import LineageTask
 
-common_task = CommonTask(dag_id='cga1_411', dag_params={})
-lineage_task = LineageTask(dag_id='cga1_411', dag_params={})
+common_task = CommonTask(dag_id='cga1_41', dag_params={})
+lineage_task = LineageTask(dag_id='cga1_41', dag_params={})
 
 default_args = {
     'owner': 'bh',
@@ -527,7 +527,8 @@ with DAG(
                 "/Workspace/Shared/dev-utils/schemas"
             ]
         },
-        "compute_xcom_key": "return_value"
+        "compute_xcom_key": "return_value",
+        "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}"
     }
     run_pipelines_cenetegarisk_enrollment_41 = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
@@ -623,7 +624,8 @@ with DAG(
                 "/Workspace/Shared/dev-utils/schemas"
             ]
         },
-        "compute_xcom_key": "return_value"
+        "compute_xcom_key": "return_value",
+        "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}"
     }
     run_pipelines_silver_raw_fidelis_ny_upstate_members_load_260518_d9fc = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
@@ -799,15 +801,7 @@ with DAG(
 
     _archive_params = {
         "bucket_name": "my-test-bucket",
-        "files": [
-            {
-                "key": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/CinqCare Member File 8.21.25.csv",
-                "base_name": "CinqCare Member File 8.21.25.csv",
-                "source_name": "cinqcare_member_file_8_21_25",
-                "relative_key": "CinqCare Member File 8.21.25.csv",
-                "size_bytes": 213108
-            }
-        ],
+        "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
         "source_prefix": "",
         "archive_prefix": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/archived/",
         "cloud_type": "databricks",
