@@ -418,7 +418,7 @@ with DAG(
                 },
                 "custom_tags": {},
                 "init_scripts": [
-                    "/Workspace/Shared/bh-dev-utils/scripts/bh_databricks_grpc_server.sh"
+                    "/Workspace/Shared/dev-utils/scripts/bh_databricks_grpc_server.sh"
                 ],
                 "libraries": [],
                 "databricks_region": None,
