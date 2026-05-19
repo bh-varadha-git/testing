@@ -36,7 +36,7 @@
         "connection_type": "DatabricksDeltaLake",
         "catalog": "main",
         "schema": "bronze_enrollment",
-        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureunity-azuredatabrickslocal"
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal"
       },
       "azure-databricks-local_cinqdev": {
         "connection_config_id": 2,
@@ -44,7 +44,7 @@
         "connection_type": "DatabricksDeltaLake",
         "catalog": "cinqdev",
         "schema": "silverods_enrollment",
-        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureunity-azuredatabrickslocal"
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal"
       }
     },
     "sources": {
