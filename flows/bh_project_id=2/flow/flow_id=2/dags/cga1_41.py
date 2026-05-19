@@ -452,6 +452,7 @@ with DAG(
 
     def submit_job_to_cluster(**context):
         params = context.get("params") or {}
+        print(f"params:  ",params)
         job_config = params.get("job_config")
         if not job_config:
             raise ValueError("Missing job_config in params")
@@ -480,6 +481,7 @@ with DAG(
         valid_files = params.get("valid_files")
         if isinstance(valid_files, str) and "{{" in valid_files:
             valid_files = context["task"].render_template(valid_files, context)
+            print(f"valid_files:  ",valid_files)
         if valid_files:
             import json
             import os
@@ -495,11 +497,13 @@ with DAG(
                 rel = f.get("relative_key") or os.path.basename(str(key))
                 by_source[src_name].append(str(rel).strip().lstrip("/"))
             overrides = {sn: ",".join(sorted(set(paths))) for sn, paths in by_source.items() if paths}
+            print(f"overrides:  ",overrides)
             if overrides:
                 job_config = dict(job_config)
                 args = list(job_config.get("parameters") or [])
                 args.append(json.dumps(overrides, separators=(",", ":")))
                 job_config["parameters"] = args
+            print(f"job_config:  ",job_config)
 
         from airflow.hooks.base import BaseHook
         conn = BaseHook.get_connection('databricks_default')
