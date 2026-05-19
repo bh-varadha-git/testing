@@ -51,6 +51,30 @@
         }
       },
       {
+        "model": "FlowPipelineMapping",
+        "pk": 4,
+        "data": {
+          "flow_pipeline_mapping_id": 4,
+          "flow_id": 3,
+          "pipeline_id": 20,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
+        "pk": 3,
+        "data": {
+          "flow_pipeline_mapping_id": 3,
+          "flow_id": 3,
+          "pipeline_id": 19,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
         "model": "FlowParameter",
         "pk": 15,
         "data": {
