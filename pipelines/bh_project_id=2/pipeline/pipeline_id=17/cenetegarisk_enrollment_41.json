@@ -32,7 +32,7 @@
         "connection_type": "azure_blob",
         "container_name": "my-test-bucket",
         "file_path_prefix": "",
-        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureblob-azurebloblocal",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
         "connection_config_id": 1
       },
       "bronze_cenetegarisk_enrollment_db_connection": {
@@ -40,7 +40,7 @@
         "connection_type": "DatabricksDeltaLake",
         "catalog": "main",
         "schema": "bronze_enrollment",
-        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureunity-azuredatabrickslocal",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal",
         "connection_config_id": 2
       }
     },
