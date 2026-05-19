@@ -348,19 +348,26 @@ with DAG(
         return summary
 
     _validate_params = {
-        "bucket_name": "<<bucket_name>>",
-        "source_prefix": "<<source_prefix>>",
+        "bucket_name": "my-test-bucket",
+        "source_prefix": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update",
         "cloud_type": "databricks",
         "airflow_connection_id": "databricks_default",
-        "secret_name": "<<secret_name>>",
+        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureblob-azurebloblocal",
         "filename_regex": None,
         "min_bytes": 1,
         "max_bytes": None,
         "min_files": 1,
         "max_files": None,
         "quarantine_prefix": None,
-        "fail_on_invalid": True,
-        "sources": []
+        "fail_on_invalid": False,
+        "sources": [
+            {
+                "source_name": "cinqcare_member_file_8_21_25",
+                "prefix": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/",
+                "min_bytes": 10,
+                "min_files": 1
+            }
+        ]
     }
     validate_inbound_files = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
@@ -702,12 +709,12 @@ with DAG(
         return summary
 
     _archive_params = {
-        "bucket_name": "<<bucket_name>>",
+        "bucket_name": "my-test-bucket",
         "source_prefix": "",
-        "archive_prefix": "<<archive_prefix>>",
+        "archive_prefix": "Archive/bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update",
         "cloud_type": "databricks",
         "airflow_connection_id": "databricks_default",
-        "secret_name": "<<secret_name>>",
+        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureblob-azurebloblocal",
         "delete_source": True,
         "allow_empty": True,
         "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}"
