@@ -1,6 +1,6 @@
 {
   "created_at": "2026-05-18T04:01:47.426937Z",
-  "updated_at": "2026-05-18T17:36:41.678813Z",
+  "updated_at": "2026-05-19T01:01:20.389160Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -601,8 +601,8 @@
     "batch_control": {
       "enabled": true,
       "feed_name": "cenetegarisk_enrollment",
-      "business_date": "2026-05-18",
-      "delivery_id": "cenetegarisk_enrollment_2026-05-18",
+      "business_date": "2026-05-19",
+      "delivery_id": "cenetegarisk_enrollment_2026-05-19",
       "batch_id": 1,
       "use_existing_batch_id": false,
       "validate_existing_batch": true,
