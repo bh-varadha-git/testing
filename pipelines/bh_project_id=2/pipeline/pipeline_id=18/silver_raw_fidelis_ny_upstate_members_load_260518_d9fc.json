@@ -34,7 +34,7 @@
         "connection_config_id": 2,
         "name": "azure-databricks-local_main",
         "connection_type": "DatabricksDeltaLake",
-        "catalog": "main",
+        "catalog": "cinqdev",
         "schema": "bronze_enrollment",
         "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal"
       },
