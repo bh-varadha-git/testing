@@ -1,6 +1,6 @@
 {
   "created_at": "2026-05-19T06:02:58.368741Z",
-  "updated_at": "2026-05-19T06:57:56.140323Z",
+  "updated_at": "2026-05-19T11:28:45.773011Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -110,168 +110,135 @@
         "schema": [
           {
             "name": "LOB",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_KEY",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_MEDICARE_Nbr",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_NAME",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_SEX",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_DOB",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_ADDRESS_1",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_ADDRESS_2",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           {
             "name": "MEMBER_CITY",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_STATE",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_ZIP",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_REGION",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_PRIMARY_PHONE",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           {
             "name": "MEMBER_HOME_PHONE",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           {
             "name": "MEMBER_CELL_PHONE",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           {
             "name": "MEMBER_LANGUAGE",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           {
             "name": "MEMBER_ELIG_START_DT",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "MEMBER_ELIG_END_DT",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           {
             "name": "MEMBER_ACTIVE_IND",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_IRS_NBR",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_IRS_NAME",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_NPI",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_PROV_KEY",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_FIRST_NAME",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_LAST_NAME",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_ADDRESS1",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_ADDRESS2",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_CITY",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_STATE",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_ZIP",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_PHONE",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "PCP_FAX",
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           {
             "name": "corrupt_record",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         ],
         "dependent_on": []
