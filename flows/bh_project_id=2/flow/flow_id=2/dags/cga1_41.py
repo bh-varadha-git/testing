@@ -364,7 +364,7 @@ with DAG(
             {
                 "source_name": "cinqcare_member_file_8_21_25",
                 "prefix": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update/",
-                "filename_regex": "CinqCare Member File .*\\.csv",
+                "filename_regex": "CinqCare Member File .*.csv",
                 "ignore_subfolders": False,
                 "is_required": True,
                 "min_bytes": 10,
