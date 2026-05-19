@@ -352,7 +352,7 @@ with DAG(
         "source_prefix": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update",
         "cloud_type": "databricks",
         "airflow_connection_id": "databricks_default",
-        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureblob-azurebloblocal",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
         "filename_regex": None,
         "min_bytes": 1,
         "max_bytes": None,
