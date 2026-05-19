@@ -345,7 +345,7 @@
                   "source_prefix": "bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update",
                   "cloud_type": "databricks",
                   "airflow_connection_id": "databricks_default",
-                  "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureblob-azurebloblocal",
+                  "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
                   "fail_on_invalid": false,
                   "sources": [
                     {
@@ -377,7 +377,7 @@
                     "driver_node_type_id": null,
                     "runtime_engine": null,
                     "data_security_mode": "SINGLE_USER",
-                    "single_user_name": "srinivas@bighammer.ai",
+                    "single_user_name": "sathish@bighammer.ai",
                     "policy_id": null,
                     "apply_policy_default_values": true,
                     "idempotency_token": null,
@@ -434,17 +434,38 @@
                   "nodeId": "Submit_Job_run_pipelines_cenetegarisk_enrollment_41"
                 },
                 {
+                  "task_id": "run_pipelines_silver_raw_fidelis_ny_upstate_members_load_260518_d9fc",
+                  "type": "SubmitJob",
+                  "depends_on": [
+                    "run_pipelines_cenetegarisk_enrollment_41"
+                  ],
+                  "bh_project_name": "local",
+                  "pipeline_key": "silver_raw_fidelis_ny_upstate_members_load_260518_d9fc",
+                  "pipeline_name": "silver_raw_fidelis_ny_upstate_members_load_260518_d9fc",
+                  "pipeline_id": 18,
+                  "compute_binding": {
+                    "source_task_id": "create_compute",
+                    "source_output_id": "compute_id"
+                  },
+                  "compute_type": "DATABRICKS_CLUSTER",
+                  "cloud_type": "databricks",
+                  "airflow_connection_id": "databricks_default",
+                  "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
+                  "name": "Submit_Job_2",
+                  "nodeId": "Submit_Job_run_pipelines_silver_raw_fidelis_ny_upstate_members_load_260518_d9fc"
+                },
+                {
                   "task_id": "archive_processed_files",
                   "type": "ArchiveProcessedFiles",
                   "depends_on": [
-                    "run_pipelines_cenetegarisk_enrollment_41"
+                    "run_pipelines_silver_raw_fidelis_ny_upstate_members_load_260518_d9fc"
                   ],
                   "bucket_name": "my-test-bucket",
                   "cloud_type": "databricks",
                   "archive_prefix": "Archive/bhargs/1-Enrollment/1-Enrollment/Centene GA Risk Update",
                   "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
                   "airflow_connection_id": "databricks_default",
-                  "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureblob-azurebloblocal",
+                  "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
                   "delete_source": true,
                   "allow_empty": true,
                   "name": "Archive",
