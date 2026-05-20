@@ -1,6 +1,6 @@
 {
   "created_at": "2026-05-20T06:40:44.957725Z",
-  "updated_at": "2026-05-20T09:51:24.695233Z",
+  "updated_at": "2026-05-20T09:52:23.201029Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -14,8 +14,8 @@
   "tags": null,
   "status": "active",
   "pipeline_version_id": null,
-  "bh_project_name": null,
-  "bh_github_username": null,
+  "bh_project_name": "local",
+  "bh_github_username": "bh-varadha-git",
   "pipeline_json": {
     "name": "local_1",
     "version": "1.0.0",
@@ -383,7 +383,7 @@
       "atomic_commit_enabled": true,
       "group_id": 43,
       "expected_group_members": 1,
-      "group_run_id": "local_1_20260520T095124Z"
+      "group_run_id": "local_1_20260520T095223Z"
     }
   },
   "pipeline_type": "design",
