@@ -1,0 +1,756 @@
+{
+  "created_at": "2026-05-20T10:22:28.285640Z",
+  "updated_at": "2026-05-20T10:36:39.616084Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 1,
+  "pipeline_id": 24,
+  "pipeline_name": "silver_raw_source_to_local_test_load_260520_8882",
+  "pipeline_key": "silver_raw_source_to_local_test_load_260520_8882",
+  "bh_project_id": 2,
+  "notes": "",
+  "tags": {
+    "data_domain_id": 4,
+    "data_domain_name": "local",
+    "source_count": 1,
+    "target_count": 4
+  },
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "local",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "name": "silver_raw_source_to_local_test_load_260520_8882",
+    "description": "Requirement Pipeline",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "mode": "ENGINE",
+    "parameters": [],
+    "connections": {
+      "azure-databricks-local_cinqdev": {
+        "connection_config_id": 2,
+        "name": "azure-databricks-local_cinqdev",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "cinqdev",
+        "schema": "staging",
+        "secret_name": "bh-app-local-databricks-keycloak-4-v1/bh-azureunity-azuredatabrickslocal"
+      }
+    },
+    "sources": {
+      "orders_denormalized_ncbnl": {
+        "data_src_id": 65,
+        "name": "orders_denormalized_ncbnl",
+        "source_type": "Relational",
+        "table_name": "orders_denormalized_ncbnl",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "fields": [
+          "order_id",
+          "order_date",
+          "customer_id",
+          "customer_name",
+          "email",
+          "product_id",
+          "product_name",
+          "category",
+          "quantity",
+          "unit_price",
+          "corrupt_record",
+          "batch_id",
+          "feed_name",
+          "ingest_ts",
+          "ingest_year",
+          "ingest_month",
+          "ingest_day"
+        ],
+        "schema": [
+          {
+            "name": "order_id",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "order_date",
+            "type": "date",
+            "nullable": false
+          },
+          {
+            "name": "customer_id",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "customer_name",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "product_id",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "product_name",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "category",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "quantity",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "unit_price",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "batch_id",
+            "type": "biginteger",
+            "nullable": true
+          },
+          {
+            "name": "feed_name",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "ingest_ts",
+            "type": "timestamp",
+            "nullable": true
+          },
+          {
+            "name": "ingest_year",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "ingest_month",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "ingest_day",
+            "type": "integer",
+            "nullable": true
+          }
+        ],
+        "db_schema": "staging"
+      }
+    },
+    "targets": {
+      "customer": {
+        "data_src_id": 59,
+        "name": "customer",
+        "target_type": "Relational",
+        "table_name": "customer",
+        "load_mode": "merge",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "local_test",
+        "merge_keys": [
+          "customer_sk",
+          "customer_id",
+          "customer_name",
+          "email",
+          "created_ts"
+        ],
+        "process_deletes": false
+      },
+      "product": {
+        "data_src_id": 58,
+        "name": "product",
+        "target_type": "Relational",
+        "table_name": "product",
+        "load_mode": "merge",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "local_test",
+        "merge_keys": [
+          "product_sk",
+          "product_id",
+          "product_name",
+          "category",
+          "created_ts"
+        ],
+        "process_deletes": false
+      },
+      "orders": {
+        "data_src_id": 60,
+        "name": "orders",
+        "target_type": "Relational",
+        "table_name": "orders",
+        "load_mode": "merge",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "local_test",
+        "merge_keys": [
+          "order_sk",
+          "order_id",
+          "order_date",
+          "customer_id",
+          "created_ts"
+        ],
+        "process_deletes": false
+      },
+      "order_items": {
+        "data_src_id": 61,
+        "name": "order_items",
+        "target_type": "Relational",
+        "table_name": "order_items",
+        "load_mode": "merge",
+        "connection": {
+          "$ref": "#/connections/azure-databricks-local_cinqdev"
+        },
+        "schema": "local_test",
+        "merge_keys": [
+          "order_item_sk",
+          "order_id",
+          "product_id",
+          "quantity",
+          "unit_price",
+          "total_amount",
+          "created_ts"
+        ],
+        "process_deletes": false
+      }
+    },
+    "transformations": [
+      {
+        "name": "orders_denormalized_ncbnl",
+        "transformation": "Reader",
+        "dependent_on": [],
+        "source": {
+          "$ref": "#/sources/orders_denormalized_ncbnl"
+        },
+        "rename_columns": {
+          "order_id": "order_id_src_1",
+          "order_date": "order_date_src_1",
+          "customer_id": "customer_id_src_1",
+          "customer_name": "customer_name_src_1",
+          "email": "email_src_1",
+          "product_id": "product_id_src_1",
+          "product_name": "product_name_src_1",
+          "category": "category_src_1",
+          "quantity": "quantity_src_1",
+          "unit_price": "unit_price_src_1",
+          "corrupt_record": "corrupt_record_src_1",
+          "batch_id": "batch_id_src_1",
+          "feed_name": "feed_name_src_1",
+          "ingest_ts": "ingest_ts_src_1",
+          "ingest_year": "ingest_year_src_1",
+          "ingest_month": "ingest_month_src_1",
+          "ingest_day": "ingest_day_src_1"
+        },
+        "schema": [
+          {
+            "name": "order_id",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "order_date",
+            "type": "date",
+            "nullable": false
+          },
+          {
+            "name": "customer_id",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "customer_name",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "product_id",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "product_name",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "category",
+            "type": "string",
+            "nullable": false
+          },
+          {
+            "name": "quantity",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "unit_price",
+            "type": "long",
+            "nullable": false
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "batch_id",
+            "type": "biginteger",
+            "nullable": true
+          },
+          {
+            "name": "feed_name",
+            "type": "string",
+            "nullable": true
+          },
+          {
+            "name": "ingest_ts",
+            "type": "timestamp",
+            "nullable": true
+          },
+          {
+            "name": "ingest_year",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "ingest_month",
+            "type": "integer",
+            "nullable": true
+          },
+          {
+            "name": "ingest_day",
+            "type": "integer",
+            "nullable": true
+          }
+        ],
+        "read_options": {}
+      },
+      {
+        "name": "orders_denormalized_ncbnl_MaxBatchExpr",
+        "transformation": "Expression",
+        "dependent_on": [
+          "orders_denormalized_ncbnl"
+        ],
+        "derived_fields": [
+          {
+            "name": "max_batch_id",
+            "expression": "max(batch_id_src_1) OVER ()"
+          }
+        ]
+      },
+      {
+        "name": "orders_denormalized_ncbnl_IngestFilter",
+        "transformation": "Filter",
+        "dependent_on": [
+          "orders_denormalized_ncbnl_MaxBatchExpr"
+        ],
+        "condition": "batch_id_src_1 = max_batch_id AND (corrupt_record_src_1 IS NULL OR corrupt_record_src_1 = '')"
+      },
+      {
+        "name": "FilterCustomerNotNull",
+        "transformation": "Filter",
+        "dependent_on": [
+          "orders_denormalized_ncbnl_IngestFilter"
+        ],
+        "condition": "customer_id_src_1 IS NOT NULL"
+      },
+      {
+        "name": "FilterProductNotNull",
+        "transformation": "Filter",
+        "dependent_on": [
+          "FilterCustomerNotNull"
+        ],
+        "condition": "product_id_src_1 IS NOT NULL"
+      },
+      {
+        "name": "FilterOrderDateValid",
+        "transformation": "Filter",
+        "dependent_on": [
+          "FilterProductNotNull"
+        ],
+        "condition": "order_date_src_1 IS NOT NULL AND CAST(order_date_src_1 AS DATE) IS NOT NULL"
+      },
+      {
+        "name": "FilterQuantityAndPriceValid",
+        "transformation": "Filter",
+        "dependent_on": [
+          "FilterOrderDateValid"
+        ],
+        "condition": "CAST(quantity_src_1 AS INTEGER) >= 0 AND CAST(unit_price_src_1 AS DECIMAL(18,2)) >= 0"
+      },
+      {
+        "name": "DedupCustomer",
+        "transformation": "Deduplicator",
+        "dependent_on": [
+          "FilterQuantityAndPriceValid"
+        ],
+        "dedup_by": [
+          "customer_id_src_1"
+        ],
+        "keep": "any"
+      },
+      {
+        "name": "CustomerHashAndExpressions",
+        "transformation": "Mapper",
+        "dependent_on": [
+          "DedupCustomer"
+        ],
+        "derived_fields": [
+          {
+            "function_name": "sha256",
+            "parameters": {
+              "input_fields": [
+                "customer_id_src_1"
+              ],
+              "output_fields": [
+                "customer_sk"
+              ]
+            }
+          }
+        ],
+        "select_columns": [
+          "customer_id_src_1",
+          "customer_name_src_1",
+          "email_src_1",
+          "customer_sk"
+        ]
+      },
+      {
+        "name": "CustomerFinalExpression",
+        "transformation": "Expression",
+        "dependent_on": [
+          "CustomerHashAndExpressions"
+        ],
+        "derived_fields": [
+          {
+            "name": "customer_id",
+            "expression": "customer_id_src_1"
+          },
+          {
+            "name": "customer_name",
+            "expression": "customer_name_src_1"
+          },
+          {
+            "name": "email",
+            "expression": "LOWER(TRIM(email_src_1))"
+          },
+          {
+            "name": "created_ts",
+            "expression": "CURRENT_TIMESTAMP()"
+          }
+        ],
+        "select_columns": [
+          "customer_sk",
+          "customer_id",
+          "customer_name",
+          "email",
+          "created_ts"
+        ]
+      },
+      {
+        "name": "DedupProduct",
+        "transformation": "Deduplicator",
+        "dependent_on": [
+          "FilterQuantityAndPriceValid"
+        ],
+        "dedup_by": [
+          "product_id_src_1"
+        ],
+        "keep": "any"
+      },
+      {
+        "name": "ProductUUID",
+        "transformation": "Expression",
+        "dependent_on": [
+          "DedupProduct"
+        ],
+        "derived_fields": [
+          {
+            "name": "product_sk",
+            "expression": "uuid()"
+          },
+          {
+            "name": "product_id",
+            "expression": "product_id_src_1"
+          },
+          {
+            "name": "product_name",
+            "expression": "product_name_src_1"
+          },
+          {
+            "name": "category",
+            "expression": "category_src_1"
+          },
+          {
+            "name": "created_ts",
+            "expression": "CURRENT_TIMESTAMP()"
+          }
+        ],
+        "select_columns": [
+          "product_sk",
+          "product_id",
+          "product_name",
+          "category",
+          "created_ts"
+        ]
+      },
+      {
+        "name": "OrdersUUID",
+        "transformation": "Expression",
+        "dependent_on": [
+          "FilterQuantityAndPriceValid"
+        ],
+        "derived_fields": [
+          {
+            "name": "order_sk",
+            "expression": "uuid()"
+          },
+          {
+            "name": "order_id",
+            "expression": "CAST(order_id_src_1 AS STRING)"
+          },
+          {
+            "name": "order_date",
+            "expression": "CAST(order_date_src_1 AS DATE)"
+          },
+          {
+            "name": "customer_id",
+            "expression": "customer_id_src_1"
+          },
+          {
+            "name": "created_ts",
+            "expression": "CURRENT_TIMESTAMP()"
+          }
+        ],
+        "select_columns": [
+          "order_sk",
+          "order_id",
+          "order_date",
+          "customer_id",
+          "created_ts"
+        ]
+      },
+      {
+        "name": "DedupOrderItems",
+        "transformation": "Deduplicator",
+        "dependent_on": [
+          "FilterQuantityAndPriceValid"
+        ],
+        "dedup_by": [
+          "order_id_src_1",
+          "product_id_src_1"
+        ],
+        "keep": "any"
+      },
+      {
+        "name": "OrderItemsExpression",
+        "transformation": "Expression",
+        "dependent_on": [
+          "DedupOrderItems"
+        ],
+        "derived_fields": [
+          {
+            "name": "order_id",
+            "expression": "CAST(order_id_src_1 AS STRING)"
+          },
+          {
+            "name": "product_id",
+            "expression": "product_id_src_1"
+          },
+          {
+            "name": "quantity",
+            "expression": "CAST(quantity_src_1 AS INTEGER)"
+          },
+          {
+            "name": "unit_price",
+            "expression": "CAST(unit_price_src_1 AS DECIMAL(18,2))"
+          },
+          {
+            "name": "total_amount",
+            "expression": "CAST(quantity_src_1 AS INTEGER) * CAST(unit_price_src_1 AS DECIMAL(18,2))"
+          },
+          {
+            "name": "created_ts",
+            "expression": "CURRENT_TIMESTAMP()"
+          }
+        ],
+        "select_columns": [
+          "order_id",
+          "product_id",
+          "quantity",
+          "unit_price",
+          "total_amount",
+          "created_ts"
+        ]
+      },
+      {
+        "name": "OrderItemsSequence",
+        "transformation": "Sequence",
+        "dependent_on": [
+          "OrderItemsExpression"
+        ],
+        "for_column_name": "order_item_sk",
+        "start_with": 1,
+        "step": 1
+      },
+      {
+        "name": "customer_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "CustomerFinalExpression"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "customer_sk",
+          "customer_id",
+          "customer_name",
+          "email",
+          "created_ts"
+        ]
+      },
+      {
+        "name": "customer",
+        "transformation": "Writer",
+        "dependent_on": [
+          "customer_final"
+        ],
+        "target": {
+          "$ref": "#/targets/customer"
+        },
+        "write_options": {
+          "mode": "merge",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        }
+      },
+      {
+        "name": "product_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "ProductUUID"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "product_sk",
+          "product_id",
+          "product_name",
+          "category",
+          "created_ts"
+        ]
+      },
+      {
+        "name": "product",
+        "transformation": "Writer",
+        "dependent_on": [
+          "product_final"
+        ],
+        "target": {
+          "$ref": "#/targets/product"
+        },
+        "write_options": {
+          "mode": "merge",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        }
+      },
+      {
+        "name": "orders_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "OrdersUUID"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "order_sk",
+          "order_id",
+          "order_date",
+          "customer_id",
+          "created_ts"
+        ]
+      },
+      {
+        "name": "orders",
+        "transformation": "Writer",
+        "dependent_on": [
+          "orders_final"
+        ],
+        "target": {
+          "$ref": "#/targets/orders"
+        },
+        "write_options": {
+          "mode": "merge",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        }
+      },
+      {
+        "name": "order_items_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "OrderItemsSequence"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "order_item_sk",
+          "order_id",
+          "product_id",
+          "quantity",
+          "unit_price",
+          "total_amount",
+          "created_ts"
+        ]
+      },
+      {
+        "name": "order_items",
+        "transformation": "Writer",
+        "dependent_on": [
+          "order_items_final"
+        ],
+        "target": {
+          "$ref": "#/targets/order_items"
+        },
+        "write_options": {
+          "mode": "merge",
+          "createDisposition": "CREATE_IF_NEEDED",
+          "writeMethod": "direct"
+        }
+      }
+    ]
+  },
+  "pipeline_type": "requirement",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
