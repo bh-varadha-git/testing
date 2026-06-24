@@ -473,6 +473,7 @@
                 }
               ],
               "bh_environment_id": 4,
+              "template_parameters": [],
               "bh_project_id": 2,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
@@ -497,7 +498,7 @@
           "flow_version_id": null,
           "schema_id": null,
           "cron_expression": null,
-          "last_deployed_at": "2026-06-24 10:05:52.495413+00:00",
+          "last_deployed_at": "2026-06-24 10:15:33.034581+00:00",
           "tenant_id": 1,
           "is_deleted": false,
           "deleted_by": null
