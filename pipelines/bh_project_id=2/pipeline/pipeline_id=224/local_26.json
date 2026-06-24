@@ -1,6 +1,6 @@
 {
   "created_at": "2026-06-24T10:49:48.540529Z",
-  "updated_at": "2026-06-24T10:57:07.225598Z",
+  "updated_at": "2026-06-24T11:07:59.832263Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -22,12 +22,12 @@
     "engine_type": "pyspark",
     "parameters": [
       {
-        "key": "data2",
-        "value": "local/data2.csv"
-      },
-      {
         "key": "orders_denormalized",
         "value": "local/orders_denormalized.csv"
+      },
+      {
+        "key": "data2",
+        "value": "local/data2.csv"
       },
       {
         "key": "orders_denormalized_2",
@@ -35,22 +35,6 @@
       }
     ],
     "connections": {
-      "landing_data2_file_connection_obj275": {
-        "name": "landing_data2_file_connection_obj275",
-        "connection_type": "azure_blob",
-        "container_name": "my-test-bucket",
-        "file_path_prefix": "",
-        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
-        "connection_config_id": 1
-      },
-      "bronze_data2_db_connection_obj275": {
-        "name": "bronze_data2_db_connection_obj275",
-        "connection_type": "DatabricksDeltaLake",
-        "catalog": "cinqdev",
-        "schema": "staging",
-        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal",
-        "connection_config_id": 2
-      },
       "landing_orders_denormalized_file_connection_obj276": {
         "name": "landing_orders_denormalized_file_connection_obj276",
         "connection_type": "azure_blob",
@@ -61,6 +45,22 @@
       },
       "bronze_orders_denormalized_db_connection_obj276": {
         "name": "bronze_orders_denormalized_db_connection_obj276",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "cinqdev",
+        "schema": "staging",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal",
+        "connection_config_id": 2
+      },
+      "landing_data2_file_connection_obj275": {
+        "name": "landing_data2_file_connection_obj275",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+        "connection_config_id": 1
+      },
+      "bronze_data2_db_connection_obj275": {
+        "name": "bronze_data2_db_connection_obj275",
         "connection_type": "DatabricksDeltaLake",
         "catalog": "cinqdev",
         "schema": "staging",
@@ -85,15 +85,6 @@
       }
     },
     "sources": {
-      "landing_source_data2_obj275": {
-        "name": "landing_source_data2_obj275",
-        "source_type": "File",
-        "file_name": "${data2}",
-        "connection": {
-          "$ref": "#/connections/landing_data2_file_connection_obj275"
-        },
-        "data_src_id": 165
-      },
       "landing_source_orders_denormalized_obj276": {
         "name": "landing_source_orders_denormalized_obj276",
         "source_type": "File",
@@ -102,6 +93,15 @@
           "$ref": "#/connections/landing_orders_denormalized_file_connection_obj276"
         },
         "data_src_id": 167
+      },
+      "landing_source_data2_obj275": {
+        "name": "landing_source_data2_obj275",
+        "source_type": "File",
+        "file_name": "${data2}",
+        "connection": {
+          "$ref": "#/connections/landing_data2_file_connection_obj275"
+        },
+        "data_src_id": 165
       },
       "landing_source_orders_denormalized_2_obj277": {
         "name": "landing_source_orders_denormalized_2_obj277",
@@ -114,17 +114,6 @@
       }
     },
     "targets": {
-      "bronze_target_data2_obj275": {
-        "name": "bronze_target_data2_obj275",
-        "target_type": "Relational",
-        "table_name": "data2",
-        "connection": {
-          "$ref": "#/connections/bronze_data2_db_connection_obj275"
-        },
-        "load_mode": "append",
-        "schema": "staging",
-        "data_src_id": 166
-      },
       "bronze_target_orders_denormalized_obj276": {
         "name": "bronze_target_orders_denormalized_obj276",
         "target_type": "Relational",
@@ -135,6 +124,17 @@
         "load_mode": "append",
         "schema": "staging",
         "data_src_id": 168
+      },
+      "bronze_target_data2_obj275": {
+        "name": "bronze_target_data2_obj275",
+        "target_type": "Relational",
+        "table_name": "data2",
+        "connection": {
+          "$ref": "#/connections/bronze_data2_db_connection_obj275"
+        },
+        "load_mode": "append",
+        "schema": "staging",
+        "data_src_id": 166
       },
       "bronze_target_orders_denormalized_2_obj277": {
         "name": "bronze_target_orders_denormalized_2_obj277",
@@ -149,200 +149,6 @@
       }
     },
     "transformations": [
-      {
-        "name": "landing_read_data2_obj275",
-        "transformation": "Reader",
-        "source": {
-          "$ref": "#/sources/landing_source_data2_obj275"
-        },
-        "file_type": "CSV",
-        "read_options": {
-          "fetch_size": 10000,
-          "sep": ",",
-          "encoding": "UTF-8",
-          "header": true,
-          "inferSchema": false,
-          "multiLine": false,
-          "quote": "\"",
-          "escape": "\\",
-          "comment": "",
-          "preferDate": true,
-          "enforceSchema": true,
-          "ignoreLeadingWhiteSpace": false,
-          "ignoreTrailingWhiteSpace": false,
-          "nullValue": "",
-          "nanValue": "NaN",
-          "positiveInf": "Inf",
-          "negativeInf": "-Inf",
-          "dateFormat": "yyyy-MM-dd",
-          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
-          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
-          "maxColumns": 20480,
-          "maxCharsPerColumn": -1,
-          "columnNameOfCorruptRecord": "corrupt_record",
-          "samplingRatio": 1.0,
-          "emptyValue": "",
-          "locale": "en-US",
-          "lineSep": "\r\n",
-          "unescapedQuoteHandling": "STOP_AT_DELIMITER",
-          "mode": "PERMISSIVE"
-        },
-        "schema": [
-          {
-            "name": "id",
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "corrupt_record",
-            "type": "string"
-          }
-        ],
-        "dependent_on": []
-      },
-      {
-        "name": "add_lineage_metadata_obj275",
-        "transformation": "Expression",
-        "dependent_on": [
-          "landing_read_data2_obj275"
-        ],
-        "derived_fields": [
-          {
-            "name": "feed_name",
-            "expression": "'local_26'"
-          },
-          {
-            "name": "ingest_ts",
-            "expression": "current_timestamp()"
-          },
-          {
-            "name": "ingest_year",
-            "expression": "year(current_date())"
-          },
-          {
-            "name": "ingest_month",
-            "expression": "month(current_date())"
-          },
-          {
-            "name": "ingest_day",
-            "expression": "day(current_date())"
-          },
-          {
-            "name": "created_ts",
-            "expression": "current_timestamp()"
-          },
-          {
-            "name": "updated_ts",
-            "expression": "current_timestamp()"
-          },
-          {
-            "name": "batch_id",
-            "expression": "batch_id"
-          }
-        ]
-      },
-      {
-        "name": "schema_drift_guard_obj275",
-        "transformation": "SchemaDriftGuard",
-        "dependent_on": [
-          "add_lineage_metadata_obj275"
-        ],
-        "schema_version": "v1",
-        "rescued_column": "_rescued_data",
-        "raw_record_column": "_raw_record",
-        "detect_only": true,
-        "version": "1.0.0",
-        "engine_type": "pyspark",
-        "expected_schema": [
-          {
-            "name": "id",
-            "type": "string",
-            "nullable": false,
-            "is_required": true
-          },
-          {
-            "name": "name",
-            "type": "string",
-            "nullable": false,
-            "is_required": true
-          },
-          {
-            "name": "corrupt_record",
-            "type": "string",
-            "nullable": true,
-            "is_required": false
-          },
-          {
-            "name": "batch_id",
-            "type": "string",
-            "nullable": true,
-            "is_required": false
-          },
-          {
-            "name": "feed_name",
-            "type": "string",
-            "nullable": true,
-            "is_required": false
-          },
-          {
-            "name": "ingest_ts",
-            "type": "timestamp",
-            "nullable": true,
-            "is_required": false
-          },
-          {
-            "name": "ingest_year",
-            "type": "integer",
-            "nullable": true,
-            "is_required": false
-          },
-          {
-            "name": "ingest_month",
-            "type": "integer",
-            "nullable": true,
-            "is_required": false
-          },
-          {
-            "name": "ingest_day",
-            "type": "integer",
-            "nullable": true,
-            "is_required": false
-          }
-        ],
-        "dataset_id": "data2",
-        "drift_policy": {
-          "new_column": "rescue",
-          "missing_required_column": "fail_batch",
-          "type_mismatch_required": "quarantine_record",
-          "type_mismatch_optional": "rescue"
-        }
-      },
-      {
-        "name": "bronze_write_data2_obj275",
-        "transformation": "Writer",
-        "dependent_on": [
-          "schema_drift_guard_obj275"
-        ],
-        "target": {
-          "$ref": "#/targets/bronze_target_data2_obj275"
-        },
-        "write_options": {
-          "truncate": false,
-          "cascadeTruncate": false,
-          "refreshKrb5Config": false,
-          "encrypt": "false",
-          "trustServerCertificate": "false",
-          "partitionBy": [
-            "ingest_year",
-            "ingest_month",
-            "ingest_day",
-            "batch_id"
-          ]
-        }
-      },
       {
         "name": "landing_read_orders_denormalized_obj276",
         "transformation": "Reader",
@@ -618,6 +424,201 @@
         }
       },
       {
+        "name": "landing_read_data2_obj275",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_data2_obj275"
+        },
+        "file_type": "CSV",
+        "read_options": {
+          "fetch_size": 10000,
+          "sep": ",",
+          "encoding": "UTF-8",
+          "header": true,
+          "inferSchema": false,
+          "multiLine": false,
+          "quote": "\"",
+          "escape": "\\",
+          "comment": "",
+          "preferDate": true,
+          "enforceSchema": true,
+          "ignoreLeadingWhiteSpace": false,
+          "ignoreTrailingWhiteSpace": false,
+          "nullValue": "",
+          "nanValue": "NaN",
+          "positiveInf": "Inf",
+          "negativeInf": "-Inf",
+          "dateFormat": "yyyy-MM-dd",
+          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
+          "maxColumns": 20480,
+          "maxCharsPerColumn": -1,
+          "columnNameOfCorruptRecord": "corrupt_record",
+          "samplingRatio": 1.0,
+          "emptyValue": "",
+          "locale": "en-US",
+          "lineSep": "\r\n",
+          "unescapedQuoteHandling": "STOP_AT_DELIMITER",
+          "mode": "PERMISSIVE"
+        },
+        "schema": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string"
+          }
+        ],
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata_obj275",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_data2_obj275"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'local_26'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          }
+        ]
+      },
+      {
+        "name": "schema_drift_guard_obj275",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata_obj275"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "detect_only": true,
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "expected_schema": [
+          {
+            "name": "id",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "batch_id",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "feed_name",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_ts",
+            "type": "timestamp",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_year",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_month",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_day",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          }
+        ],
+        "dataset_id": "data2",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "bronze_write_data2_obj275",
+        "transformation": "Writer",
+        "dependent_on": [
+          "schema_drift_guard_obj275",
+          "bronze_write_orders_denormalized_2_obj277"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_data2_obj275"
+        },
+        "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      },
+      {
         "name": "landing_read_orders_denormalized_2_obj277",
         "transformation": "Reader",
         "source": {
@@ -872,7 +873,8 @@
         "name": "bronze_write_orders_denormalized_2_obj277",
         "transformation": "Writer",
         "dependent_on": [
-          "schema_drift_guard_obj277"
+          "schema_drift_guard_obj277",
+          "bronze_write_orders_denormalized_obj276"
         ],
         "target": {
           "$ref": "#/targets/bronze_target_orders_denormalized_2_obj277"
@@ -920,14 +922,14 @@
       },
       "stage_to_transformations": {
         "bronze": [
-          "landing_read_data2_obj275",
-          "add_lineage_metadata_obj275",
-          "schema_drift_guard_obj275",
-          "bronze_write_data2_obj275",
           "landing_read_orders_denormalized_obj276",
           "add_lineage_metadata_obj276",
           "schema_drift_guard_obj276",
           "bronze_write_orders_denormalized_obj276",
+          "landing_read_data2_obj275",
+          "add_lineage_metadata_obj275",
+          "schema_drift_guard_obj275",
+          "bronze_write_data2_obj275",
           "landing_read_orders_denormalized_2_obj277",
           "add_lineage_metadata_obj277",
           "schema_drift_guard_obj277",
@@ -939,7 +941,7 @@
       "atomic_commit_enabled": true,
       "group_id": 85,
       "expected_group_members": 3,
-      "group_run_id": "local_26_20260624T105706Z"
+      "group_run_id": "local_26_20260624T110759Z"
     }
   },
   "pipeline_type": "design",
