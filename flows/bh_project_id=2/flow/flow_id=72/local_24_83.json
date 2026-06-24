@@ -65,20 +65,6 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 69,
-        "data": {
-          "flow_parameter_id": 69,
-          "flow_id": 72,
-          "parameter_name": "sources",
-          "parameter_value": "[{\"source_name\": \"orders_denormalized\", \"prefix\": \"local\", \"filename_regex\": \"orders_denormalized.csv\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"orders_denormalized_2\", \"prefix\": \"local\", \"filename_regex\": \"orders_denormalized_2.csv\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
         "pk": 76,
         "data": {
           "flow_parameter_id": 76,
@@ -93,40 +79,12 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 74,
+        "pk": 73,
         "data": {
-          "flow_parameter_id": 74,
+          "flow_parameter_id": 73,
           "flow_id": 72,
-          "parameter_name": "pipelines",
-          "parameter_value": "[{\"id\": 223, \"name\": \"local_24\", \"pipeline_name\": \"local_24\"}]",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 66,
-        "data": {
-          "flow_parameter_id": 66,
-          "flow_id": 72,
-          "parameter_name": "parallelization_factor",
-          "parameter_value": 1,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 71,
-        "data": {
-          "flow_parameter_id": 71,
-          "flow_id": 72,
-          "parameter_name": "files",
-          "parameter_value": "[{\"key\": \"local/orders_denormalized.csv\", \"base_name\": \"orders_denormalized.csv\", \"source_name\": \"orders_denormalized\", \"relative_key\": \"orders_denormalized.csv\", \"size_bytes\": 247}, {\"key\": \"local/orders_denormalized_2.csv\", \"base_name\": \"orders_denormalized_2.csv\", \"source_name\": \"orders_denormalized_2\", \"relative_key\": \"orders_denormalized_2.csv\", \"size_bytes\": 502}]",
+          "parameter_name": "allow_empty",
+          "parameter_value": true,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -141,48 +99,6 @@
           "flow_id": 72,
           "parameter_name": "fail_on_invalid",
           "parameter_value": true,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 65,
-        "data": {
-          "flow_parameter_id": 65,
-          "flow_id": 72,
-          "parameter_name": "execute_in_parallel",
-          "parameter_value": false,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 72,
-        "data": {
-          "flow_parameter_id": 72,
-          "flow_id": 72,
-          "parameter_name": "delete_source",
-          "parameter_value": true,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 68,
-        "data": {
-          "flow_parameter_id": 68,
-          "flow_id": 72,
-          "parameter_name": "compute_type",
-          "parameter_value": "DATABRICKS_CLUSTER",
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -219,6 +135,48 @@
       },
       {
         "model": "FlowParameter",
+        "pk": 72,
+        "data": {
+          "flow_parameter_id": 72,
+          "flow_id": 72,
+          "parameter_name": "delete_source",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 69,
+        "data": {
+          "flow_parameter_id": 69,
+          "flow_id": 72,
+          "parameter_name": "sources",
+          "parameter_value": "[{\"source_name\": \"orders_denormalized\", \"prefix\": \"local\", \"filename_regex\": \"orders_denormalized.csv\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"orders_denormalized_2\", \"prefix\": \"local\", \"filename_regex\": \"orders_denormalized_2.csv\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 66,
+        "data": {
+          "flow_parameter_id": 66,
+          "flow_id": 72,
+          "parameter_name": "parallelization_factor",
+          "parameter_value": 1,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
         "pk": 77,
         "data": {
           "flow_parameter_id": 77,
@@ -233,12 +191,54 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 73,
+        "pk": 74,
         "data": {
-          "flow_parameter_id": 73,
+          "flow_parameter_id": 74,
           "flow_id": 72,
-          "parameter_name": "allow_empty",
-          "parameter_value": true,
+          "parameter_name": "pipelines",
+          "parameter_value": "[{\"id\": 223, \"name\": \"local_24\", \"pipeline_name\": \"local_24\"}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 71,
+        "data": {
+          "flow_parameter_id": 71,
+          "flow_id": 72,
+          "parameter_name": "files",
+          "parameter_value": "[{\"key\": \"local/orders_denormalized.csv\", \"base_name\": \"orders_denormalized.csv\", \"source_name\": \"orders_denormalized\", \"relative_key\": \"orders_denormalized.csv\", \"size_bytes\": 247}, {\"key\": \"local/orders_denormalized_2.csv\", \"base_name\": \"orders_denormalized_2.csv\", \"source_name\": \"orders_denormalized_2\", \"relative_key\": \"orders_denormalized_2.csv\", \"size_bytes\": 502}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 68,
+        "data": {
+          "flow_parameter_id": 68,
+          "flow_id": 72,
+          "parameter_name": "compute_type",
+          "parameter_value": "DATABRICKS_CLUSTER",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 65,
+        "data": {
+          "flow_parameter_id": 65,
+          "flow_id": 72,
+          "parameter_name": "execute_in_parallel",
+          "parameter_value": false,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -498,7 +498,7 @@
           "flow_version_id": null,
           "schema_id": null,
           "cron_expression": null,
-          "last_deployed_at": null,
+          "last_deployed_at": "2026-06-24 10:00:58.667860+00:00",
           "tenant_id": 1,
           "is_deleted": false,
           "deleted_by": null
