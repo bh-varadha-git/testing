@@ -1,6 +1,6 @@
 {
   "created_at": "2026-06-24T09:53:29.400396Z",
-  "updated_at": "2026-06-24T10:00:05.216111Z",
+  "updated_at": "2026-06-24T10:02:27.521092Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -638,8 +638,7 @@
         "name": "bronze_write_orders_denormalized_2_obj261",
         "transformation": "Writer",
         "dependent_on": [
-          "schema_drift_guard_obj261",
-          "bronze_write_orders_denormalized_obj260"
+          "schema_drift_guard_obj261"
         ],
         "target": {
           "$ref": "#/targets/bronze_target_orders_denormalized_2_obj261"
@@ -702,7 +701,7 @@
       "atomic_commit_enabled": true,
       "group_id": 83,
       "expected_group_members": 2,
-      "group_run_id": "local_24_20260624T100004Z"
+      "group_run_id": "local_24_20260624T100227Z"
     }
   },
   "pipeline_type": "design",
