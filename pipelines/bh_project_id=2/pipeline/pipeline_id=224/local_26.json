@@ -1,6 +1,6 @@
 {
   "created_at": "2026-06-24T10:49:48.540529Z",
-  "updated_at": "2026-06-24T10:54:53.629299Z",
+  "updated_at": "2026-06-24T10:57:07.225598Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -324,8 +324,7 @@
         "name": "bronze_write_data2_obj275",
         "transformation": "Writer",
         "dependent_on": [
-          "schema_drift_guard_obj275",
-          "bronze_write_orders_denormalized_2_obj277"
+          "schema_drift_guard_obj275"
         ],
         "target": {
           "$ref": "#/targets/bronze_target_data2_obj275"
@@ -873,8 +872,7 @@
         "name": "bronze_write_orders_denormalized_2_obj277",
         "transformation": "Writer",
         "dependent_on": [
-          "schema_drift_guard_obj277",
-          "bronze_write_orders_denormalized_obj276"
+          "schema_drift_guard_obj277"
         ],
         "target": {
           "$ref": "#/targets/bronze_target_orders_denormalized_2_obj277"
@@ -941,7 +939,7 @@
       "atomic_commit_enabled": true,
       "group_id": 85,
       "expected_group_members": 3,
-      "group_run_id": "local_26_20260624T105452Z"
+      "group_run_id": "local_26_20260624T105706Z"
     }
   },
   "pipeline_type": "design",
