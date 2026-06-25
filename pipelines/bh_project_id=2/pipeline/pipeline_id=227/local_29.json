@@ -1,0 +1,1013 @@
+{
+  "created_at": "2026-06-25T03:18:28.421043Z",
+  "updated_at": "2026-06-25T03:19:38.628399Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 1,
+  "pipeline_id": 227,
+  "pipeline_name": "local_29",
+  "pipeline_key": "local_29",
+  "bh_project_id": 2,
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "local",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "name": "local_29",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "parameters": [
+      {
+        "key": "data2",
+        "value": "local/data2.csv"
+      },
+      {
+        "key": "orders_denormalized",
+        "value": "local/orders_denormalized.csv"
+      },
+      {
+        "key": "orders_denormalized_2",
+        "value": "local/orders_denormalized_2.csv"
+      }
+    ],
+    "connections": {
+      "landing_data2_file_connection_obj304": {
+        "name": "landing_data2_file_connection_obj304",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+        "connection_config_id": 1
+      },
+      "bronze_data2_db_connection_obj304": {
+        "name": "bronze_data2_db_connection_obj304",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "cinqdev",
+        "schema": "staging",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal",
+        "connection_config_id": 2
+      },
+      "landing_orders_denormalized_file_connection_obj305": {
+        "name": "landing_orders_denormalized_file_connection_obj305",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+        "connection_config_id": 1
+      },
+      "bronze_orders_denormalized_db_connection_obj305": {
+        "name": "bronze_orders_denormalized_db_connection_obj305",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "cinqdev",
+        "schema": "staging",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal",
+        "connection_config_id": 2
+      },
+      "landing_orders_denormalized_2_file_connection_obj306": {
+        "name": "landing_orders_denormalized_2_file_connection_obj306",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+        "connection_config_id": 1
+      },
+      "bronze_orders_denormalized_2_db_connection_obj306": {
+        "name": "bronze_orders_denormalized_2_db_connection_obj306",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "cinqdev",
+        "schema": "staging",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal",
+        "connection_config_id": 2
+      }
+    },
+    "sources": {
+      "landing_source_data2_obj304": {
+        "name": "landing_source_data2_obj304",
+        "source_type": "File",
+        "file_name": "${data2}",
+        "connection": {
+          "$ref": "#/connections/landing_data2_file_connection_obj304"
+        },
+        "data_src_id": 183
+      },
+      "landing_source_orders_denormalized_obj305": {
+        "name": "landing_source_orders_denormalized_obj305",
+        "source_type": "File",
+        "file_name": "${orders_denormalized}",
+        "connection": {
+          "$ref": "#/connections/landing_orders_denormalized_file_connection_obj305"
+        },
+        "data_src_id": 185
+      },
+      "landing_source_orders_denormalized_2_obj306": {
+        "name": "landing_source_orders_denormalized_2_obj306",
+        "source_type": "File",
+        "file_name": "${orders_denormalized_2}",
+        "connection": {
+          "$ref": "#/connections/landing_orders_denormalized_2_file_connection_obj306"
+        },
+        "data_src_id": 187
+      }
+    },
+    "targets": {
+      "bronze_target_data2_obj304": {
+        "name": "bronze_target_data2_obj304",
+        "target_type": "Relational",
+        "table_name": "data2",
+        "connection": {
+          "$ref": "#/connections/bronze_data2_db_connection_obj304"
+        },
+        "load_mode": "append",
+        "schema": "staging",
+        "data_src_id": 184
+      },
+      "bronze_target_orders_denormalized_obj305": {
+        "name": "bronze_target_orders_denormalized_obj305",
+        "target_type": "Relational",
+        "table_name": "orders_denormalized",
+        "connection": {
+          "$ref": "#/connections/bronze_orders_denormalized_db_connection_obj305"
+        },
+        "load_mode": "append",
+        "schema": "staging",
+        "data_src_id": 186
+      },
+      "bronze_target_orders_denormalized_2_obj306": {
+        "name": "bronze_target_orders_denormalized_2_obj306",
+        "target_type": "Relational",
+        "table_name": "orders_denormalized_2",
+        "connection": {
+          "$ref": "#/connections/bronze_orders_denormalized_2_db_connection_obj306"
+        },
+        "load_mode": "append",
+        "schema": "staging",
+        "data_src_id": 188
+      }
+    },
+    "transformations": [
+      {
+        "name": "landing_read_data2_obj304",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_data2_obj304"
+        },
+        "file_type": "CSV",
+        "read_options": {
+          "fetch_size": 10000,
+          "sep": ",",
+          "encoding": "UTF-8",
+          "header": true,
+          "inferSchema": false,
+          "multiLine": false,
+          "quote": "\"",
+          "escape": "\\",
+          "comment": "",
+          "preferDate": true,
+          "enforceSchema": true,
+          "ignoreLeadingWhiteSpace": false,
+          "ignoreTrailingWhiteSpace": false,
+          "nullValue": "",
+          "nanValue": "NaN",
+          "positiveInf": "Inf",
+          "negativeInf": "-Inf",
+          "dateFormat": "yyyy-MM-dd",
+          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
+          "maxColumns": 20480,
+          "maxCharsPerColumn": -1,
+          "columnNameOfCorruptRecord": "corrupt_record",
+          "samplingRatio": 1.0,
+          "emptyValue": "",
+          "locale": "en-US",
+          "lineSep": "\r\n",
+          "unescapedQuoteHandling": "STOP_AT_DELIMITER",
+          "mode": "PERMISSIVE"
+        },
+        "schema": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string"
+          }
+        ],
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata_obj304",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_data2_obj304"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'local_29'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          },
+          {
+            "name": "file_date",
+            "expression": "to_date(regexp_extract(input_file_name(), '(\\\\d{8})', 1), 'yyyyMMdd')"
+          },
+          {
+            "name": "col2",
+            "expression": "10"
+          }
+        ]
+      },
+      {
+        "name": "schema_drift_guard_obj304",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata_obj304"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "detect_only": true,
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "expected_schema": [
+          {
+            "name": "id",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "batch_id",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "feed_name",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_ts",
+            "type": "timestamp",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_year",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_month",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_day",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "file_date",
+            "type": "date",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "col2",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          }
+        ],
+        "dataset_id": "data2",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "bronze_write_data2_obj304",
+        "transformation": "Writer",
+        "dependent_on": [
+          "schema_drift_guard_obj304"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_data2_obj304"
+        },
+        "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      },
+      {
+        "name": "landing_read_orders_denormalized_obj305",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_orders_denormalized_obj305"
+        },
+        "file_type": "CSV",
+        "read_options": {
+          "fetch_size": 10000,
+          "sep": ",",
+          "encoding": "UTF-8",
+          "header": true,
+          "inferSchema": false,
+          "multiLine": false,
+          "quote": "\"",
+          "escape": "\\",
+          "comment": "",
+          "preferDate": true,
+          "enforceSchema": true,
+          "ignoreLeadingWhiteSpace": false,
+          "ignoreTrailingWhiteSpace": false,
+          "nullValue": "",
+          "nanValue": "NaN",
+          "positiveInf": "Inf",
+          "negativeInf": "-Inf",
+          "dateFormat": "yyyy-MM-dd",
+          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
+          "maxColumns": 20480,
+          "maxCharsPerColumn": -1,
+          "columnNameOfCorruptRecord": "corrupt_record",
+          "samplingRatio": 1.0,
+          "emptyValue": "",
+          "locale": "en-US",
+          "lineSep": "\n",
+          "unescapedQuoteHandling": "STOP_AT_DELIMITER",
+          "mode": "PERMISSIVE"
+        },
+        "schema": [
+          {
+            "name": "order_id",
+            "type": "string"
+          },
+          {
+            "name": "order_date",
+            "type": "date"
+          },
+          {
+            "name": "customer_id",
+            "type": "string"
+          },
+          {
+            "name": "product_id",
+            "type": "string"
+          },
+          {
+            "name": "customer_name",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "name": "product_name",
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "type": "string"
+          },
+          {
+            "name": "quantity",
+            "type": "string"
+          },
+          {
+            "name": "unit_price",
+            "type": "string"
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string"
+          }
+        ],
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata_obj305",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_orders_denormalized_obj305"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'local_29'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          },
+          {
+            "name": "file_date",
+            "expression": "to_date(regexp_extract(input_file_name(), '(\\\\d{8})', 1), 'yyyyMMdd')"
+          },
+          {
+            "name": "col2",
+            "expression": "10"
+          }
+        ]
+      },
+      {
+        "name": "schema_drift_guard_obj305",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata_obj305"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "detect_only": true,
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "expected_schema": [
+          {
+            "name": "order_id",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "order_date",
+            "type": "date",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "customer_id",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "product_id",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "customer_name",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "product_name",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "category",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "quantity",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "unit_price",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "batch_id",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "feed_name",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_ts",
+            "type": "timestamp",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_year",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_month",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_day",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "file_date",
+            "type": "date",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "col2",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          }
+        ],
+        "dataset_id": "orders_denormalized",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "bronze_write_orders_denormalized_obj305",
+        "transformation": "Writer",
+        "dependent_on": [
+          "schema_drift_guard_obj305"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_orders_denormalized_obj305"
+        },
+        "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      },
+      {
+        "name": "landing_read_orders_denormalized_2_obj306",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_orders_denormalized_2_obj306"
+        },
+        "file_type": "CSV",
+        "read_options": {
+          "fetch_size": 10000,
+          "sep": ",",
+          "encoding": "UTF-8",
+          "header": true,
+          "inferSchema": false,
+          "multiLine": false,
+          "quote": "\"",
+          "escape": "\\",
+          "comment": "",
+          "preferDate": true,
+          "enforceSchema": true,
+          "ignoreLeadingWhiteSpace": false,
+          "ignoreTrailingWhiteSpace": false,
+          "nullValue": "",
+          "nanValue": "NaN",
+          "positiveInf": "Inf",
+          "negativeInf": "-Inf",
+          "dateFormat": "yyyy-MM-dd",
+          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
+          "maxColumns": 20480,
+          "maxCharsPerColumn": -1,
+          "columnNameOfCorruptRecord": "corrupt_record",
+          "samplingRatio": 1.0,
+          "emptyValue": "",
+          "locale": "en-US",
+          "lineSep": "\r\n",
+          "unescapedQuoteHandling": "STOP_AT_DELIMITER",
+          "mode": "PERMISSIVE"
+        },
+        "schema": [
+          {
+            "name": "order_id",
+            "type": "string"
+          },
+          {
+            "name": "order_date",
+            "type": "date"
+          },
+          {
+            "name": "customer_id",
+            "type": "string"
+          },
+          {
+            "name": "customer_name",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "name": "product_id",
+            "type": "string"
+          },
+          {
+            "name": "product",
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "type": "string"
+          },
+          {
+            "name": "quantity",
+            "type": "long"
+          },
+          {
+            "name": "unit_price",
+            "type": "long"
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string"
+          }
+        ],
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata_obj306",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_orders_denormalized_2_obj306"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'local_29'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          },
+          {
+            "name": "file_date",
+            "expression": "to_date(regexp_extract(input_file_name(), '(\\\\d{8})', 1), 'yyyyMMdd')"
+          },
+          {
+            "name": "col2",
+            "expression": "10"
+          }
+        ]
+      },
+      {
+        "name": "schema_drift_guard_obj306",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata_obj306"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "detect_only": true,
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "expected_schema": [
+          {
+            "name": "order_id",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "order_date",
+            "type": "date",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "customer_id",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "customer_name",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "product_id",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "product",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "category",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "quantity",
+            "type": "long",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "unit_price",
+            "type": "long",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "batch_id",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "feed_name",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_ts",
+            "type": "timestamp",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_year",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_month",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_day",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "file_date",
+            "type": "date",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "col2",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          }
+        ],
+        "dataset_id": "orders_denormalized_2",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "bronze_write_orders_denormalized_2_obj306",
+        "transformation": "Writer",
+        "dependent_on": [
+          "schema_drift_guard_obj306"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_orders_denormalized_2_obj306"
+        },
+        "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      }
+    ],
+    "description": "Cloned from File to DB Ingestion V2",
+    "batch_control": {
+      "enabled": true,
+      "feed_name": "local_29",
+      "business_date": "2026-06-25",
+      "delivery_id": "local_29_2026-06-25",
+      "batch_id": 1,
+      "use_existing_batch_id": false,
+      "validate_existing_batch": true,
+      "require_input_acceptance": true,
+      "auto_accept_input_on_batch_init": true,
+      "input_registry_processed_on_stage": "bronze",
+      "seed_stage_rows": true,
+      "stages": [
+        "bronze"
+      ],
+      "storage": {
+        "connection": {
+          "name": "control_delta",
+          "connection_type": "DatabricksDeltaLake"
+        },
+        "namespace": {
+          "catalog": "cinqdev",
+          "schema": "control"
+        }
+      },
+      "stage_to_transformations": {
+        "bronze": [
+          "landing_read_data2_obj304",
+          "add_lineage_metadata_obj304",
+          "schema_drift_guard_obj304",
+          "bronze_write_data2_obj304",
+          "landing_read_orders_denormalized_obj305",
+          "add_lineage_metadata_obj305",
+          "schema_drift_guard_obj305",
+          "bronze_write_orders_denormalized_obj305",
+          "landing_read_orders_denormalized_2_obj306",
+          "add_lineage_metadata_obj306",
+          "schema_drift_guard_obj306",
+          "bronze_write_orders_denormalized_2_obj306"
+        ]
+      },
+      "error_threshold_pct": 50.0,
+      "run_scope": "GROUP",
+      "atomic_commit_enabled": true,
+      "group_id": 88,
+      "expected_group_members": 3,
+      "group_run_id": "local_29_20260625T031938Z"
+    }
+  },
+  "pipeline_type": "design",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
