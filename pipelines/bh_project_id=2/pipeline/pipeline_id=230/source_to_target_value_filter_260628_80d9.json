@@ -1,0 +1,171 @@
+{
+  "created_at": "2026-06-28T03:50:59.977399Z",
+  "updated_at": "2026-07-05T05:13:55.085093Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 1,
+  "pipeline_id": 230,
+  "pipeline_name": "source_to_target_value_filter_260628_80d9",
+  "pipeline_key": "source_to_target_value_filter_260628_80d9",
+  "bh_project_id": 2,
+  "notes": "",
+  "tags": {
+    "created_from": "chat-quick-action"
+  },
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "local",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "name": "source_to_target_value_filter_260628_80d9",
+    "description": "Requirement Pipeline",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "mode": "ENGINE",
+    "parameters": [],
+    "connections": {
+      "sv_az_postgres": {
+        "connection_config_id": 4,
+        "name": "sv_az_postgres",
+        "connection_type": "PostgreSQL",
+        "database": "sample_db",
+        "schema": "smaller_data",
+        "driver": "org.postgresql.Driver",
+        "host": "4.227.38.66",
+        "port": "5434",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-postgres-svazpostgres"
+      }
+    },
+    "sources": {
+      "source_table": {
+        "data_src_id": 122,
+        "name": "source_table",
+        "source_type": "Relational",
+        "table_name": "source_table",
+        "connection": {
+          "$ref": "#/connections/sv_az_postgres"
+        },
+        "fields": [
+          "id",
+          "value"
+        ],
+        "schema": [
+          {
+            "name": "id",
+            "type": "integer",
+            "nullable": false
+          },
+          {
+            "name": "value",
+            "type": "integer",
+            "nullable": true
+          }
+        ],
+        "db_schema": "smaller_data"
+      }
+    },
+    "targets": {
+      "target_table": {
+        "data_src_id": 121,
+        "name": "target_table",
+        "target_type": "Relational",
+        "table_name": "target_table",
+        "load_mode": "overwrite",
+        "connection": {
+          "$ref": "#/connections/sv_az_postgres"
+        },
+        "schema": "smaller_data"
+      }
+    },
+    "transformations": [
+      {
+        "name": "source_table",
+        "transformation": "Reader",
+        "dependent_on": [],
+        "source": {
+          "$ref": "#/sources/source_table"
+        },
+        "rename_columns": {
+          "id": "id_src_1",
+          "value": "value_src_1"
+        },
+        "schema": [
+          {
+            "name": "id",
+            "type": "integer",
+            "nullable": false
+          },
+          {
+            "name": "value",
+            "type": "integer",
+            "nullable": true
+          }
+        ],
+        "read_options": {
+          "dbtable": "source_table"
+        }
+      },
+      {
+        "name": "FilterValueGt10",
+        "transformation": "Filter",
+        "dependent_on": [
+          "source_table"
+        ],
+        "condition": "value_src_1 > 10"
+      },
+      {
+        "name": "RenameToTarget",
+        "transformation": "Expression",
+        "dependent_on": [
+          "FilterValueGt10"
+        ],
+        "rename_columns": {
+          "id_src_1": "id",
+          "value_src_1": "value"
+        },
+        "select_columns": [
+          "id",
+          "value"
+        ]
+      },
+      {
+        "name": "target_table_final",
+        "transformation": "Expression",
+        "dependent_on": [
+          "RenameToTarget"
+        ],
+        "rename_columns": {},
+        "select_columns": [
+          "id",
+          "value"
+        ]
+      },
+      {
+        "name": "target_table",
+        "transformation": "Writer",
+        "dependent_on": [
+          "target_table_final"
+        ],
+        "target": {
+          "$ref": "#/targets/target_table"
+        },
+        "write_options": {
+          "mode": "overwrite",
+          "dbtable": "target_table"
+        }
+      }
+    ]
+  },
+  "draft_pipeline_json": null,
+  "pipeline_type": "requirement",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}
