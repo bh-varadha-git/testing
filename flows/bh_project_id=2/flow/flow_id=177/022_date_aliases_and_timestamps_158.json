@@ -1,0 +1,499 @@
+{
+  "created_at": "2026-09-03T09:21:42.319125Z",
+  "updated_at": "2026-09-03T09:21:42.319125Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 1,
+  "flow_id": 177,
+  "flow_name": "022_date_aliases_and_timestamps_158",
+  "flow_key": "022_date_aliases_and_timestamps_158",
+  "recipient_email": {},
+  "notes": "Bulk ingest from healthcare_demo/data2/022_date_aliases_and_timestamps",
+  "tags": null,
+  "status": "active",
+  "bh_project_name": "local",
+  "bh_project_id": 2,
+  "alert_settings": {
+    "on_job_start": false,
+    "on_job_failure": false,
+    "on_job_success": false,
+    "long_running": false
+  },
+  "_graph": {
+    "root": {
+      "model": "Flow",
+      "pk": 177
+    },
+    "nodes": [
+      {
+        "model": "Flow",
+        "pk": 177,
+        "data": {
+          "flow_id": 177,
+          "flow_name": "022_date_aliases_and_timestamps_158",
+          "flow_key": "022_date_aliases_and_timestamps_158",
+          "bh_project_id": 2,
+          "recipient_email": {},
+          "notes": "Bulk ingest from healthcare_demo/data2/022_date_aliases_and_timestamps",
+          "tags": null,
+          "status": "active",
+          "alert_settings": {
+            "on_job_start": false,
+            "on_job_failure": false,
+            "on_job_success": false,
+            "long_running": false
+          },
+          "bh_bundle_id": null,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
+        "pk": 85,
+        "data": {
+          "flow_pipeline_mapping_id": 85,
+          "flow_id": 177,
+          "pipeline_id": 1244,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 291,
+        "data": {
+          "flow_parameter_id": 291,
+          "flow_id": 177,
+          "parameter_name": "archive_prefix",
+          "parameter_value": "Archive/healthcare_demo/data2/022_date_aliases_and_timestamps",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 290,
+        "data": {
+          "flow_parameter_id": 290,
+          "flow_id": 177,
+          "parameter_name": "source_prefix",
+          "parameter_value": "healthcare_demo/data2/022_date_aliases_and_timestamps",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 289,
+        "data": {
+          "flow_parameter_id": 289,
+          "flow_id": 177,
+          "parameter_name": "bucket_name",
+          "parameter_value": "my-test-bucket",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 288,
+        "data": {
+          "flow_parameter_id": 288,
+          "flow_id": 177,
+          "parameter_name": "runtime_params_base_path",
+          "parameter_value": "/Workspace/Shared/runtime_params",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 287,
+        "data": {
+          "flow_parameter_id": 287,
+          "flow_id": 177,
+          "parameter_name": "use_valid_files_manifest",
+          "parameter_value": false,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 286,
+        "data": {
+          "flow_parameter_id": 286,
+          "flow_id": 177,
+          "parameter_name": "pipelines",
+          "parameter_value": "[{\"id\": 1244, \"name\": \"roster_20260904_158\", \"pipeline_name\": \"roster_20260904_158\"}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 285,
+        "data": {
+          "flow_parameter_id": 285,
+          "flow_id": 177,
+          "parameter_name": "allow_empty",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 284,
+        "data": {
+          "flow_parameter_id": 284,
+          "flow_id": 177,
+          "parameter_name": "delete_source",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 283,
+        "data": {
+          "flow_parameter_id": 283,
+          "flow_id": 177,
+          "parameter_name": "files",
+          "parameter_value": "[{\"key\": \"healthcare_demo/data2/022_date_aliases_and_timestamps/roster_20260904.csv\", \"base_name\": \"roster_20260904.csv\", \"source_name\": \"roster_20260904\", \"relative_key\": \"roster_20260904.csv\", \"size_bytes\": 940}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 282,
+        "data": {
+          "flow_parameter_id": 282,
+          "flow_id": 177,
+          "parameter_name": "fail_on_invalid",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 281,
+        "data": {
+          "flow_parameter_id": 281,
+          "flow_id": 177,
+          "parameter_name": "sources",
+          "parameter_value": "[{\"source_name\": \"roster_20260904\", \"prefix\": \"healthcare_demo/data2/022_date_aliases_and_timestamps\", \"filename_regex\": \"roster_20260904.csv\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 280,
+        "data": {
+          "flow_parameter_id": 280,
+          "flow_id": 177,
+          "parameter_name": "compute_type",
+          "parameter_value": "DATABRICKS_CLUSTER",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 279,
+        "data": {
+          "flow_parameter_id": 279,
+          "flow_id": 177,
+          "parameter_name": "cloud_type",
+          "parameter_value": "databricks",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 278,
+        "data": {
+          "flow_parameter_id": 278,
+          "flow_id": 177,
+          "parameter_name": "parallelization_factor",
+          "parameter_value": 1,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 277,
+        "data": {
+          "flow_parameter_id": 277,
+          "flow_id": 177,
+          "parameter_name": "execute_in_parallel",
+          "parameter_value": false,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDefinition",
+        "pk": 177,
+        "data": {
+          "flow_definition_id": 177,
+          "flow_id": 177,
+          "flow_json": {
+            "flowJson": {
+              "$schema": "https://json-schema.org/draft-07/schema#",
+              "name": "022_date_aliases_and_timestamps_158",
+              "flow_name": "022_date_aliases_and_timestamps_158",
+              "flow_id": 177,
+              "flow_key": "022_date_aliases_and_timestamps_158",
+              "flow_type": "INGESTION",
+              "description": "Bulk ingest from healthcare_demo/data2/022_date_aliases_and_timestamps",
+              "version": "1.0.0",
+              "project_id": 2,
+              "project_name": "local",
+              "cron_expression": null,
+              "tenant_id": 1,
+              "flow_tags": [
+                {
+                  "key": "environment",
+                  "value": "dev"
+                }
+              ],
+              "parameters": [
+                {
+                  "key": "allow_empty",
+                  "value": true
+                },
+                {
+                  "key": "archive_prefix",
+                  "value": "Archive/healthcare_demo/data2/022_date_aliases_and_timestamps"
+                },
+                {
+                  "key": "bucket_name",
+                  "value": "my-test-bucket"
+                },
+                {
+                  "key": "cloud_type",
+                  "value": "databricks"
+                },
+                {
+                  "key": "compute_type",
+                  "value": "DATABRICKS_CLUSTER"
+                },
+                {
+                  "key": "delete_source",
+                  "value": true
+                },
+                {
+                  "key": "execute_in_parallel",
+                  "value": false
+                },
+                {
+                  "key": "fail_on_invalid",
+                  "value": true
+                },
+                {
+                  "key": "files",
+                  "value": "[{\"key\": \"healthcare_demo/data2/022_date_aliases_and_timestamps/roster_20260904.csv\", \"base_name\": \"roster_20260904.csv\", \"source_name\": \"roster_20260904\", \"relative_key\": \"roster_20260904.csv\", \"size_bytes\": 940}]"
+                },
+                {
+                  "key": "parallelization_factor",
+                  "value": 1
+                },
+                {
+                  "key": "pipelines",
+                  "value": "[{\"id\": 1244, \"name\": \"roster_20260904_158\", \"pipeline_name\": \"roster_20260904_158\"}]"
+                },
+                {
+                  "key": "runtime_params_base_path",
+                  "value": "/Workspace/Shared/runtime_params"
+                },
+                {
+                  "key": "source_prefix",
+                  "value": "healthcare_demo/data2/022_date_aliases_and_timestamps"
+                },
+                {
+                  "key": "sources",
+                  "value": "[{\"source_name\": \"roster_20260904\", \"prefix\": \"healthcare_demo/data2/022_date_aliases_and_timestamps\", \"filename_regex\": \"roster_20260904.csv\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]"
+                },
+                {
+                  "key": "use_valid_files_manifest",
+                  "value": false
+                }
+              ],
+              "tasks": [
+                {
+                  "task_id": "validate_inbound_files",
+                  "type": "ValidateInboundFiles",
+                  "depends_on": [],
+                  "bucket_name": "my-test-bucket",
+                  "source_prefix": "healthcare_demo/data2/022_date_aliases_and_timestamps",
+                  "cloud_type": "databricks",
+                  "airflow_connection_id": "<<airflow_connection_id>>",
+                  "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+                  "fail_on_invalid": true,
+                  "sources": [
+                    {
+                      "source_name": "roster_20260904",
+                      "prefix": "healthcare_demo/data2/022_date_aliases_and_timestamps",
+                      "filename_regex": "roster_20260904.csv",
+                      "ignore_subfolders": true,
+                      "is_required": true,
+                      "min_bytes": 10,
+                      "min_files": 1
+                    }
+                  ],
+                  "feed_name": "<<feed_name>>",
+                  "use_valid_files_manifest": false,
+                  "runtime_params_base_path": "/Workspace/Shared/runtime_params",
+                  "name": "Validate",
+                  "nodeId": "validate_validate_inbound_files"
+                },
+                {
+                  "task_id": "create_compute",
+                  "type": "CreateCompute",
+                  "depends_on": [
+                    "validate_inbound_files"
+                  ],
+                  "cluster_name": "<<cluster_name>>",
+                  "compute_config": "<<compute_config>>",
+                  "cloud_type": "databricks",
+                  "compute_type": "DATABRICKS_CLUSTER",
+                  "airflow_connection_id": "<<airflow_connection_id>>",
+                  "output_variables": [
+                    {
+                      "id": "compute_id",
+                      "label": "Cluster / job identifier",
+                      "xcom_key": "return_value"
+                    }
+                  ],
+                  "name": "Create_Compute",
+                  "nodeId": "create_compute_create_compute"
+                },
+                {
+                  "task_id": "run_pipelines_roster_20260904_158",
+                  "type": "SubmitJob",
+                  "depends_on": [
+                    "create_compute"
+                  ],
+                  "bh_project_name": "local",
+                  "pipeline_key": "roster_20260904_158",
+                  "pipeline_name": "roster_20260904_158",
+                  "pipeline_id": 1244,
+                  "compute_binding": {
+                    "source_task_id": "create_compute",
+                    "source_output_id": "compute_id"
+                  },
+                  "compute_type": "DATABRICKS_CLUSTER",
+                  "cloud_type": "databricks",
+                  "airflow_connection_id": "<<airflow_connection_id>>",
+                  "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
+                  "batch_id": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='batch_id') }}",
+                  "name": "Submit_Job",
+                  "nodeId": "Submit_Job_run_pipelines_roster_20260904_158"
+                },
+                {
+                  "task_id": "archive_processed_files",
+                  "type": "ArchiveProcessedFiles",
+                  "depends_on": [
+                    "run_pipelines_roster_20260904_158"
+                  ],
+                  "bucket_name": "my-test-bucket",
+                  "cloud_type": "databricks",
+                  "archive_prefix": "Archive/healthcare_demo/data2/022_date_aliases_and_timestamps",
+                  "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
+                  "airflow_connection_id": "<<airflow_connection_id>>",
+                  "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+                  "delete_source": true,
+                  "allow_empty": true,
+                  "name": "Archive",
+                  "nodeId": "archive_archive_processed_files"
+                },
+                {
+                  "task_id": "delete_compute",
+                  "type": "DeleteCompute",
+                  "depends_on": [
+                    "archive_processed_files"
+                  ],
+                  "cloud_type": "databricks",
+                  "compute_type": "DATABRICKS_CLUSTER",
+                  "airflow_connection_id": "<<airflow_connection_id>>",
+                  "compute_binding": {
+                    "source_task_id": "create_compute",
+                    "source_output_id": "compute_id"
+                  },
+                  "name": "Delete_Compute",
+                  "nodeId": "delete_compute_delete_compute"
+                }
+              ],
+              "template_parameters": [],
+              "bh_project_id": 2,
+              "ingestion_group_id": 158
+            }
+          },
+          "schema_id": null,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDeployment",
+        "pk": 177,
+        "data": {
+          "flow_deployment_id": 177,
+          "flow_id": 177,
+          "bh_env_id": null,
+          "bh_airflow_id": null,
+          "flow_version_id": null,
+          "schema_id": null,
+          "cron_expression": null,
+          "last_deployed_at": null,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      }
+    ]
+  }
+}
