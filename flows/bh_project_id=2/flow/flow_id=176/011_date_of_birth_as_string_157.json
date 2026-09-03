@@ -466,9 +466,8 @@
                   "nodeId": "delete_compute_delete_compute"
                 }
               ],
-              "template_parameters": [],
-              "bh_environment_id": 4,
               "bh_project_id": 2,
+              "bh_environment_id": 4,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
               "vault_url": "https://bh-dev-westus3-kv-key.vault.azure.net/",
