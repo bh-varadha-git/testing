@@ -65,96 +65,26 @@
       },
       {
         "model": "FlowParameter",
+        "pk": 291,
+        "data": {
+          "flow_parameter_id": 291,
+          "flow_id": 177,
+          "parameter_name": "archive_prefix",
+          "parameter_value": "Archive/healthcare_demo/data2/022_date_aliases_and_timestamps",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
         "pk": 290,
         "data": {
           "flow_parameter_id": 290,
           "flow_id": 177,
           "parameter_name": "source_prefix",
           "parameter_value": "healthcare_demo/data2/022_date_aliases_and_timestamps",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 288,
-        "data": {
-          "flow_parameter_id": 288,
-          "flow_id": 177,
-          "parameter_name": "runtime_params_base_path",
-          "parameter_value": "/Workspace/Shared/runtime_params",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 286,
-        "data": {
-          "flow_parameter_id": 286,
-          "flow_id": 177,
-          "parameter_name": "pipelines",
-          "parameter_value": "[{\"id\": 1244, \"name\": \"roster_20260904_158\", \"pipeline_name\": \"roster_20260904_158\"}]",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 284,
-        "data": {
-          "flow_parameter_id": 284,
-          "flow_id": 177,
-          "parameter_name": "delete_source",
-          "parameter_value": true,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 282,
-        "data": {
-          "flow_parameter_id": 282,
-          "flow_id": 177,
-          "parameter_name": "fail_on_invalid",
-          "parameter_value": true,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 280,
-        "data": {
-          "flow_parameter_id": 280,
-          "flow_id": 177,
-          "parameter_name": "compute_type",
-          "parameter_value": "DATABRICKS_CLUSTER",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 278,
-        "data": {
-          "flow_parameter_id": 278,
-          "flow_id": 177,
-          "parameter_name": "parallelization_factor",
-          "parameter_value": 1,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -177,6 +107,20 @@
       },
       {
         "model": "FlowParameter",
+        "pk": 288,
+        "data": {
+          "flow_parameter_id": 288,
+          "flow_id": 177,
+          "parameter_name": "runtime_params_base_path",
+          "parameter_value": "/Workspace/Shared/runtime_params",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
         "pk": 287,
         "data": {
           "flow_parameter_id": 287,
@@ -191,11 +135,39 @@
       },
       {
         "model": "FlowParameter",
+        "pk": 286,
+        "data": {
+          "flow_parameter_id": 286,
+          "flow_id": 177,
+          "parameter_name": "pipelines",
+          "parameter_value": "[{\"id\": 1244, \"name\": \"roster_20260904_158\", \"pipeline_name\": \"roster_20260904_158\"}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
         "pk": 285,
         "data": {
           "flow_parameter_id": 285,
           "flow_id": 177,
           "parameter_name": "allow_empty",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 284,
+        "data": {
+          "flow_parameter_id": 284,
+          "flow_id": 177,
+          "parameter_name": "delete_source",
           "parameter_value": true,
           "parameter_type": "USER",
           "tenant_id": 1,
@@ -219,12 +191,40 @@
       },
       {
         "model": "FlowParameter",
+        "pk": 282,
+        "data": {
+          "flow_parameter_id": 282,
+          "flow_id": 177,
+          "parameter_name": "fail_on_invalid",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
         "pk": 281,
         "data": {
           "flow_parameter_id": 281,
           "flow_id": 177,
           "parameter_name": "sources",
           "parameter_value": "[{\"source_name\": \"roster_20260904\", \"prefix\": \"healthcare_demo/data2/022_date_aliases_and_timestamps\", \"filename_regex\": \"roster_20260904.csv\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 280,
+        "data": {
+          "flow_parameter_id": 280,
+          "flow_id": 177,
+          "parameter_name": "compute_type",
+          "parameter_value": "DATABRICKS_CLUSTER",
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -247,12 +247,12 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 277,
+        "pk": 278,
         "data": {
-          "flow_parameter_id": 277,
+          "flow_parameter_id": 278,
           "flow_id": 177,
-          "parameter_name": "execute_in_parallel",
-          "parameter_value": false,
+          "parameter_name": "parallelization_factor",
+          "parameter_value": 1,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -261,12 +261,12 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 291,
+        "pk": 277,
         "data": {
-          "flow_parameter_id": 291,
+          "flow_parameter_id": 277,
           "flow_id": 177,
-          "parameter_name": "archive_prefix",
-          "parameter_value": "Archive/healthcare_demo/data2/022_date_aliases_and_timestamps",
+          "parameter_name": "execute_in_parallel",
+          "parameter_value": false,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -466,9 +466,8 @@
                   "nodeId": "delete_compute_delete_compute"
                 }
               ],
-              "template_parameters": [],
-              "bh_environment_id": 4,
               "bh_project_id": 2,
+              "bh_environment_id": 4,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
               "vault_url": "https://bh-dev-westus3-kv-key.vault.azure.net/",
