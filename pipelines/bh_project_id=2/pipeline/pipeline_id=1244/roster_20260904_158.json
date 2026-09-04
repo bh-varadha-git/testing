@@ -1,6 +1,6 @@
 {
   "created_at": "2026-09-03T08:30:52.745354Z",
-  "updated_at": "2026-09-03T09:21:40.822185Z",
+  "updated_at": "2026-09-04T08:14:51.017056Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -313,8 +313,8 @@
     "batch_control": {
       "enabled": true,
       "feed_name": "roster_20260904",
-      "business_date": "2026-09-03",
-      "delivery_id": "roster_20260904_2026-09-03",
+      "business_date": "2026-09-04",
+      "delivery_id": "roster_20260904_2026-09-04",
       "batch_id": 1,
       "use_existing_batch_id": false,
       "validate_existing_batch": true,
