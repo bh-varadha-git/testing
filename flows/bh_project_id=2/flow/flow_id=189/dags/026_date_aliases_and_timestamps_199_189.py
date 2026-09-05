@@ -43,65 +43,553 @@ with DAG(
     )
 
 
-    from airflow.operators.python import PythonOperator
-    from airflow_plugins.feed_control.sla.inbound.validate_task import (
-        validate_inbound_files,
-    )
-    import airflow_plugins.dag_task_definitions.feed_control_callbacks as feed_control_callbacks
-
-    _validate_params = {
-        "bucket_name": "my-test-bucket",
-        "source_prefix": "healthcare_demo/data6/026_date_aliases_and_timestamps",
-        "cloud_type": "databricks",
-        "airflow_connection_id": "databricks_default",
-        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
-        "filename_regex": None,
-        "min_bytes": 1,
-        "max_bytes": None,
-        "min_files": 1,
-        "max_files": None,
-        "quarantine_prefix": "healthcare_demo/data6/026_date_aliases_and_timestamps/rejected",
-        "fail_on_invalid": True,
-        "use_valid_files_manifest": False,
-        "runtime_params_base_path": "/Workspace/Shared/runtime_params",
-        "sources": [
-            {
-                "source_name": "roster_20260908",
-                "prefix": "healthcare_demo/data6/026_date_aliases_and_timestamps",
-                "filename_regex": "roster_20260908.csv",
-                "ignore_subfolders": True,
-                "is_required": True,
-                "min_bytes": 10,
-                "min_files": 1
-            }
-        ],
-        "allow_control_table_failure": False,
-        "require_batch_id": None,
-        "require_feed_control_policy": True,
-        "control_catalog": "cinqdev",
-        "control_schema": None,
-        "feed_name": "026_date_aliases_and_timestamps",
-        "feed_id": "026_date_aliases_and_timestamps"
-    }
-    validate_inbound_files = PythonOperator(
-        pre_execute=common_task.pre_execute_callback,
-        task_id='validate_inbound_files',
-        python_callable=validate_inbound_files,
-        params=_validate_params,
-        on_success_callback=feed_control_callbacks.validate_inbound_success_callback,
-        on_failure_callback=feed_control_callbacks.validate_inbound_failure_callback,
+                from airflow.operators.python import PythonOperator
+                import os
+                import re
+                from datetime import datetime, timezone
+                from airflow_plugins.cloud_factory import CloudFactory
+                from airflow_plugins.utils.airflow_runtime import (
+        require_airflow_connection,
+        require_connection_fields,
+        require_databricks_connection_fields,
+        require_param,
+        get_airflow_variable,
     )
 
+                def validate_inbound_files(**context):
+                    params = context.get("params") or {}
+                    bucket_name = require_param(params.get("bucket_name"), name="bucket_name")
+
+                    source_prefix = (params.get("source_prefix") or "").lstrip("/")
+                    cloud_type = (params.get("cloud_type") or "aws").lower()
+                    if cloud_type not in ["aws", "gcp", "azure", "databricks"]:
+                        raise ValueError(f"Unsupported cloud_type '{cloud_type}' for ValidateInboundFiles")
+                    airflow_connection_id = params.get("airflow_connection_id", "aws_default")
+                    quarantine_prefix = params.get("quarantine_prefix")
+                    fail_on_invalid = params.get("fail_on_invalid", True)
+                    secret_name = params.get("secret_name")
+                    configured_sources = params.get("sources") or []
+                    ds_nodash = context.get("ds_nodash") or "unknown_date"
+
+                    if configured_sources and not isinstance(configured_sources, list):
+                        raise ValueError("sources must be an array when provided")
+
+                    # Backward compatibility path: build single-source definition from top-level fields.
+                    if not configured_sources:
+                        configured_sources = [{
+                            "source_name": "default",
+                            "prefix": source_prefix,
+                            "filename_regex": params.get("filename_regex"),
+                            "ignore_subfolders": False,
+                            "is_required": True,
+                            "required_patterns": [],
+                            "min_bytes": params.get("min_bytes", 1),
+                            "max_bytes": params.get("max_bytes"),
+                            "min_files": params.get("min_files", 1),
+                            "max_files": params.get("max_files"),
+                        }]
+
+                    conn = require_airflow_connection(airflow_connection_id)
+                    context_label = "ValidateInboundFiles"
+                    extras = conn.extra_dejson or {}
+                    factory_kwargs = {}
+                    if cloud_type == "aws":
+                        if conn.login:
+                            factory_kwargs["aws_access_key_id"] = conn.login
+                        if conn.password:
+                            factory_kwargs["aws_secret_access_key"] = conn.password
+                        factory_kwargs["region"] = (
+                            extras.get("region_name")
+                            or extras.get("region")
+                            or extras.get("aws_region")
+                            or "us-east-1"
+                        )
+                    elif cloud_type == "gcp":
+                        if extras.get("project"):
+                            factory_kwargs["project_id"] = extras.get("project")
+                        elif extras.get("project_id"):
+                            factory_kwargs["project_id"] = extras.get("project_id")
+                        if extras.get("keyfile_dict"):
+                            factory_kwargs["credentials"] = extras.get("keyfile_dict")
+                        elif extras.get("key_path"):
+                            factory_kwargs["credentials_path"] = extras.get("key_path")
+                    elif cloud_type == "azure":
+                        factory_kwargs["connection_string"] = (
+                            conn.password
+                            or extras.get("connection_string")
+                            or extras.get("azure_storage_connection_string")
+                        )
+                        if extras.get("account_url"):
+                            factory_kwargs["account_url"] = extras.get("account_url")
+                    elif cloud_type == "databricks":
+                        workspace_url, token = require_databricks_connection_fields(
+                            conn,
+                            conn_id=airflow_connection_id,
+                            context=context_label,
+                        )
+                        factory_kwargs["databricks_workspace_url"] = workspace_url
+                        factory_kwargs["databricks_token"] = token
+                    if cloud_type == "databricks":
+                        storage_secret_name = secret_name or extras.get("secret_name")
+                        if storage_secret_name:
+                            factory_kwargs["storage_secret_name"] = storage_secret_name
+                            factory_kwargs["storage_backend"] = "azure_blob"
+                        else:
+                            raise ValueError(
+                                "secret_name is required for databricks validation storage. "
+                                "Use value format 'scope/key' to avoid separate scope config."
+                            )
+                        if extras.get("secrets_scope_name"):
+                            factory_kwargs["secrets_scope_name"] = extras.get("secrets_scope_name")
+                        factory_kwargs["secrets_backend_type"] = extras.get("secrets_backend_type") or "databricks"
+
+                    factory = CloudFactory(cloud_type, **factory_kwargs)
+                    storage = factory.get_storage(cloud_type)
+                    valid_files = []
+                    invalid_files = []
+                    missing_required = []
+                    valid_keys_in_any_source = set()
+
+                    def _is_truthy_folder_flag(value):
+                        return str(value).strip().lower() in {"true", "1", "yes"}
+
+                    def _is_directory_like_object(obj):
+                        key = str((obj or {}).get("key") or "")
+                        if not key or key.endswith("/"):
+                            return True
+                        metadata = (obj or {}).get("metadata") or {}
+                        if isinstance(metadata, dict) and _is_truthy_folder_flag(metadata.get("hdi_isfolder")):
+                            return True
+                        return False
+
+                    def _validate_numeric_rules(min_bytes, max_bytes, min_files, max_files):
+                        if min_bytes is not None and min_bytes < 0:
+                            raise ValueError("min_bytes must be >= 0")
+                        if max_bytes is not None and max_bytes < 0:
+                            raise ValueError("max_bytes must be >= 0")
+                        if min_bytes is not None and max_bytes is not None and min_bytes > max_bytes:
+                            raise ValueError("min_bytes cannot be greater than max_bytes")
+                        if min_files is not None and min_files < 0:
+                            raise ValueError("min_files must be >= 0")
+                        if max_files is not None and max_files < 1:
+                            raise ValueError("max_files must be >= 1")
+                        if min_files is not None and max_files is not None and min_files > max_files:
+                            raise ValueError("min_files cannot be greater than max_files")
+
+                    for source in configured_sources:
+                        source_name = (source or {}).get("source_name") or "default"
+                        source_rule_prefix = ((source or {}).get("prefix") or source_prefix).lstrip("/")
+                        filename_regex = (source or {}).get("filename_regex") or params.get("filename_regex")
+                        ignore_subfolders = bool((source or {}).get("ignore_subfolders", False))
+                        is_required = (source or {}).get("is_required", True)
+                        required_patterns = (source or {}).get("required_patterns") or []
+                        # Backward compatibility: if old required_patterns are present, preserve behavior.
+                        if required_patterns:
+                            required_regexes = [re.compile(pattern) for pattern in required_patterns]
+                        else:
+                            required_regexes = [re.compile(filename_regex)] if (is_required and filename_regex) else []
+                        min_bytes = (source or {}).get("min_bytes")
+                        if min_bytes is None:
+                            min_bytes = params.get("min_bytes", 1)
+                        max_bytes = (source or {}).get("max_bytes")
+                        if max_bytes is None:
+                            max_bytes = params.get("max_bytes")
+                        min_files = (source or {}).get("min_files")
+                        if min_files is None:
+                            min_files = params.get("min_files", 1)
+                        # Source optionality takes precedence over file-count minimum.
+                        if not is_required:
+                            min_files = 0
+                        max_files = (source or {}).get("max_files")
+                        if max_files is None:
+                            max_files = params.get("max_files")
+                        _validate_numeric_rules(min_bytes, max_bytes, min_files, max_files)
+
+                        regex = re.compile(filename_regex) if filename_regex else None
+
+                        objects_with_metadata = []
+                        if hasattr(storage, "list_objects_with_metadata"):
+                            objects_with_metadata = storage.list_objects_with_metadata(
+                                bucket_name=bucket_name,
+                                prefix=source_rule_prefix,
+                            ) or []
+                        if objects_with_metadata:
+                            candidate_files = [
+                                {
+                                    "key": obj.get("key"),
+                                    "size_bytes": int(obj.get("size", obj.get("size_bytes", 0)) or 0),
+                                }
+                                for obj in objects_with_metadata
+                                if not _is_directory_like_object(obj)
+                            ]
+                        else:
+                            keys = storage.list_objects(bucket_name=bucket_name, prefix=source_rule_prefix) or []
+                            candidate_files = [
+                                {"key": key, "size_bytes": 0}
+                                for key in keys
+                                if key and not key.endswith("/")
+                            ]
+
+                        valid_in_source = []
+                        invalid_in_source = []
+                        required_hits = [False for _ in required_regexes]
+                        for item in candidate_files:
+                            key = item["key"]
+                            base_name = os.path.basename(key)
+                            relative_key = key.lstrip("/")
+                            normalized_source_prefix = source_rule_prefix.strip("/")
+                            if normalized_source_prefix:
+                                source_prefix_with_slash = f"{normalized_source_prefix}/"
+                                if relative_key.startswith(source_prefix_with_slash):
+                                    relative_key = relative_key[len(source_prefix_with_slash):]
+                            reasons = []
+                            file_size = int(item.get("size_bytes", 0))
+                            regex_target = relative_key
+                            if ignore_subfolders and "/" in relative_key:
+                                continue
+
+                            if regex and not regex.match(regex_target):
+                                reasons.append(
+                                    f"filename '{regex_target}' does not match regex "
+                                    f"(ignore_subfolders={ignore_subfolders})"
+                                )
+
+                            if min_bytes is not None and file_size < min_bytes:
+                                reasons.append(f"file size {file_size} is below min_bytes {min_bytes}")
+                            if max_bytes is not None and file_size > max_bytes:
+                                reasons.append(f"file size {file_size} exceeds max_bytes {max_bytes}")
+
+                            file_info = {
+                                "source_name": source_name,
+                                "key": key,
+                                "size_bytes": file_size,
+                                "base_name": base_name,
+                                "relative_key": relative_key,
+                            }
+                            if reasons:
+                                file_info["reasons"] = reasons
+                                invalid_in_source.append(file_info)
+                            else:
+                                valid_keys_in_any_source.add(key)
+                                valid_in_source.append(file_info)
+                                for idx, req_re in enumerate(required_regexes):
+                                    if req_re.match(regex_target):
+                                        required_hits[idx] = True
+
+                        valid_count = len(valid_in_source)
+                        total_count = len(candidate_files)
+                        if min_files is not None and valid_count < min_files:
+                            invalid_in_source.append({
+                                "source_name": source_name,
+                                "key": "__batch_rule__",
+                                "size_bytes": 0,
+                                "base_name": "__batch_rule__",
+                                "reasons": [f"valid file count {valid_count} below min_files {min_files}"],
+                            })
+                        if max_files is not None and valid_count > max_files:
+                            invalid_in_source.append({
+                                "source_name": source_name,
+                                "key": "__batch_rule__",
+                                "size_bytes": 0,
+                                "base_name": "__batch_rule__",
+                                "reasons": [f"valid file count {valid_count} above max_files {max_files}"],
+                            })
+
+                        required_pattern_labels = required_patterns or ([filename_regex] if (is_required and filename_regex) else [])
+                        for idx, pattern in enumerate(required_pattern_labels):
+                            if not required_hits[idx]:
+                                rule_item = {
+                                    "source_name": source_name,
+                                    "required_pattern": pattern,
+                                    "reason": "required pattern not found",
+                                }
+                                missing_required.append(rule_item)
+                                invalid_in_source.append({
+                                    "source_name": source_name,
+                                    "key": "__required_rule__",
+                                    "size_bytes": 0,
+                                    "base_name": "__required_rule__",
+                                    "reasons": [f"required pattern '{pattern}' not found"],
+                                })
+
+                        valid_files.extend(valid_in_source)
+                        invalid_files.extend(invalid_in_source)
+
+                    quarantined_keys = []
+                    already_quarantined = set()
+                    filtered_invalid_files = []
+                    for item in invalid_files:
+                        key = item.get("key")
+                        if key in ("__batch_rule__", "__required_rule__") or key not in valid_keys_in_any_source:
+                            filtered_invalid_files.append(item)
+                    if quarantine_prefix and filtered_invalid_files:
+                        normalized_quarantine = quarantine_prefix.strip("/")
+                        for item in filtered_invalid_files:
+                            invalid_key = item.get("key")
+                            if not invalid_key or invalid_key in ("__batch_rule__", "__required_rule__"):
+                                continue
+                            if invalid_key in valid_keys_in_any_source:
+                                continue
+                            if invalid_key in already_quarantined:
+                                continue
+                            target_key = f"{normalized_quarantine}/{ds_nodash}/{os.path.basename(invalid_key)}"
+                            moved = storage.move_object(
+                                source_bucket_name=bucket_name,
+                                source_object_key=invalid_key,
+                                destination_bucket_name=bucket_name,
+                                destination_object_key=target_key,
+                            )
+                            if not moved:
+                                raise RuntimeError(f"Failed to quarantine '{invalid_key}' to '{target_key}'")
+                            already_quarantined.add(invalid_key)
+                            quarantined_keys.append(target_key)
+
+                    summary = {
+                        "cloud_type": cloud_type,
+                        "bucket_name": bucket_name,
+                        "source_prefix": source_prefix,
+                        "total_files": len(valid_files) + len([i for i in filtered_invalid_files if i.get("key") not in ("__batch_rule__", "__required_rule__")]),
+                        "valid_files": valid_files,
+                        "invalid_files": filtered_invalid_files,
+                        "missing_required": missing_required,
+                        "quarantined_keys": quarantined_keys,
+                    }
+                    context["ti"].xcom_push(key="valid_files", value=valid_files)
+                    context["ti"].xcom_push(key="invalid_files", value=filtered_invalid_files)
+                    context["ti"].xcom_push(key="missing_required", value=missing_required)
+                    context["ti"].xcom_push(key="validation_summary", value=summary)
+
+                    # Write batch_control + input_registry on Databricks when warehouse is available.
+                    # Warehouse / control UC: Airflow Variables (optional task params override catalog/schema).
+                    warehouse_id = get_airflow_variable("default_databricks_warehouse_id")
+                    control_catalog = (
+                        params.get("control_catalog")
+                        or get_airflow_variable("default_control_catalog", default="cinqdev")
+                    )
+                    control_schema = (
+                        params.get("control_schema")
+                        or get_airflow_variable("default_control_schema", default="control")
+                    )
+                    feed_name = params.get("feed_name")
+                    business_date = context.get("ds") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+                    batch_id = None
+                    if warehouse_id and cloud_type == "databricks":
+                        try:
+                            import requests as _requests
+
+                            dbr_conn = require_airflow_connection(airflow_connection_id)
+                            dbr_host, dbr_token = require_databricks_connection_fields(
+                                dbr_conn,
+                                conn_id=airflow_connection_id,
+                                context="ValidateInboundFiles batch_control SQL",
+                            )
+
+                            qual = f"`{control_catalog}`.`{control_schema}`"
+                            seq_table = f"{qual}.`batch_id_sequence`"
+                            bc_table = f"{qual}.`batch_control`"
+                            ir_table = f"{qual}.`input_registry`"
+                            now_ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+                            total_input_files = len(valid_files)
+
+                            _sql_api = f"{dbr_host}/api/2.0/sql/statements"
+                            _headers = {"Authorization": f"Bearer {dbr_token}", "Content-Type": "application/json"}
+
+                            def _exec(sql):
+                                request_payload = dict(
+                                    warehouse_id=warehouse_id,
+                                    statement=sql,
+                                    wait_timeout="30s",
+                                )
+                                resp = _requests.post(
+                                    _sql_api,
+                                    headers=_headers,
+                                    json=request_payload,
+                                    timeout=60,
+                                )
+                                resp.raise_for_status()
+                                return resp.json()
+
+                            _exec(f'''
+                                MERGE INTO {seq_table} t
+                                USING (SELECT 1 AS singleton_id) s
+                                ON t.singleton_id = s.singleton_id
+                                WHEN MATCHED THEN UPDATE SET next_batch_id = t.next_batch_id + 1
+                                WHEN NOT MATCHED THEN INSERT (singleton_id, next_batch_id) VALUES (1, 1)
+                            ''')
+
+                            bid_result = _exec(f"SELECT next_batch_id FROM {seq_table} WHERE singleton_id = 1")
+                            bid_data = (bid_result.get("result") or {}).get("data_array") or []
+                            if bid_result.get("status", {}).get("state") == "SUCCEEDED" and bid_data:
+                                batch_id = int(bid_data[0][0])
+
+                            if batch_id is not None:
+                                delivery_id = context.get("run_id", "manual")
+                                feed_name_sql = (feed_name or "").replace("'", "''")
+                                delivery_id_sql = str(delivery_id).replace("'", "''")
+                                _exec(f'''
+                                    INSERT INTO {bc_table}
+                                        (batch_id, feed_name, delivery_id, business_date,
+                                         status, created_ts, started_ts, restart_count,
+                                         input_file_count, input_record_count)
+                                    VALUES
+                                        ({batch_id}, '{feed_name_sql}', '{delivery_id_sql}',
+                                         DATE('{business_date}'), 'RECEIVED',
+                                         TIMESTAMP('{now_ts}'), TIMESTAMP('{now_ts}'),
+                                         0, {total_input_files}, 0)
+                                ''')
+
+                                input_rows = []
+                                for vf in valid_files:
+                                    src = str(vf.get("source_name", "default")).replace("'", "''")
+                                    key = str(vf.get("key", "")).replace("'", "''")
+                                    size_bytes = int(vf.get("size_bytes", 0) or 0)
+                                    input_rows.append(
+                                        f"('{feed_name_sql}', '{key}', '{src}', {batch_id}, "
+                                        f"DATE('{business_date}'), {size_bytes}, 0, "
+                                        f"TIMESTAMP('{now_ts}'), 'RECEIVED', NULL, "
+                                        f"NULL, TIMESTAMP('{now_ts}'))"
+                                    )
+                                if input_rows:
+                                    _exec(f'''
+                                        INSERT INTO {ir_table}
+                                            (feed_name, input_key, source_type, batch_id,
+                                             business_date, input_size_bytes, record_count,
+                                             received_ts, status, acceptance_status,
+                                             accepted_ts, created_ts)
+                                        VALUES {", ".join(input_rows)}
+                                    ''')
+
+                                print(
+                                    f"[validate_control] Wrote batch_id={batch_id} to {bc_table}, "
+                                    f"{len(valid_files)} inputs to {ir_table}"
+                                )
+
+                                if valid_files:
+                                    dup_conditions = " OR ".join(
+                                        f"(input_key = '{str(vf.get('key', '')).replace(chr(39), chr(39)+chr(39))}' "
+                                        f"AND source_type = '{str(vf.get('source_name', 'default')).replace(chr(39), chr(39)+chr(39))}')"
+                                        for vf in valid_files
+                                    )
+                                    dup_result = _exec(f'''
+                                        SELECT input_key, source_type, batch_id FROM {ir_table}
+                                        WHERE feed_name = '{feed_name_sql}'
+                                          AND status = 'PROCESSED'
+                                          AND acceptance_status = 'ACCEPTED'
+                                          AND ({dup_conditions})
+                                    ''')
+                                    dup_keys = []
+                                    dup_data = (dup_result.get("result") or {}).get("data_array") or []
+                                    if dup_result.get("status", {}).get("state") == "SUCCEEDED" and dup_data:
+                                        dup_keys = [row[0] for row in dup_data]
+
+                                    if dup_keys:
+                                        _exec(f'''
+                                            UPDATE {ir_table}
+                                            SET acceptance_status = 'REJECTED',
+                                                accepted_ts = TIMESTAMP('{now_ts}'),
+                                                status = 'REJECTED'
+                                            WHERE batch_id = {batch_id}
+                                              AND feed_name = '{feed_name_sql}'
+                                        ''')
+                                        _exec(f'''
+                                            UPDATE {bc_table}
+                                            SET status = 'REJECTED',
+                                                completed_ts = TIMESTAMP('{now_ts}')
+                                            WHERE batch_id = {batch_id}
+                                        ''')
+                                        print(
+                                            f"[validate_control] Duplicates found: {dup_keys}. "
+                                            f"Marked batch {batch_id} and its inputs as REJECTED."
+                                        )
+                                        raise RuntimeError(
+                                            f"input_registry already contains entries for feed '{feed_name}' "
+                                            f"with keys: {dup_keys}. "
+                                            f"Batch {batch_id} recorded as REJECTED."
+                                        )
+
+                                    acceptance = "REJECTED" if missing_required else "ACCEPTED"
+
+                                    _exec(f'''
+                                        UPDATE {ir_table}
+                                        SET acceptance_status = '{acceptance}',
+                                            accepted_ts = TIMESTAMP('{now_ts}')
+                                        WHERE batch_id = {batch_id}
+                                          AND feed_name = '{feed_name_sql}'
+                                    ''')
+                                    if acceptance != "ACCEPTED":
+                                        _exec(f'''
+                                            UPDATE {bc_table}
+                                            SET status = '{acceptance}',
+                                                completed_ts = TIMESTAMP('{now_ts}')
+                                            WHERE batch_id = {batch_id}
+                                        ''')
+
+                                    print(f"[validate_control] batch_id={batch_id} accepted={acceptance}")
+                        except RuntimeError:
+                            raise
+                        except Exception as exc:
+                            print(f"[validate_control] WARNING: failed to write control tables: {exc}")
+
+                    summary["batch_id"] = batch_id
+                    if batch_id is not None:
+                        context["ti"].xcom_push(key="batch_id", value=batch_id)
+                    context["ti"].xcom_push(key="validation_summary", value=summary)
+
+                    if fail_on_invalid and filtered_invalid_files:
+                        raise ValueError(
+                            f"ValidateInboundFiles found {len(filtered_invalid_files)} invalid items"
+                        )
+
+                    return summary
+
+                _validate_params = {
+                    "bucket_name": "my-test-bucket",
+                    "source_prefix": "healthcare_demo/data6/026_date_aliases_and_timestamps",
+                    "cloud_type": "databricks",
+                    "airflow_connection_id": "databricks_default",
+                    "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+                    "filename_regex": None,
+                    "min_bytes": 1,
+                    "max_bytes": None,
+                    "min_files": 1,
+                    "max_files": None,
+                    "quarantine_prefix": None,
+                    "fail_on_invalid": True,
+                    "sources": [
+                        {
+                            "source_name": "roster_20260908",
+                            "prefix": "healthcare_demo/data6/026_date_aliases_and_timestamps",
+                            "filename_regex": "roster_20260908.csv",
+                            "ignore_subfolders": True,
+                            "is_required": True,
+                            "min_bytes": 10,
+                            "min_files": 1
+                        }
+                    ],
+                    "feed_name": "026_date_aliases_and_timestamps"
+                }
+                validate_inbound_files = PythonOperator(
+                    pre_execute=common_task.pre_execute_callback,
+                    task_id='validate_inbound_files',
+                    python_callable=validate_inbound_files,
+                    params=_validate_params,
+                    on_success_callback=feed_control_callbacks.validate_inbound_success_callback,
+                    on_failure_callback=feed_control_callbacks.validate_inbound_failure_callback,
+                )
+
 
     from airflow.operators.python import PythonOperator
-    from airflow.providers.databricks.hooks.databricks import DatabricksHook
 
     def create_databricks_cluster_create_compute(**context):
         from airflow_plugins.cloud_factory import CloudFactory
-        hook = DatabricksHook(databricks_conn_id='databricks_default')
-        conn = hook.get_conn()
-        workspace_url = (conn.host or '').rstrip('/')
-        token = conn.password
+        from airflow_plugins.utils.airflow_runtime import require_airflow_connection, require_databricks_connection_fields
+        conn = require_airflow_connection('databricks_default')
+        workspace_url, token = require_databricks_connection_fields(
+            conn,
+            conn_id='databricks_default',
+            context="CreateCompute",
+        )
         user_account = conn.login
         if not user_account:
             try:
@@ -117,8 +605,6 @@ with DAG(
             except Exception:
                 pass
         user_account = user_account or 'unknown'
-        if not workspace_url or not token:
-            raise ValueError("Databricks connection must have host and password (token)")
         factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
         compute = factory.get_compute(compute_type="databricks")
         payload = (
@@ -154,7 +640,6 @@ with DAG(
                 "bh_tags": []
             }
         )
-
         cluster_id = compute.create_compute(
             payload,
             compute_name=payload.get("cluster_name"),
@@ -162,11 +647,13 @@ with DAG(
         )
         if not cluster_id:
             raise ValueError("create_compute did not return cluster_id")
+
         num_workers = payload.get("num_workers", 0)
         context["ti"].xcom_push(key="bh_audit_metadata", value={
-            "databricks_cluster_id": cluster_id,
-            "databricks_cluster_size": num_workers,
-            "databricks_user_account": user_account,
+            "compute_provider": "databricks",
+            "compute_cluster_id": cluster_id,
+            "compute_cluster_size": num_workers,
+            "compute_user_account": user_account,
             "ingestion_group_id": 199,
             "flow_id": 189
         })
@@ -182,7 +669,6 @@ with DAG(
 
     from airflow.operators.python import PythonOperator
     from airflow_plugins.cloud_factory import CloudFactory
-    from airflow_plugins.utils.databricks_submit_params import offload_oversized_job_parameters
     import logging
     logger = logging.getLogger(__name__)
 
@@ -246,55 +732,6 @@ with DAG(
         batch_id = params.get("batch_id")
         if isinstance(batch_id, str) and "{{" in batch_id:
             batch_id = context["task"].render_template(batch_id, context)
-        # Airflow renders xcom_pull templates to a string; normalize empty/None-ish.
-        if isinstance(batch_id, str):
-            _bid = batch_id.strip()
-            batch_id = None if _bid in ("", "None") else _bid
-        validate_task_id = params.get("validate_inbound_task_id")
-        batch_control_overlay = params.get("batch_control")
-        if isinstance(batch_control_overlay, str) and "{{" in batch_control_overlay:
-            batch_control_overlay = context["task"].render_template(batch_control_overlay, context)
-        # Templating returns a str repr of the xcom dict (e.g. "{'business_ts': ...}");
-        # coerce back to a dict via JSON then Python-literal before use.
-        if isinstance(batch_control_overlay, str):
-            _bco = batch_control_overlay.strip()
-            if not _bco or _bco == "None":
-                batch_control_overlay = None
-            else:
-                import json as _json_bco
-                try:
-                    batch_control_overlay = _json_bco.loads(_bco)
-                except Exception:
-                    import ast as _ast_bco
-                    try:
-                        batch_control_overlay = _ast_bco.literal_eval(_bco)
-                    except Exception:
-                        batch_control_overlay = None
-        # Fall back to a direct xcom_pull when the param was missing or unparseable.
-        if (not isinstance(batch_control_overlay, dict) or not batch_control_overlay) and validate_task_id:
-            batch_control_overlay = context["ti"].xcom_pull(
-                task_ids=validate_task_id, key="batch_control"
-            )
-        if isinstance(batch_control_overlay, dict) and batch_control_overlay:
-            job_config = dict(job_config)
-            args = list(job_config.get("parameters") or [])
-            # Ensure 4th positional (runtime_parameters_json) exists, then merge overlay into it.
-            while len(args) < 3:
-                args.append("")
-            if len(args) <= 3:
-                args.append("{}")
-            try:
-                import json as _json
-                runtime = _json.loads(args[3]) if args[3] else {}
-                if not isinstance(runtime, dict):
-                    runtime = {}
-            except Exception:
-                runtime = {}
-            runtime["__batch_control_overlay__"] = batch_control_overlay
-            args[3] = _json.dumps(runtime, separators=(",", ":"), default=str)
-            if batch_id is None and batch_control_overlay.get("batch_id") is not None:
-                batch_id = batch_control_overlay.get("batch_id")
-            job_config["parameters"] = args
         if batch_id is not None:
             job_config = dict(job_config)
             args = list(job_config.get("parameters") or [])
@@ -302,22 +739,16 @@ with DAG(
             # Ensure 4th positional (runtime_parameters_json) exists first.
             if len(args) <= 3:
                 args.append("{}")
-            if len(args) == 4:
-                args.append(str(batch_id))
-            else:
-                # keep existing 5th slot if present; else append
-                while len(args) < 4:
-                    args.append("{}")
-                if len(args) == 4:
-                    args.append(str(batch_id))
-                else:
-                    args[4] = str(batch_id)
+            args.append(str(batch_id))
             job_config["parameters"] = args
 
-        from airflow.hooks.base import BaseHook
-        conn = BaseHook.get_connection('databricks_default')
-        workspace_url = (conn.host or '').rstrip('/')
-        token = conn.password
+        from airflow_plugins.utils.airflow_runtime import require_airflow_connection, require_databricks_connection_fields
+        conn = require_airflow_connection('databricks_default')
+        workspace_url, token = require_databricks_connection_fields(
+            conn,
+            conn_id='databricks_default',
+            context="SubmitJob",
+        )
         user_account = conn.login
         if not user_account:
             try:
@@ -333,44 +764,16 @@ with DAG(
             except Exception:
                 pass
         user_account = user_account or 'unknown'
-        if not workspace_url or not token:
-            raise ValueError("Databricks connection must have host and password (token)")
-
-
-        from airflow_plugins.utils.databricks_dq_submit import apply_writer_dq_rules_to_job_config
-        _dq_catalog = None
-        if params.get("run_data_quality_rules") and str(params.get("dq_rules_source") or "git").lower() == "catalog":
-            try:
-                from airflow_plugins.compute_pool.pool_client import catalog_api_from_context
-                _dq_catalog = catalog_api_from_context(context)
-            except Exception as _dq_exc:
-                logger.warning("Could not init catalog API for Writer DQ runtime rules: %s", _dq_exc)
-        job_config = apply_writer_dq_rules_to_job_config(
-            job_config,
-            context,
-            params,
-            workspace_url=workspace_url,
-            token=token,
-            catalog_api=_dq_catalog,
-        )
-
-        job_config = offload_oversized_job_parameters(
-            job_config, context, params, workspace_url, token
-        )
 
         audit_meta = {
-            "databricks_cluster_id": compute_id,
-            "databricks_user_account": user_account
+            "compute_provider": "databricks",
+            "compute_cluster_id": compute_id,
+            "compute_user_account": user_account
         }
         # Audit context for the submit_job event: ingestion_group_id, flow_id, pipeline_id.
         for _audit_k in ("ingestion_group_id", "flow_id", "pipeline_id"):
             if params.get(_audit_k) is not None:
                 audit_meta[_audit_k] = params.get(_audit_k)
-        # Pipeline definition JSON path (first positional arg) so the failure-capture
-        # pipeline can fetch the pipeline JSON from the Databricks workspace.
-        _pipeline_args = job_config.get("parameters") or []
-        if _pipeline_args:
-            audit_meta["pipeline_json_path"] = _pipeline_args[0]
 
         factory = CloudFactory("databricks", databricks_workspace_url=workspace_url, databricks_token=token)
         compute = factory.get_compute(compute_type="databricks")
@@ -378,19 +781,17 @@ with DAG(
             _cfg = compute.get_compute_configuration(compute_id)
             _size = _cfg.get("num_workers")
             if _size is not None:
-                audit_meta["databricks_cluster_size"] = _size
+                audit_meta["compute_cluster_size"] = _size
         except Exception as _e:
             logger.warning("Could not resolve cluster size for %s: %s", compute_id, _e)
-
         result = compute.execute_job(compute_id, job_config, run_async=False)
 
         run_id = result.get("run_id")
         job_id = result.get("job_id")
         if run_id:
             context["ti"].xcom_push(key="run_id", value=run_id)
-            audit_meta["databricks_run_id"] = run_id
         if job_id:
-            audit_meta["databricks_job_id"] = job_id
+            audit_meta["compute_job_id"] = str(job_id)
         run_url = result.get("run_page_url")
         if not run_url and run_id:
             _job_id = result.get("job_id")
@@ -398,22 +799,18 @@ with DAG(
                 run_url = workspace_url + "/jobs/" + str(_job_id) + "/runs/" + str(run_id)
             else:
                 run_url = workspace_url + "/jobs/runs/" + str(run_id)
+        if run_id:
+            audit_meta["compute_provider"] = "databricks"
+            audit_meta["compute_run_id"] = str(run_id)
+        if result.get("job_id"):
+            audit_meta["compute_job_id"] = str(result.get("job_id"))
         if run_url:
-            context["ti"].xcom_push(key="databricks_run_url", value=run_url)
-            audit_meta["databricks_run_url"] = run_url
+            context["ti"].xcom_push(key="compute_run_url", value=run_url)
+            audit_meta["compute_run_url"] = run_url
         context["ti"].xcom_push(key="bh_audit_metadata", value=audit_meta)
 
         if result.get("status") == "FAILED":
             raise RuntimeError(result.get("error", "Job submission failed"))
-
-
-
-        if params.get("feed_name") or params.get("feed_id"):
-            from airflow_plugins.dag_task_definitions.feed_control_callbacks import (
-                run_post_submit_feed_control_or_fail,
-            )
-            run_post_submit_feed_control_or_fail(context)
-
         return result
 
     _submit_params = {
@@ -430,22 +827,13 @@ with DAG(
         },
         "ingestion_group_id": 199,
         "flow_id": 189,
-        "pipeline_id": "1271",
+        "pipeline_id": 1271,
         "feed_name": "026_date_aliases_and_timestamps",
         "validate_inbound_task_id": "validate_inbound_files",
-        "facts_source": "databricks",
         "pipeline_name": "roster_20260908_199",
-        "run_data_quality_rules": False,
-        "dq_rules_source": "git",
-        "airflow_connection_id": "databricks_default",
-        "pipeline_key": "roster_20260908_199",
-        "bh_project_id": 2,
-        "project_id": 2,
-        "project_name": "local",
         "compute_xcom_key": "return_value",
         "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
-        "batch_id": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='batch_id') }}",
-        "batch_control": "{{ ti.xcom_pull(task_ids='validate_inbound_files', key='batch_control') }}"
+        "batch_id": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='batch_id') }}"
     }
     run_pipelines_roster_20260908_199 = PythonOperator(
         pre_execute=common_task.pre_execute_callback,
@@ -457,226 +845,229 @@ with DAG(
     )
 
 
-    from airflow.operators.python import PythonOperator
-    import os
-    from airflow.hooks.base import BaseHook
-    from airflow_plugins.cloud_factory import CloudFactory
-
-    def archive_processed_files(**context):
-        params = context.get("params") or {}
-        bucket_name = params.get("bucket_name")
-        archive_prefix = params.get("archive_prefix")
-        cloud_type = (params.get("cloud_type") or "aws").lower()
-        if not bucket_name:
-            raise ValueError("bucket_name is required for ArchiveProcessedFiles")
-        if not archive_prefix:
-            raise ValueError("archive_prefix is required for ArchiveProcessedFiles")
-        if cloud_type not in ["aws", "gcp", "azure", "databricks"]:
-            raise ValueError(f"Unsupported cloud_type '{cloud_type}' for ArchiveProcessedFiles")
-
-        input_files = params.get("files")
-        if isinstance(input_files, str) and "{" in input_files:
-            input_files = context["task"].render_template(input_files, context)
-            if isinstance(input_files, str):
-                import ast
-                try:
-                    input_files = ast.literal_eval(input_files)
-                except (ValueError, SyntaxError):
-                    logger.warning("Rendered input_files is not valid Python literal", extra={"rendered_input_files": input_files})
-                    input_files = None
-        if input_files is None:
-            input_files = []
-        elif not isinstance(input_files, list):
-            input_files = [input_files] if input_files else []
-        source_prefix = (params.get("source_prefix") or "").lstrip("/")
-        airflow_connection_id = params.get("airflow_connection_id", "aws_default")
-        delete_source = params.get("delete_source", True)
-        allow_empty = params.get("allow_empty", True)
-
-        conn = BaseHook.get_connection(airflow_connection_id)
-        extras = conn.extra_dejson or {}
-        factory_kwargs = {}
-        if cloud_type == "aws":
-            if conn.login:
-                factory_kwargs["aws_access_key_id"] = conn.login
-            if conn.password:
-                factory_kwargs["aws_secret_access_key"] = conn.password
-            factory_kwargs["region"] = (
-                extras.get("region_name")
-                or extras.get("region")
-                or extras.get("aws_region")
-                or "us-east-1"
-            )
-        elif cloud_type == "gcp":
-            if extras.get("project"):
-                factory_kwargs["project_id"] = extras.get("project")
-            elif extras.get("project_id"):
-                factory_kwargs["project_id"] = extras.get("project_id")
-            if extras.get("keyfile_dict"):
-                factory_kwargs["credentials"] = extras.get("keyfile_dict")
-            elif extras.get("key_path"):
-                factory_kwargs["credentials_path"] = extras.get("key_path")
-        elif cloud_type == "azure":
-            factory_kwargs["connection_string"] = (
-                conn.password
-                or extras.get("connection_string")
-                or extras.get("azure_storage_connection_string")
-            )
-            if extras.get("account_url"):
-                factory_kwargs["account_url"] = extras.get("account_url")
-        elif cloud_type == "databricks":
-            workspace_url = (conn.host or "").rstrip("/")
-            token = conn.password
-            if not workspace_url or not token:
-                raise ValueError(
-                    "Databricks connection must have host and password (token) for ArchiveProcessedFiles"
-                )
-            factory_kwargs["databricks_workspace_url"] = workspace_url
-            factory_kwargs["databricks_token"] = token
-            # Keep archive task aligned with compute pattern: pass Databricks
-            # secrets context to cloud-factory, let provider resolve backend creds.
-            storage_backend = extras.get("storage_backend")
-            if storage_backend:
-                factory_kwargs["storage_backend"] = storage_backend
-            account_url = extras.get("account_url")
-            if account_url:
-                factory_kwargs["account_url"] = account_url
-
-            storage_secret_name = (
-                params.get("secret_name")
-                or extras.get("secret_name")
-            )
-            if storage_secret_name:
-                factory_kwargs["storage_secret_name"] = storage_secret_name
-                # Enforce Azure Blob path when secret-based storage is requested.
-                factory_kwargs["storage_backend"] = "azure_blob"
-
-            secrets_scope_name = extras.get("secrets_scope_name")
-            if secrets_scope_name:
-                factory_kwargs["secrets_scope_name"] = secrets_scope_name
-
-            secrets_backend_type = extras.get("secrets_backend_type")
-            if not secrets_backend_type:
-                secrets_backend_type = "databricks"
-            if secrets_backend_type:
-                factory_kwargs["secrets_backend_type"] = secrets_backend_type
-
-        factory = CloudFactory(cloud_type, **factory_kwargs)
-        storage = factory.get_storage(cloud_type)
-        ti = context["ti"]
-        ds_nodash = context.get("ds_nodash") or "unknown_date"
-
-        def _is_truthy_folder_flag(value):
-            return str(value).strip().lower() in {"true", "1", "yes"}
-
-        def _is_directory_like_object(obj):
-            key = str((obj or {}).get("key") or "")
-            if not key or key.endswith("/"):
-                return True
-            metadata = (obj or {}).get("metadata") or {}
-            if isinstance(metadata, dict) and _is_truthy_folder_flag(metadata.get("hdi_isfolder")):
-                return True
-            return False
-
-        def _extract_source_key(item):
-            if isinstance(item, str):
-                return item
-            if isinstance(item, dict):
-                return (
-                    item.get("key")
-                    or item.get("source_key")
-                    or item.get("object_key")
-                    or item.get("path")
-                )
-            return None
-
-        files_to_archive = []
-        if isinstance(input_files, list):
-            for item in input_files:
-                source_key = _extract_source_key(item)
-                if source_key:
-                    files_to_archive.append(source_key)
-
-        if not files_to_archive:
-            objects_with_metadata = []
-            if hasattr(storage, "list_objects_with_metadata"):
-                objects_with_metadata = storage.list_objects_with_metadata(
-                    bucket_name=bucket_name,
-                    prefix=source_prefix,
-                ) or []
-
-            if objects_with_metadata:
-                files_to_archive = [
-                    str(obj.get("key"))
-                    for obj in objects_with_metadata
-                    if not _is_directory_like_object(obj)
-                ]
-            else:
-                files_to_archive = storage.list_objects(bucket_name=bucket_name, prefix=source_prefix) or []
-                files_to_archive = [k for k in files_to_archive if k and not k.endswith("/")]
-
-        if not files_to_archive and not allow_empty:
-            raise ValueError("No files found to archive")
-
-        archived_files = []
-        for source_key in files_to_archive:
-            base_name = os.path.basename(source_key)
-            dest_key = f"{archive_prefix.strip('/')}/{ds_nodash}/{base_name}"
-            if delete_source:
-                moved = storage.move_object(
-                    source_bucket_name=bucket_name,
-                    source_object_key=source_key,
-                    destination_bucket_name=bucket_name,
-                    destination_object_key=dest_key,
-                )
-                if not moved:
-                    raise RuntimeError(
-                        f"Failed to move '{source_key}' to '{dest_key}' for cloud_type '{cloud_type}'"
-                    )
-            else:
-                copied = storage.copy_object(
-                    source_bucket_name=bucket_name,
-                    source_object_key=source_key,
-                    destination_bucket_name=bucket_name,
-                    destination_object_key=dest_key,
-                )
-                if not copied:
-                    raise RuntimeError(
-                        f"Failed to copy '{source_key}' to '{dest_key}' for cloud_type '{cloud_type}'"
-                    )
-            archived_files.append({"source_key": source_key, "archive_key": dest_key})
-
-        summary = {
-            "cloud_type": cloud_type,
-            "bucket_name": bucket_name,
-            "archive_prefix": archive_prefix,
-            "archived_count": len(archived_files),
-            "delete_source": delete_source,
-            "archived_files": archived_files,
-        }
-        ti.xcom_push(key="archived_files", value=archived_files)
-        ti.xcom_push(key="archive_summary", value=summary)
-        return summary
-
-    _archive_params = {
-        "bucket_name": "my-test-bucket",
-        "source_prefix": "",
-        "archive_prefix": "Archive/healthcare_demo/data6/026_date_aliases_and_timestamps",
-        "cloud_type": "databricks",
-        "airflow_connection_id": "databricks_default",
-        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
-        "delete_source": True,
-        "allow_empty": True,
-        "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}"
-    }
-    archive_processed_files = PythonOperator(
-        pre_execute=common_task.pre_execute_callback,
-        task_id='archive_processed_files',
-        python_callable=archive_processed_files,
-        params=_archive_params,
-        on_success_callback=common_task.success_callback,
-        on_failure_callback=common_task.failure_callback,
+                from airflow.operators.python import PythonOperator
+                import os
+                import logging
+                from airflow_plugins.cloud_factory import CloudFactory
+                from airflow_plugins.utils.airflow_runtime import (
+        require_airflow_connection,
+        require_connection_fields,
+        require_databricks_connection_fields,
+        require_param,
+        get_airflow_variable,
     )
+                logger = logging.getLogger(__name__)
+
+                def archive_processed_files(**context):
+                    params = context.get("params") or {}
+                    bucket_name = require_param(params.get("bucket_name"), name="bucket_name")
+                    archive_prefix = require_param(params.get("archive_prefix"), name="archive_prefix")
+                    cloud_type = (params.get("cloud_type") or "aws").lower()
+                    if cloud_type not in ["aws", "gcp", "azure", "databricks"]:
+                        raise ValueError(f"Unsupported cloud_type '{cloud_type}' for ArchiveProcessedFiles")
+
+                    input_files = params.get("files")
+                    if isinstance(input_files, str) and "{" in input_files:
+                        input_files = context["task"].render_template(input_files, context)
+                        if isinstance(input_files, str):
+                            import ast
+                            try:
+                                input_files = ast.literal_eval(input_files)
+                            except (ValueError, SyntaxError):
+                                logger.warning("Rendered input_files is not valid Python literal", extra={"rendered_input_files": input_files})
+                                input_files = None
+                    if input_files is None:
+                        input_files = []
+                    elif not isinstance(input_files, list):
+                        input_files = [input_files] if input_files else []
+                    source_prefix = (params.get("source_prefix") or "").lstrip("/")
+                    airflow_connection_id = params.get("airflow_connection_id", "aws_default")
+                    delete_source = params.get("delete_source", True)
+                    allow_empty = params.get("allow_empty", True)
+
+                    conn = require_airflow_connection(airflow_connection_id)
+                    context_label = "ArchiveProcessedFiles"
+                    extras = conn.extra_dejson or {}
+                    factory_kwargs = {}
+                    if cloud_type == "aws":
+                        if conn.login:
+                            factory_kwargs["aws_access_key_id"] = conn.login
+                        if conn.password:
+                            factory_kwargs["aws_secret_access_key"] = conn.password
+                        factory_kwargs["region"] = (
+                            extras.get("region_name")
+                            or extras.get("region")
+                            or extras.get("aws_region")
+                            or "us-east-1"
+                        )
+                    elif cloud_type == "gcp":
+                        if extras.get("project"):
+                            factory_kwargs["project_id"] = extras.get("project")
+                        elif extras.get("project_id"):
+                            factory_kwargs["project_id"] = extras.get("project_id")
+                        if extras.get("keyfile_dict"):
+                            factory_kwargs["credentials"] = extras.get("keyfile_dict")
+                        elif extras.get("key_path"):
+                            factory_kwargs["credentials_path"] = extras.get("key_path")
+                    elif cloud_type == "azure":
+                        factory_kwargs["connection_string"] = (
+                            conn.password
+                            or extras.get("connection_string")
+                            or extras.get("azure_storage_connection_string")
+                        )
+                        if extras.get("account_url"):
+                            factory_kwargs["account_url"] = extras.get("account_url")
+                    elif cloud_type == "databricks":
+                        workspace_url, token = require_databricks_connection_fields(
+                            conn,
+                            conn_id=airflow_connection_id,
+                            context=context_label,
+                        )
+                        factory_kwargs["databricks_workspace_url"] = workspace_url
+                        factory_kwargs["databricks_token"] = token
+                    if cloud_type == "databricks":
+                        storage_backend = extras.get("storage_backend")
+                        if storage_backend:
+                            factory_kwargs["storage_backend"] = storage_backend
+                        account_url = extras.get("account_url")
+                        if account_url:
+                            factory_kwargs["account_url"] = account_url
+
+                        storage_secret_name = (
+                            params.get("secret_name")
+                            or extras.get("secret_name")
+                        )
+                        if storage_secret_name:
+                            factory_kwargs["storage_secret_name"] = storage_secret_name
+                            # Enforce Azure Blob path when secret-based storage is requested.
+                            factory_kwargs["storage_backend"] = "azure_blob"
+
+                        secrets_scope_name = extras.get("secrets_scope_name")
+                        if secrets_scope_name:
+                            factory_kwargs["secrets_scope_name"] = secrets_scope_name
+
+                        secrets_backend_type = extras.get("secrets_backend_type")
+                        if not secrets_backend_type:
+                            secrets_backend_type = "databricks"
+                        if secrets_backend_type:
+                            factory_kwargs["secrets_backend_type"] = secrets_backend_type
+
+                    factory = CloudFactory(cloud_type, **factory_kwargs)
+                    storage = factory.get_storage(cloud_type)
+                    ti = context["ti"]
+                    ds_nodash = context.get("ds_nodash") or "unknown_date"
+
+                    def _is_truthy_folder_flag(value):
+                        return str(value).strip().lower() in {"true", "1", "yes"}
+
+                    def _is_directory_like_object(obj):
+                        key = str((obj or {}).get("key") or "")
+                        if not key or key.endswith("/"):
+                            return True
+                        metadata = (obj or {}).get("metadata") or {}
+                        if isinstance(metadata, dict) and _is_truthy_folder_flag(metadata.get("hdi_isfolder")):
+                            return True
+                        return False
+
+                    def _extract_source_key(item):
+                        if isinstance(item, str):
+                            return item
+                        if isinstance(item, dict):
+                            return (
+                                item.get("key")
+                                or item.get("source_key")
+                                or item.get("object_key")
+                                or item.get("path")
+                            )
+                        return None
+
+                    files_to_archive = []
+                    if isinstance(input_files, list):
+                        for item in input_files:
+                            source_key = _extract_source_key(item)
+                            if source_key:
+                                files_to_archive.append(source_key)
+
+                    if not files_to_archive:
+                        objects_with_metadata = []
+                        if hasattr(storage, "list_objects_with_metadata"):
+                            objects_with_metadata = storage.list_objects_with_metadata(
+                                bucket_name=bucket_name,
+                                prefix=source_prefix,
+                            ) or []
+
+                        if objects_with_metadata:
+                            files_to_archive = [
+                                str(obj.get("key"))
+                                for obj in objects_with_metadata
+                                if not _is_directory_like_object(obj)
+                            ]
+                        else:
+                            files_to_archive = storage.list_objects(bucket_name=bucket_name, prefix=source_prefix) or []
+                            files_to_archive = [k for k in files_to_archive if k and not k.endswith("/")]
+
+                    if not files_to_archive and not allow_empty:
+                        raise ValueError("No files found to archive")
+
+                    archived_files = []
+                    for source_key in files_to_archive:
+                        base_name = os.path.basename(source_key)
+                        dest_key = f"{archive_prefix.strip('/')}/{ds_nodash}/{base_name}"
+                        if delete_source:
+                            moved = storage.move_object(
+                                source_bucket_name=bucket_name,
+                                source_object_key=source_key,
+                                destination_bucket_name=bucket_name,
+                                destination_object_key=dest_key,
+                            )
+                            if not moved:
+                                raise RuntimeError(
+                                    f"Failed to move '{source_key}' to '{dest_key}' for cloud_type '{cloud_type}'"
+                                )
+                        else:
+                            copied = storage.copy_object(
+                                source_bucket_name=bucket_name,
+                                source_object_key=source_key,
+                                destination_bucket_name=bucket_name,
+                                destination_object_key=dest_key,
+                            )
+                            if not copied:
+                                raise RuntimeError(
+                                    f"Failed to copy '{source_key}' to '{dest_key}' for cloud_type '{cloud_type}'"
+                                )
+                        archived_files.append({"source_key": source_key, "archive_key": dest_key})
+
+                    summary = {
+                        "cloud_type": cloud_type,
+                        "bucket_name": bucket_name,
+                        "archive_prefix": archive_prefix,
+                        "archived_count": len(archived_files),
+                        "delete_source": delete_source,
+                        "archived_files": archived_files,
+                    }
+                    ti.xcom_push(key="archived_files", value=archived_files)
+                    ti.xcom_push(key="archive_summary", value=summary)
+                    return summary
+
+                _archive_params = {
+                    "bucket_name": "my-test-bucket",
+                    "source_prefix": "",
+                    "archive_prefix": "Archive/healthcare_demo/data6/026_date_aliases_and_timestamps",
+                    "cloud_type": "databricks",
+                    "airflow_connection_id": "databricks_default",
+                    "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+                    "delete_source": True,
+                    "allow_empty": True,
+                    "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}"
+                }
+                archive_processed_files = PythonOperator(
+                    pre_execute=common_task.pre_execute_callback,
+                    task_id='archive_processed_files',
+                    python_callable=archive_processed_files,
+                    params=_archive_params,
+                    on_success_callback=common_task.success_callback,
+                    on_failure_callback=common_task.failure_callback,
+                )
 
 
     from airflow.operators.python import PythonOperator
@@ -693,10 +1084,13 @@ with DAG(
         if not compute_id or (isinstance(compute_id, str) and "{" in compute_id):
             logger.warning("No compute_id from XCom task create_compute or params; skipping terminate")
             return
-        from airflow.hooks.base import BaseHook
-        conn = BaseHook.get_connection('databricks_default')
-        workspace_url = (conn.host or '').rstrip('/')
-        token = conn.password
+        from airflow_plugins.utils.airflow_runtime import require_airflow_connection, require_databricks_connection_fields
+        conn = require_airflow_connection('databricks_default')
+        workspace_url, token = require_databricks_connection_fields(
+            conn,
+            conn_id='databricks_default',
+            context="DeleteCompute",
+        )
         user_account = conn.login
         if not user_account:
             try:
@@ -712,12 +1106,11 @@ with DAG(
             except Exception:
                 pass
         user_account = user_account or 'unknown'
-        if not workspace_url or not token:
-            raise ValueError("Databricks connection must have host and password (token)")
 
         ti.xcom_push(key="bh_audit_metadata", value={
-            "databricks_cluster_id": compute_id,
-            "databricks_user_account": user_account,
+            "compute_provider": "databricks",
+            "compute_cluster_id": compute_id,
+            "compute_user_account": user_account,
             "ingestion_group_id": 199,
             "flow_id": 189
         })
