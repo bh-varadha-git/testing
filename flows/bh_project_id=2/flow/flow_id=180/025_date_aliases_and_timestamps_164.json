@@ -1,6 +1,6 @@
 {
   "created_at": "2026-09-05T02:38:09.894322Z",
-  "updated_at": "2026-09-05T02:38:09.894322Z",
+  "updated_at": "2026-09-05T02:38:20.803877Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -10,7 +10,7 @@
   "flow_name": "025_date_aliases_and_timestamps_164",
   "flow_key": "025_date_aliases_and_timestamps_164",
   "recipient_email": {},
-  "notes": "Bulk ingest from healthcare_demo/data5/025_date_aliases_and_timestamps",
+  "notes": null,
   "tags": null,
   "status": "active",
   "bh_project_name": "local",
@@ -36,7 +36,7 @@
           "flow_key": "025_date_aliases_and_timestamps_164",
           "bh_project_id": 2,
           "recipient_email": {},
-          "notes": "Bulk ingest from healthcare_demo/data5/025_date_aliases_and_timestamps",
+          "notes": null,
           "tags": null,
           "status": "active",
           "alert_settings": {
@@ -466,8 +466,12 @@
                   "nodeId": "delete_compute_delete_compute"
                 }
               ],
-              "template_parameters": [],
               "bh_project_id": 2,
+              "bh_environment_id": 4,
+              "bh_environment_name": "local-databricks-sv-2",
+              "cloud_provider": "databricks",
+              "vault_url": "https://bh-dev-westus3-kv-key.vault.azure.net/",
+              "bh_kc_secret_url": "bh-dev-westus3-kv-key-scope/secrets",
               "ingestion_group_id": 164
             }
           },
@@ -483,12 +487,15 @@
         "data": {
           "flow_deployment_id": 180,
           "flow_id": 180,
-          "bh_env_id": null,
+          "bh_env_id": 4,
           "bh_airflow_id": null,
           "flow_version_id": null,
           "schema_id": null,
-          "cron_expression": null,
-          "last_deployed_at": null,
+          "cron_expression": {
+            "is_scheduled": true,
+            "cron_expression": "0 8 * * *"
+          },
+          "last_deployed_at": "2026-09-05 02:38:20.288951+00:00",
           "tenant_id": 1,
           "is_deleted": false,
           "deleted_by": null
