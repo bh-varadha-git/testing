@@ -1,6 +1,6 @@
 {
   "created_at": "2026-09-05T17:34:53.210816Z",
-  "updated_at": "2026-09-05T17:34:53.210816Z",
+  "updated_at": "2026-09-05T17:35:30.700437Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -10,7 +10,7 @@
   "flow_name": "bp_onboard_ca25de01_198",
   "flow_key": "bp_onboard_ca25de01_198",
   "recipient_email": {},
-  "notes": "Build Plan file_onboard_medallion",
+  "notes": null,
   "tags": null,
   "status": "active",
   "bh_project_name": "local",
@@ -36,7 +36,7 @@
           "flow_key": "bp_onboard_ca25de01_198",
           "bh_project_id": 2,
           "recipient_email": {},
-          "notes": "Build Plan file_onboard_medallion",
+          "notes": null,
           "tags": null,
           "status": "active",
           "alert_settings": {
@@ -506,7 +506,6 @@
                 }
               ],
               "bh_environment_id": 4,
-              "template_parameters": [],
               "bh_project_id": 2,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
@@ -532,7 +531,7 @@
           "flow_version_id": null,
           "schema_id": null,
           "cron_expression": null,
-          "last_deployed_at": null,
+          "last_deployed_at": "2026-09-05 17:35:28.852172+00:00",
           "tenant_id": 1,
           "is_deleted": false,
           "deleted_by": null
