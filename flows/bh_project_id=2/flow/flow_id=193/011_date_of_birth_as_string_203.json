@@ -1,6 +1,6 @@
 {
   "created_at": "2026-09-06T16:25:38.857240Z",
-  "updated_at": "2026-09-06T16:25:38.857240Z",
+  "updated_at": "2026-09-06T16:26:00.425120Z",
   "created_by": "srinivas@bighammer.ai",
   "updated_by": "srinivas@bighammer.ai",
   "is_deleted": false,
@@ -10,7 +10,7 @@
   "flow_name": "011_date_of_birth_as_string_203",
   "flow_key": "011_date_of_birth_as_string_203",
   "recipient_email": {},
-  "notes": "Bulk ingest from healthcare_demo/data2/011_date_of_birth_as_string",
+  "notes": null,
   "tags": null,
   "status": "active",
   "bh_project_name": "local",
@@ -36,7 +36,7 @@
           "flow_key": "011_date_of_birth_as_string_203",
           "bh_project_id": 2,
           "recipient_email": {},
-          "notes": "Bulk ingest from healthcare_demo/data2/011_date_of_birth_as_string",
+          "notes": null,
           "tags": null,
           "status": "active",
           "alert_settings": {
@@ -506,7 +506,6 @@
                 }
               ],
               "bh_environment_id": 4,
-              "template_parameters": [],
               "bh_project_id": 2,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
@@ -531,8 +530,11 @@
           "bh_airflow_id": null,
           "flow_version_id": null,
           "schema_id": null,
-          "cron_expression": null,
-          "last_deployed_at": null,
+          "cron_expression": {
+            "is_scheduled": true,
+            "cron_expression": "0 8 * * *"
+          },
+          "last_deployed_at": "2026-09-06 16:25:59.462315+00:00",
           "tenant_id": 1,
           "is_deleted": false,
           "deleted_by": null
