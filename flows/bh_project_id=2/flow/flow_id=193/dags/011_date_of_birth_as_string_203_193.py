@@ -597,11 +597,6 @@ with DAG(
                 if source_key:
                     files_to_archive.append(source_key)
 
-        # Multi-sheet Excel files yield one input entry per sheet, all
-        # pointing at the same source key — dedupe or delete_source
-        # would fail archiving the same file twice.
-        files_to_archive = list(dict.fromkeys(files_to_archive))
-
         if not files_to_archive:
             objects_with_metadata = []
             if hasattr(storage, "list_objects_with_metadata"):
