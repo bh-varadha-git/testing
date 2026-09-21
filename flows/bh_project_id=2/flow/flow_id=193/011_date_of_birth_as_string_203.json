@@ -52,18 +52,6 @@
         }
       },
       {
-        "model": "FlowPipelineMapping",
-        "pk": 136,
-        "data": {
-          "flow_pipeline_mapping_id": 136,
-          "flow_id": 193,
-          "pipeline_id": 1765,
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
         "model": "FlowParameter",
         "pk": 556,
         "data": {
@@ -140,7 +128,7 @@
           "flow_parameter_id": 551,
           "flow_id": 193,
           "parameter_name": "pipelines",
-          "parameter_value": "[{\"id\": 1765, \"name\": \"members_203\", \"pipeline_name\": \"members_203\"}]",
+          "parameter_value": "[{\"id\": 1275, \"name\": \"members_20260904_203\", \"pipeline_name\": \"members_20260904_203\"}]",
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -182,7 +170,7 @@
           "flow_parameter_id": 548,
           "flow_id": 193,
           "parameter_name": "files",
-          "parameter_value": "[{\"key\": \"healthcare_demo/data2/011_date_of_birth_as_string/members_20260904.csv\", \"base_name\": \"members_20260904.csv\", \"source_name\": \"members\", \"relative_key\": \"members_20260904.csv\", \"size_bytes\": 540}]",
+          "parameter_value": "[{\"key\": \"healthcare_demo/data2/011_date_of_birth_as_string/members_20260904.csv\", \"base_name\": \"members_20260904.csv\", \"source_name\": \"members_20260904\", \"relative_key\": \"members_20260904.csv\", \"size_bytes\": 540}]",
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -210,7 +198,7 @@
           "flow_parameter_id": 546,
           "flow_id": 193,
           "parameter_name": "sources",
-          "parameter_value": "[{\"source_name\": \"members\", \"prefix\": \"healthcare_demo/data2/011_date_of_birth_as_string\", \"filename_regex\": \"^members_[0-9]{8}[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
+          "parameter_value": "[{\"source_name\": \"members_20260904\", \"prefix\": \"healthcare_demo/data2/011_date_of_birth_as_string\", \"filename_regex\": \"members_20260904.csv\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -318,7 +306,7 @@
                 },
                 {
                   "key": "sources",
-                  "value": "[{\"source_name\": \"members\", \"prefix\": \"healthcare_demo/data2/011_date_of_birth_as_string\", \"filename_regex\": \"^members_[0-9]{8}[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]"
+                  "value": "[{\"source_name\": \"members_20260904\", \"prefix\": \"healthcare_demo/data2/011_date_of_birth_as_string\", \"filename_regex\": \"members_20260904.csv\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]"
                 },
                 {
                   "key": "fail_on_invalid",
@@ -326,7 +314,7 @@
                 },
                 {
                   "key": "files",
-                  "value": "[{\"key\": \"healthcare_demo/data2/011_date_of_birth_as_string/members_20260904.csv\", \"base_name\": \"members_20260904.csv\", \"source_name\": \"members\", \"relative_key\": \"members_20260904.csv\", \"size_bytes\": 540}]"
+                  "value": "[{\"key\": \"healthcare_demo/data2/011_date_of_birth_as_string/members_20260904.csv\", \"base_name\": \"members_20260904.csv\", \"source_name\": \"members_20260904\", \"relative_key\": \"members_20260904.csv\", \"size_bytes\": 540}]"
                 },
                 {
                   "key": "delete_source",
@@ -338,7 +326,7 @@
                 },
                 {
                   "key": "pipelines",
-                  "value": "[{\"id\": 1765, \"name\": \"members_203\", \"pipeline_name\": \"members_203\"}]"
+                  "value": "[{\"id\": 1275, \"name\": \"members_20260904_203\", \"pipeline_name\": \"members_20260904_203\"}]"
                 },
                 {
                   "key": "use_valid_files_manifest",
@@ -506,7 +494,6 @@
                 }
               ],
               "bh_environment_id": 4,
-              "template_parameters": [],
               "bh_project_id": 2,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
