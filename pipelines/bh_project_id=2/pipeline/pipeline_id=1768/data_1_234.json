@@ -1,0 +1,348 @@
+{
+  "created_at": "2026-09-22T10:55:31.816067Z",
+  "updated_at": "2026-09-22T14:27:24.881423Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 1,
+  "pipeline_id": 1768,
+  "pipeline_name": "data_1_234",
+  "pipeline_key": "data_1_234",
+  "bh_project_id": 2,
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "pipeline_version_id": null,
+  "bh_project_name": "local",
+  "bh_github_username": "bh-varadha-git",
+  "pipeline_json": {
+    "name": "data_1_234",
+    "version": "1.0.0",
+    "engine_type": "pyspark",
+    "parameters": [
+      {
+        "key": "data_1",
+        "value": "smaller_data/data1.csv"
+      }
+    ],
+    "connections": {
+      "landing_data_1_file_connection": {
+        "name": "landing_data_1_file_connection",
+        "connection_type": "azure_blob",
+        "container_name": "my-test-bucket",
+        "file_path_prefix": "",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+        "connection_config_id": 1
+      },
+      "bronze_data_1_db_connection": {
+        "name": "bronze_data_1_db_connection",
+        "connection_type": "DatabricksDeltaLake",
+        "catalog": "cinqdev",
+        "schema": "bronze_enrollment",
+        "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureunity-azuredatabrickslocal",
+        "connection_config_id": 2
+      }
+    },
+    "sources": {
+      "landing_source_data_1": {
+        "name": "landing_source_data_1",
+        "source_type": "File",
+        "file_name": "${data_1}",
+        "connection": {
+          "$ref": "#/connections/landing_data_1_file_connection"
+        },
+        "data_src_id": 1035
+      }
+    },
+    "targets": {
+      "bronze_target_data_1": {
+        "name": "bronze_target_data_1",
+        "target_type": "Relational",
+        "table_name": "data_1",
+        "connection": {
+          "$ref": "#/connections/bronze_data_1_db_connection"
+        },
+        "load_mode": "append",
+        "schema": "bronze_enrollment",
+        "data_src_id": 1036
+      }
+    },
+    "transformations": [
+      {
+        "name": "landing_read_data_1",
+        "transformation": "Reader",
+        "source": {
+          "$ref": "#/sources/landing_source_data_1"
+        },
+        "file_type": "CSV",
+        "read_options": {
+          "fetch_size": 10000,
+          "sep": ",",
+          "encoding": "UTF-8",
+          "header": false,
+          "inferSchema": false,
+          "multiLine": false,
+          "skiprows": 2,
+          "columnNamesOverride": [
+            "member_id_1",
+            "member_name_Dr. Jane Q. Public Jr.",
+            "member_address_123 Main St, Austin, TX 78701",
+            "member_phone_+1-512-555-0100",
+            "scenario_note_title_middle_suffix_standard_us_street"
+          ],
+          "quote": "\"",
+          "escape": "\\",
+          "comment": "",
+          "preferDate": true,
+          "enforceSchema": true,
+          "ignoreLeadingWhiteSpace": false,
+          "ignoreTrailingWhiteSpace": false,
+          "nullValue": "",
+          "nanValue": "NaN",
+          "positiveInf": "Inf",
+          "negativeInf": "-Inf",
+          "dateFormat": "yyyy-MM-dd",
+          "timestampFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+          "timestampNTZFormat": "yyyy-MM-dd'T'HH:mm:ss[.SSS]",
+          "maxColumns": 20480,
+          "maxCharsPerColumn": -1,
+          "columnNameOfCorruptRecord": "corrupt_record",
+          "samplingRatio": 1.0,
+          "emptyValue": "",
+          "locale": "en-US",
+          "lineSep": "\r\n",
+          "unescapedQuoteHandling": "STOP_AT_DELIMITER",
+          "mode": "PERMISSIVE"
+        },
+        "dependent_on": []
+      },
+      {
+        "name": "add_lineage_metadata",
+        "transformation": "Expression",
+        "dependent_on": [
+          "landing_read_data_1"
+        ],
+        "derived_fields": [
+          {
+            "name": "feed_name",
+            "expression": "'data_1'"
+          },
+          {
+            "name": "ingest_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "ingest_year",
+            "expression": "year(current_date())"
+          },
+          {
+            "name": "ingest_month",
+            "expression": "month(current_date())"
+          },
+          {
+            "name": "ingest_day",
+            "expression": "day(current_date())"
+          },
+          {
+            "name": "created_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "updated_ts",
+            "expression": "current_timestamp()"
+          },
+          {
+            "name": "corrupt_record",
+            "expression": "cast(null as string)"
+          },
+          {
+            "name": "batch_id",
+            "expression": "batch_id"
+          }
+        ]
+      },
+      {
+        "name": "schema_drift_guard",
+        "transformation": "SchemaDriftGuard",
+        "dependent_on": [
+          "add_lineage_metadata"
+        ],
+        "schema_version": "v1",
+        "rescued_column": "_rescued_data",
+        "raw_record_column": "_raw_record",
+        "detect_only": false,
+        "persist_quarantine_to_control": true,
+        "version": "1.0.0",
+        "engine_type": "pyspark",
+        "expected_schema": [
+          {
+            "name": "member_id_1",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "member_name_dr_jane_q_public_jr",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "member_address_123_main_st_austin_tx_78701",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "member_phone_1_512_555_0100",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "scenario_note_title_middle_suffix_standard_us_street",
+            "type": "string",
+            "nullable": false,
+            "is_required": true
+          },
+          {
+            "name": "corrupt_record",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "batch_id",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "feed_name",
+            "type": "string",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_ts",
+            "type": "timestamp",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_year",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_month",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          },
+          {
+            "name": "ingest_day",
+            "type": "integer",
+            "nullable": true,
+            "is_required": false
+          }
+        ],
+        "ignore_columns": [
+          "_raw_record",
+          "_rescued_data",
+          "batch_id",
+          "corrupt_record",
+          "created_ts",
+          "dq_failed_rules",
+          "feed_name",
+          "ingest_day",
+          "ingest_month",
+          "ingest_ts",
+          "ingest_year",
+          "ingestion_ts",
+          "source_file_name",
+          "source_row_number",
+          "updated_ts"
+        ],
+        "dataset_id": "data_1",
+        "drift_policy": {
+          "new_column": "rescue",
+          "missing_required_column": "fail_batch",
+          "missing_optional_column": "accept",
+          "type_mismatch_required": "quarantine_record",
+          "type_mismatch_optional": "rescue"
+        }
+      },
+      {
+        "name": "bronze_write_data_1",
+        "transformation": "Writer",
+        "dependent_on": [
+          "schema_drift_guard"
+        ],
+        "target": {
+          "$ref": "#/targets/bronze_target_data_1"
+        },
+        "write_options": {
+          "truncate": false,
+          "cascadeTruncate": false,
+          "refreshKrb5Config": false,
+          "encrypt": "false",
+          "trustServerCertificate": "false",
+          "partitionBy": [
+            "ingest_year",
+            "ingest_month",
+            "ingest_day",
+            "batch_id"
+          ]
+        }
+      }
+    ],
+    "description": "File to DB Ingestion V3 for data_1_234",
+    "batch_control": {
+      "enabled": true,
+      "feed_name": "data_1",
+      "business_date": "2026-09-22",
+      "delivery_id": "data_1_2026-09-22",
+      "batch_id": 1,
+      "use_existing_batch_id": false,
+      "validate_existing_batch": true,
+      "require_input_acceptance": true,
+      "auto_accept_input_on_batch_init": true,
+      "input_registry_processed_on_stage": "bronze",
+      "seed_stage_rows": true,
+      "stages": [
+        "bronze"
+      ],
+      "storage": {
+        "connection": {
+          "name": "control_delta",
+          "connection_type": "DatabricksDeltaLake"
+        },
+        "namespace": {
+          "catalog": "cinqdev",
+          "schema": "control"
+        }
+      },
+      "stage_to_transformations": {
+        "bronze": [
+          "landing_read_data_1",
+          "add_lineage_metadata",
+          "schema_drift_guard",
+          "bronze_write_data_1"
+        ]
+      },
+      "error_threshold_pct": 50.0
+    }
+  },
+  "draft_pipeline_json": null,
+  "pipeline_type": "design",
+  "engine_type": "pyspark",
+  "total_test_scenario": null,
+  "passed_test": null,
+  "failed_test": null,
+  "sme_recommendations_count": null,
+  "process_status": null,
+  "pipeline_parameters": []
+}

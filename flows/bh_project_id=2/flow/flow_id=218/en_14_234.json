@@ -365,26 +365,6 @@
                   "value": false
                 },
                 {
-                  "key": "parallelization_factor",
-                  "value": 1
-                },
-                {
-                  "key": "cloud_type",
-                  "value": "databricks"
-                },
-                {
-                  "key": "compute_type",
-                  "value": "DATABRICKS_CLUSTER"
-                },
-                {
-                  "key": "sources",
-                  "value": "[{\"source_name\": \"data\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"data_1\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[0-9]{1}[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"legacyauditlogcr\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^legacy_audit_log_cr[.]txt$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"muthusheet\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^muthu\\\\(Sheet[0-9]{1}\\\\)[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"unixstagingconfiglf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^unix_staging_config_lf[.]env$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"windowsorderscrlf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^windows_orders_crlf[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]"
-                },
-                {
-                  "key": "fail_on_invalid",
-                  "value": true
-                },
-                {
                   "key": "files",
                   "value": "[{\"key\": \"smaller_data/data.csv\", \"base_name\": \"data.csv\", \"source_name\": \"data\", \"relative_key\": \"data.csv\", \"size_bytes\": 72}, {\"key\": \"smaller_data/data1.csv\", \"base_name\": \"data1.csv\", \"source_name\": \"data_1\", \"relative_key\": \"data1.csv\", \"size_bytes\": 2540}, {\"key\": \"smaller_data/legacy_audit_log_cr.txt\", \"base_name\": \"legacy_audit_log_cr.txt\", \"source_name\": \"legacyauditlogcr\", \"relative_key\": \"legacy_audit_log_cr.txt\", \"size_bytes\": 406}, {\"key\": \"smaller_data/muthu(Sheet1).csv\", \"base_name\": \"muthu(Sheet1).csv\", \"source_name\": \"muthusheet\", \"relative_key\": \"muthu(Sheet1).csv\", \"size_bytes\": 490}, {\"key\": \"smaller_data/unix_staging_config_lf.env\", \"base_name\": \"unix_staging_config_lf.env\", \"source_name\": \"unixstagingconfiglf\", \"relative_key\": \"unix_staging_config_lf.env\", \"size_bytes\": 339}, {\"key\": \"smaller_data/windows_orders_crlf.csv\", \"base_name\": \"windows_orders_crlf.csv\", \"source_name\": \"windowsorderscrlf\", \"relative_key\": \"windows_orders_crlf.csv\", \"size_bytes\": 330}]"
                 },
@@ -419,6 +399,26 @@
                 {
                   "key": "archive_prefix",
                   "value": "Archive/smaller_data"
+                },
+                {
+                  "key": "parallelization_factor",
+                  "value": 1
+                },
+                {
+                  "key": "cloud_type",
+                  "value": "databricks"
+                },
+                {
+                  "key": "compute_type",
+                  "value": "DATABRICKS_CLUSTER"
+                },
+                {
+                  "key": "sources",
+                  "value": "[{\"source_name\": \"data\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"data_1\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[0-9]{1}[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"legacyauditlogcr\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^legacy_audit_log_cr[.]txt$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"muthusheet\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^muthu\\\\(Sheet[0-9]{1}\\\\)[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"unixstagingconfiglf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^unix_staging_config_lf[.]env$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"windowsorderscrlf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^windows_orders_crlf[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]"
+                },
+                {
+                  "key": "fail_on_invalid",
+                  "value": true
                 }
               ],
               "tasks": [
@@ -726,6 +726,7 @@
                 }
               ],
               "bh_environment_id": 4,
+              "template_parameters": [],
               "bh_project_id": 2,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
