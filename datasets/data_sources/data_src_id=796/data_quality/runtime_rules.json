@@ -1,0 +1,106 @@
+{
+  "data_source_id": 796,
+  "data_src_name": "order_items_in_both_channels",
+  "dq_rules": [
+    {
+      "dq_rule_mapping_id": 41,
+      "rule_id": 34,
+      "rule_definition_id": 49,
+      "action": "REJECT",
+      "data_source_id": 796,
+      "data_src_name": "order_items_in_both_channels",
+      "rule_name": "e2e_gov_lineage_1789268068_not_null_rule",
+      "evaluation_scope": "ROW",
+      "rule_type": "RANGE",
+      "parameter_values": {
+        "schema_name": "id"
+      },
+      "engines": {
+        "ansi": {
+          "engine": "ansi",
+          "rule_definition_id": 49,
+          "substituted_query": "WITH failed AS (\n  SELECT COUNT(*) AS fail_rows\n  FROM {database_name}.id.{table_name}\n  WHERE {column_name} > CURRENT_DATE\n    AND {additional_filters}\n),\ntotal AS (\n  SELECT COUNT(*) AS total_rows\n  FROM {database_name}.id.{table_name}\n  WHERE {additional_filters}\n)\nSELECT\n  total_rows AS rows_total,\n  total_rows - fail_rows AS rows_passed,\n  fail_rows AS rows_failed,\n  CASE\n    WHEN total_rows = 0 THEN 'PASS'\n    WHEN (fail_rows * 100.0 / total_rows) <= {tolerance(%)} THEN 'PASS'\n    ELSE 'FAIL'\n  END AS status\nFROM failed, total",
+          "failure_predicate": "({additional_filters}) AND ({column_name} > CURRENT_DATE)",
+          "referential": null,
+          "uniqueness": null,
+          "stage_filter": null
+        }
+      }
+    },
+    {
+      "dq_rule_mapping_id": 42,
+      "rule_id": 34,
+      "rule_definition_id": 49,
+      "action": "REJECT",
+      "data_source_id": 796,
+      "data_src_name": "order_items_in_both_channels",
+      "rule_name": "e2e_gov_lineage_1789268136_not_null_rule",
+      "evaluation_scope": "ROW",
+      "rule_type": "RANGE",
+      "parameter_values": {
+        "schema_name": "id"
+      },
+      "engines": {
+        "ansi": {
+          "engine": "ansi",
+          "rule_definition_id": 49,
+          "substituted_query": "WITH failed AS (\n  SELECT COUNT(*) AS fail_rows\n  FROM {database_name}.id.{table_name}\n  WHERE {column_name} > CURRENT_DATE\n    AND {additional_filters}\n),\ntotal AS (\n  SELECT COUNT(*) AS total_rows\n  FROM {database_name}.id.{table_name}\n  WHERE {additional_filters}\n)\nSELECT\n  total_rows AS rows_total,\n  total_rows - fail_rows AS rows_passed,\n  fail_rows AS rows_failed,\n  CASE\n    WHEN total_rows = 0 THEN 'PASS'\n    WHEN (fail_rows * 100.0 / total_rows) <= {tolerance(%)} THEN 'PASS'\n    ELSE 'FAIL'\n  END AS status\nFROM failed, total",
+          "failure_predicate": "({additional_filters}) AND ({column_name} > CURRENT_DATE)",
+          "referential": null,
+          "uniqueness": null,
+          "stage_filter": null
+        }
+      }
+    },
+    {
+      "dq_rule_mapping_id": 43,
+      "rule_id": 34,
+      "rule_definition_id": 49,
+      "action": "REJECT",
+      "data_source_id": 796,
+      "data_src_name": "order_items_in_both_channels",
+      "rule_name": "e2e_gov_lineage_1789268213_not_null_rule",
+      "evaluation_scope": "ROW",
+      "rule_type": "RANGE",
+      "parameter_values": {
+        "schema_name": "id"
+      },
+      "engines": {
+        "ansi": {
+          "engine": "ansi",
+          "rule_definition_id": 49,
+          "substituted_query": "WITH failed AS (\n  SELECT COUNT(*) AS fail_rows\n  FROM {database_name}.id.{table_name}\n  WHERE {column_name} > CURRENT_DATE\n    AND {additional_filters}\n),\ntotal AS (\n  SELECT COUNT(*) AS total_rows\n  FROM {database_name}.id.{table_name}\n  WHERE {additional_filters}\n)\nSELECT\n  total_rows AS rows_total,\n  total_rows - fail_rows AS rows_passed,\n  fail_rows AS rows_failed,\n  CASE\n    WHEN total_rows = 0 THEN 'PASS'\n    WHEN (fail_rows * 100.0 / total_rows) <= {tolerance(%)} THEN 'PASS'\n    ELSE 'FAIL'\n  END AS status\nFROM failed, total",
+          "failure_predicate": "({additional_filters}) AND ({column_name} > CURRENT_DATE)",
+          "referential": null,
+          "uniqueness": null,
+          "stage_filter": null
+        }
+      }
+    },
+    {
+      "dq_rule_mapping_id": 44,
+      "rule_id": 34,
+      "rule_definition_id": 49,
+      "action": "REJECT",
+      "data_source_id": 796,
+      "data_src_name": "order_items_in_both_channels",
+      "rule_name": "e2e_gov_lineage_1789269870_not_null_rule",
+      "evaluation_scope": "ROW",
+      "rule_type": "RANGE",
+      "parameter_values": {
+        "schema_name": "id"
+      },
+      "engines": {
+        "ansi": {
+          "engine": "ansi",
+          "rule_definition_id": 49,
+          "substituted_query": "WITH failed AS (\n  SELECT COUNT(*) AS fail_rows\n  FROM {database_name}.id.{table_name}\n  WHERE {column_name} > CURRENT_DATE\n    AND {additional_filters}\n),\ntotal AS (\n  SELECT COUNT(*) AS total_rows\n  FROM {database_name}.id.{table_name}\n  WHERE {additional_filters}\n)\nSELECT\n  total_rows AS rows_total,\n  total_rows - fail_rows AS rows_passed,\n  fail_rows AS rows_failed,\n  CASE\n    WHEN total_rows = 0 THEN 'PASS'\n    WHEN (fail_rows * 100.0 / total_rows) <= {tolerance(%)} THEN 'PASS'\n    ELSE 'FAIL'\n  END AS status\nFROM failed, total",
+          "failure_predicate": "({additional_filters}) AND ({column_name} > CURRENT_DATE)",
+          "referential": null,
+          "uniqueness": null,
+          "stage_filter": null
+        }
+      }
+    }
+  ]
+}
