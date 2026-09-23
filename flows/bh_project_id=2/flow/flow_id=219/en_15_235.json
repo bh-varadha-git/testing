@@ -139,6 +139,104 @@
       },
       {
         "model": "FlowParameter",
+        "pk": 625,
+        "data": {
+          "flow_parameter_id": 625,
+          "flow_id": 219,
+          "parameter_name": "allow_empty",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 624,
+        "data": {
+          "flow_parameter_id": 624,
+          "flow_id": 219,
+          "parameter_name": "delete_source",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 622,
+        "data": {
+          "flow_parameter_id": 622,
+          "flow_id": 219,
+          "parameter_name": "fail_on_invalid",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 620,
+        "data": {
+          "flow_parameter_id": 620,
+          "flow_id": 219,
+          "parameter_name": "compute_type",
+          "parameter_value": "DATABRICKS_CLUSTER",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 619,
+        "data": {
+          "flow_parameter_id": 619,
+          "flow_id": 219,
+          "parameter_name": "cloud_type",
+          "parameter_value": "databricks",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 618,
+        "data": {
+          "flow_parameter_id": 618,
+          "flow_id": 219,
+          "parameter_name": "parallelization_factor",
+          "parameter_value": 1,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 617,
+        "data": {
+          "flow_parameter_id": 617,
+          "flow_id": 219,
+          "parameter_name": "execute_in_parallel",
+          "parameter_value": false,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
         "pk": 630,
         "data": {
           "flow_parameter_id": 630,
@@ -229,104 +327,6 @@
           "flow_id": 219,
           "parameter_name": "sources",
           "parameter_value": "[{\"source_name\": \"data\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"data_1\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[0-9]{1}[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"legacyauditlogcr\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^legacy_audit_log_cr[.]txt$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"muthusheet\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^muthu\\\\(Sheet[0-9]{1}\\\\)[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"unixstagingconfiglf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^unix_staging_config_lf[.]env$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"windowsorderscrlf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^windows_orders_crlf[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 622,
-        "data": {
-          "flow_parameter_id": 622,
-          "flow_id": 219,
-          "parameter_name": "fail_on_invalid",
-          "parameter_value": true,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 620,
-        "data": {
-          "flow_parameter_id": 620,
-          "flow_id": 219,
-          "parameter_name": "compute_type",
-          "parameter_value": "DATABRICKS_CLUSTER",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 619,
-        "data": {
-          "flow_parameter_id": 619,
-          "flow_id": 219,
-          "parameter_name": "cloud_type",
-          "parameter_value": "databricks",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 618,
-        "data": {
-          "flow_parameter_id": 618,
-          "flow_id": 219,
-          "parameter_name": "parallelization_factor",
-          "parameter_value": 1,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 617,
-        "data": {
-          "flow_parameter_id": 617,
-          "flow_id": 219,
-          "parameter_name": "execute_in_parallel",
-          "parameter_value": false,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 625,
-        "data": {
-          "flow_parameter_id": 625,
-          "flow_id": 219,
-          "parameter_name": "allow_empty",
-          "parameter_value": true,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 624,
-        "data": {
-          "flow_parameter_id": 624,
-          "flow_id": 219,
-          "parameter_name": "delete_source",
-          "parameter_value": true,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -726,6 +726,7 @@
                 }
               ],
               "bh_environment_id": 4,
+              "template_parameters": [],
               "bh_project_id": 2,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
