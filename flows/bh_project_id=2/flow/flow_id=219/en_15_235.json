@@ -377,6 +377,14 @@
                   "value": "Archive/smaller_data"
                 },
                 {
+                  "key": "files",
+                  "value": "[{\"key\": \"smaller_data/data.csv\", \"base_name\": \"data.csv\", \"source_name\": \"data\", \"relative_key\": \"data.csv\", \"size_bytes\": 72}, {\"key\": \"smaller_data/data1.csv\", \"base_name\": \"data1.csv\", \"source_name\": \"data_1\", \"relative_key\": \"data1.csv\", \"size_bytes\": 2540}, {\"key\": \"smaller_data/legacy_audit_log_cr.txt\", \"base_name\": \"legacy_audit_log_cr.txt\", \"source_name\": \"legacyauditlogcr\", \"relative_key\": \"legacy_audit_log_cr.txt\", \"size_bytes\": 406}, {\"key\": \"smaller_data/muthu(Sheet1).csv\", \"base_name\": \"muthu(Sheet1).csv\", \"source_name\": \"muthusheet\", \"relative_key\": \"muthu(Sheet1).csv\", \"size_bytes\": 490}, {\"key\": \"smaller_data/unix_staging_config_lf.env\", \"base_name\": \"unix_staging_config_lf.env\", \"source_name\": \"unixstagingconfiglf\", \"relative_key\": \"unix_staging_config_lf.env\", \"size_bytes\": 339}, {\"key\": \"smaller_data/windows_orders_crlf.csv\", \"base_name\": \"windows_orders_crlf.csv\", \"source_name\": \"windowsorderscrlf\", \"relative_key\": \"windows_orders_crlf.csv\", \"size_bytes\": 330}]"
+                },
+                {
+                  "key": "runtime_params_base_path",
+                  "value": "/Workspace/Shared/runtime_params"
+                },
+                {
                   "key": "execute_in_parallel",
                   "value": false
                 },
@@ -411,14 +419,6 @@
                 {
                   "key": "pipelines",
                   "value": "[{\"id\": 1773, \"name\": \"data_235\", \"pipeline_name\": \"data_235\"}, {\"id\": 1774, \"name\": \"data_1_235\", \"pipeline_name\": \"data_1_235\"}, {\"id\": 1775, \"name\": \"legacyauditlogcr_235\", \"pipeline_name\": \"legacyauditlogcr_235\"}, {\"id\": 1776, \"name\": \"muthusheet_235\", \"pipeline_name\": \"muthusheet_235\"}, {\"id\": 1777, \"name\": \"unixstagingconfiglf_235\", \"pipeline_name\": \"unixstagingconfiglf_235\"}, {\"id\": 1778, \"name\": \"windowsorderscrlf_235\", \"pipeline_name\": \"windowsorderscrlf_235\"}]"
-                },
-                {
-                  "key": "files",
-                  "value": "[{\"key\": \"smaller_data/data.csv\", \"base_name\": \"data.csv\", \"source_name\": \"data\", \"relative_key\": \"data.csv\", \"size_bytes\": 72}, {\"key\": \"smaller_data/data1.csv\", \"base_name\": \"data1.csv\", \"source_name\": \"data_1\", \"relative_key\": \"data1.csv\", \"size_bytes\": 2540}, {\"key\": \"smaller_data/legacy_audit_log_cr.txt\", \"base_name\": \"legacy_audit_log_cr.txt\", \"source_name\": \"legacyauditlogcr\", \"relative_key\": \"legacy_audit_log_cr.txt\", \"size_bytes\": 406}, {\"key\": \"smaller_data/muthu(Sheet1).csv\", \"base_name\": \"muthu(Sheet1).csv\", \"source_name\": \"muthusheet\", \"relative_key\": \"muthu(Sheet1).csv\", \"size_bytes\": 490}, {\"key\": \"smaller_data/unix_staging_config_lf.env\", \"base_name\": \"unix_staging_config_lf.env\", \"source_name\": \"unixstagingconfiglf\", \"relative_key\": \"unix_staging_config_lf.env\", \"size_bytes\": 339}, {\"key\": \"smaller_data/windows_orders_crlf.csv\", \"base_name\": \"windows_orders_crlf.csv\", \"source_name\": \"windowsorderscrlf\", \"relative_key\": \"windows_orders_crlf.csv\", \"size_bytes\": 330}]"
-                },
-                {
-                  "key": "runtime_params_base_path",
-                  "value": "/Workspace/Shared/runtime_params"
                 }
               ],
               "tasks": [
@@ -726,6 +726,7 @@
                 }
               ],
               "bh_environment_id": 4,
+              "template_parameters": [],
               "bh_project_id": 2,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
