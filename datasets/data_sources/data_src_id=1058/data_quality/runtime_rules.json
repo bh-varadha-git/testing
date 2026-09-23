@@ -1,0 +1,45 @@
+{
+  "data_source_id": 1058,
+  "data_src_name": "employees",
+  "dq_rules": [
+    {
+      "dq_rule_mapping_id": 53,
+      "rule_id": 28,
+      "rule_definition_id": 30,
+      "action": "RECORD",
+      "data_source_id": 1058,
+      "data_src_name": "employees",
+      "rule_name": "Email Not Null or Empty",
+      "evaluation_scope": "ROW",
+      "rule_type": "NOT_NULL",
+      "parameter_values": {
+        "schema_name": "bronze_employees",
+        "table_name": "employees",
+        "column_name": "email",
+        "additional_filters": "1=1",
+        "tolerance(%)": "0",
+        "database_name": "registration"
+      },
+      "engines": {
+        "ansi": {
+          "engine": "ansi",
+          "rule_definition_id": 30,
+          "substituted_query": "WITH null_count AS (SELECT COUNT(*) AS total_nulls FROM registration.bronze_employees.employees WHERE (email IS NULL OR email = '') AND 1=1), overall_count AS (SELECT COUNT(*) AS total_rows FROM registration.bronze_employees.employees WHERE 1=1) SELECT total_rows AS rows_total, (total_rows - total_nulls) AS rows_passed, total_nulls AS rows_failed, CASE WHEN try_divide((total_rows - total_nulls) * 100.0, total_rows) >= 0 THEN 'PASS' ELSE 'FAIL' END AS status FROM null_count, overall_count;",
+          "failure_predicate": "(1=1) AND (email IS NULL OR TRIM(CAST(email AS STRING)) = '')",
+          "referential": null,
+          "uniqueness": null,
+          "stage_filter": null
+        },
+        "spark": {
+          "engine": "spark",
+          "rule_definition_id": 39,
+          "substituted_query": "WITH null_count AS (SELECT COUNT(*) AS total_nulls FROM registration.bronze_employees.employees WHERE (email IS NULL OR email = '') AND 1=1), overall_count AS (SELECT COUNT(*) AS total_rows FROM registration.bronze_employees.employees WHERE 1=1) SELECT total_rows AS rows_total, (total_rows - total_nulls) AS rows_passed, total_nulls AS rows_failed, CASE WHEN try_divide((total_rows - total_nulls) * 100.0, total_rows) >= 0 THEN 'PASS' ELSE 'FAIL' END AS status FROM null_count, overall_count;",
+          "failure_predicate": "(1=1) AND (email IS NULL OR TRIM(CAST(email AS STRING)) = '')",
+          "referential": null,
+          "uniqueness": null,
+          "stage_filter": null
+        }
+      }
+    }
+  ]
+}
