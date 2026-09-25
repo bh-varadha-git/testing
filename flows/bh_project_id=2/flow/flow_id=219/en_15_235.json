@@ -125,40 +125,26 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 627,
-        "data": {
-          "flow_parameter_id": 627,
-          "flow_id": 219,
-          "parameter_name": "use_valid_files_manifest",
-          "parameter_value": false,
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 621,
-        "data": {
-          "flow_parameter_id": 621,
-          "flow_id": 219,
-          "parameter_name": "sources",
-          "parameter_value": "[{\"source_name\": \"data\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"data_1\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[0-9]{1}[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"legacyauditlogcr\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^legacy_audit_log_cr[.]txt$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"muthusheet\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^muthu\\\\(Sheet[0-9]{1}\\\\)[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"unixstagingconfiglf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^unix_staging_config_lf[.]env$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"windowsorderscrlf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^windows_orders_crlf[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
         "pk": 630,
         "data": {
           "flow_parameter_id": 630,
           "flow_id": 219,
           "parameter_name": "source_prefix",
           "parameter_value": "smaller_data",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 629,
+        "data": {
+          "flow_parameter_id": 629,
+          "flow_id": 219,
+          "parameter_name": "bucket_name",
+          "parameter_value": "my-test-bucket",
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -181,12 +167,12 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 626,
+        "pk": 627,
         "data": {
-          "flow_parameter_id": 626,
+          "flow_parameter_id": 627,
           "flow_id": 219,
-          "parameter_name": "pipelines",
-          "parameter_value": "[{\"id\": 1773, \"name\": \"data_235\", \"pipeline_name\": \"data_235\"}, {\"id\": 1774, \"name\": \"data_1_235\", \"pipeline_name\": \"data_1_235\"}, {\"id\": 1775, \"name\": \"legacyauditlogcr_235\", \"pipeline_name\": \"legacyauditlogcr_235\"}, {\"id\": 1776, \"name\": \"muthusheet_235\", \"pipeline_name\": \"muthusheet_235\"}, {\"id\": 1777, \"name\": \"unixstagingconfiglf_235\", \"pipeline_name\": \"unixstagingconfiglf_235\"}, {\"id\": 1778, \"name\": \"windowsorderscrlf_235\", \"pipeline_name\": \"windowsorderscrlf_235\"}]",
+          "parameter_name": "use_valid_files_manifest",
+          "parameter_value": false,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -195,12 +181,12 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 618,
+        "pk": 626,
         "data": {
-          "flow_parameter_id": 618,
+          "flow_parameter_id": 626,
           "flow_id": 219,
-          "parameter_name": "parallelization_factor",
-          "parameter_value": 1,
+          "parameter_name": "pipelines",
+          "parameter_value": "[{\"id\": 1773, \"name\": \"data_235\", \"pipeline_name\": \"data_235\"}, {\"id\": 1774, \"name\": \"data_1_235\", \"pipeline_name\": \"data_1_235\"}, {\"id\": 1775, \"name\": \"legacyauditlogcr_235\", \"pipeline_name\": \"legacyauditlogcr_235\"}, {\"id\": 1776, \"name\": \"muthusheet_235\", \"pipeline_name\": \"muthusheet_235\"}, {\"id\": 1777, \"name\": \"unixstagingconfiglf_235\", \"pipeline_name\": \"unixstagingconfiglf_235\"}, {\"id\": 1778, \"name\": \"windowsorderscrlf_235\", \"pipeline_name\": \"windowsorderscrlf_235\"}]",
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -223,12 +209,12 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 622,
+        "pk": 621,
         "data": {
-          "flow_parameter_id": 622,
+          "flow_parameter_id": 621,
           "flow_id": 219,
-          "parameter_name": "fail_on_invalid",
-          "parameter_value": true,
+          "parameter_name": "sources",
+          "parameter_value": "[{\"source_name\": \"data\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"data_1\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[0-9]{1}[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"legacyauditlogcr\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^legacy_audit_log_cr[.]txt$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"muthusheet\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^muthu\\\\(Sheet[0-9]{1}\\\\)[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"unixstagingconfiglf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^unix_staging_config_lf[.]env$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"windowsorderscrlf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^windows_orders_crlf[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -237,12 +223,26 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 617,
+        "pk": 631,
         "data": {
-          "flow_parameter_id": 617,
+          "flow_parameter_id": 631,
           "flow_id": 219,
-          "parameter_name": "execute_in_parallel",
-          "parameter_value": false,
+          "parameter_name": "archive_prefix",
+          "parameter_value": "Archive/smaller_data",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 625,
+        "data": {
+          "flow_parameter_id": 625,
+          "flow_id": 219,
+          "parameter_name": "allow_empty",
+          "parameter_value": true,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -256,6 +256,20 @@
           "flow_parameter_id": 624,
           "flow_id": 219,
           "parameter_name": "delete_source",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 622,
+        "data": {
+          "flow_parameter_id": 622,
+          "flow_id": 219,
+          "parameter_name": "fail_on_invalid",
           "parameter_value": true,
           "parameter_type": "USER",
           "tenant_id": 1,
@@ -293,12 +307,12 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 629,
+        "pk": 618,
         "data": {
-          "flow_parameter_id": 629,
+          "flow_parameter_id": 618,
           "flow_id": 219,
-          "parameter_name": "bucket_name",
-          "parameter_value": "my-test-bucket",
+          "parameter_name": "parallelization_factor",
+          "parameter_value": 1,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -307,26 +321,12 @@
       },
       {
         "model": "FlowParameter",
-        "pk": 631,
+        "pk": 617,
         "data": {
-          "flow_parameter_id": 631,
+          "flow_parameter_id": 617,
           "flow_id": 219,
-          "parameter_name": "archive_prefix",
-          "parameter_value": "Archive/smaller_data",
-          "parameter_type": "USER",
-          "tenant_id": 1,
-          "is_deleted": false,
-          "deleted_by": null
-        }
-      },
-      {
-        "model": "FlowParameter",
-        "pk": 625,
-        "data": {
-          "flow_parameter_id": 625,
-          "flow_id": 219,
-          "parameter_name": "allow_empty",
-          "parameter_value": true,
+          "parameter_name": "execute_in_parallel",
+          "parameter_value": false,
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -377,6 +377,10 @@
                   "value": "DATABRICKS_CLUSTER"
                 },
                 {
+                  "key": "sources",
+                  "value": "[{\"source_name\": \"data\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"data_1\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[0-9]{1}[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"legacyauditlogcr\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^legacy_audit_log_cr[.]txt$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"muthusheet\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^muthu\\\\(Sheet[0-9]{1}\\\\)[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"unixstagingconfiglf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^unix_staging_config_lf[.]env$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"windowsorderscrlf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^windows_orders_crlf[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]"
+                },
+                {
                   "key": "fail_on_invalid",
                   "value": true
                 },
@@ -391,10 +395,6 @@
                 {
                   "key": "archive_prefix",
                   "value": "Archive/smaller_data"
-                },
-                {
-                  "key": "sources",
-                  "value": "[{\"source_name\": \"data\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"data_1\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^data[0-9]{1}[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"legacyauditlogcr\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^legacy_audit_log_cr[.]txt$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"muthusheet\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^muthu\\\\(Sheet[0-9]{1}\\\\)[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"unixstagingconfiglf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^unix_staging_config_lf[.]env$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"windowsorderscrlf\", \"prefix\": \"smaller_data\", \"filename_regex\": \"^windows_orders_crlf[.]csv$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]"
                 },
                 {
                   "key": "files",
@@ -726,6 +726,7 @@
                 }
               ],
               "bh_environment_id": 4,
+              "template_parameters": [],
               "bh_project_id": 2,
               "bh_environment_name": "local-databricks-sv-2",
               "cloud_provider": "databricks",
