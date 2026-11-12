@@ -65,6 +65,18 @@
       },
       {
         "model": "FlowPipelineMapping",
+        "pk": 177,
+        "data": {
+          "flow_pipeline_mapping_id": 177,
+          "flow_id": 234,
+          "pipeline_id": 45,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
         "pk": 175,
         "data": {
           "flow_pipeline_mapping_id": 175,
@@ -138,7 +150,7 @@
           "flow_parameter_id": 701,
           "flow_id": 234,
           "parameter_name": "pipelines",
-          "parameter_value": "[{\"id\": 43, \"name\": \"pdalgcrpdt_273\", \"pipeline_name\": \"pdalgcrpdt_273\"}, {\"id\": 44, \"name\": \"pdalgcrpdt_1_273\", \"pipeline_name\": \"pdalgcrpdt_1_273\"}]",
+          "parameter_value": "[{\"id\": 45, \"name\": \"fidelis_en_4\", \"pipeline_name\": \"fidelis-en-4\"}, {\"id\": 43, \"name\": \"pdalgcrpdt_273\", \"pipeline_name\": \"pdalgcrpdt_273\"}, {\"id\": 44, \"name\": \"pdalgcrpdt_1_273\", \"pipeline_name\": \"pdalgcrpdt_1_273\"}]",
           "parameter_type": "USER",
           "tenant_id": 1,
           "is_deleted": false,
@@ -354,7 +366,7 @@
                 },
                 {
                   "key": "pipelines",
-                  "value": "[{\"id\": 43, \"name\": \"pdalgcrpdt_273\", \"pipeline_name\": \"pdalgcrpdt_273\"}, {\"id\": 44, \"name\": \"pdalgcrpdt_1_273\", \"pipeline_name\": \"pdalgcrpdt_1_273\"}]"
+                  "value": "[{\"id\": 45, \"name\": \"fidelis_en_4\", \"pipeline_name\": \"fidelis-en-4\"}, {\"id\": 43, \"name\": \"pdalgcrpdt_273\", \"pipeline_name\": \"pdalgcrpdt_273\"}, {\"id\": 44, \"name\": \"pdalgcrpdt_1_273\", \"pipeline_name\": \"pdalgcrpdt_1_273\"}]"
                 },
                 {
                   "key": "runtime_params_base_path",
@@ -469,10 +481,33 @@
                   "pool_enabled": false
                 },
                 {
-                  "task_id": "run_pipelines_pdalgcrpdt_273",
+                  "task_id": "run_pipelines_fidelis_en_4",
                   "type": "SubmitJob",
                   "depends_on": [
                     "create_compute"
+                  ],
+                  "bh_project_name": "local",
+                  "pipeline_key": "fidelis_en_4",
+                  "pipeline_name": "fidelis-en-4",
+                  "pipeline_id": 45,
+                  "compute_binding": {
+                    "source_task_id": "create_compute",
+                    "source_output_id": "compute_id"
+                  },
+                  "compute_type": "DATABRICKS_CLUSTER",
+                  "cloud_type": "databricks",
+                  "airflow_connection_id": "databricks_default",
+                  "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
+                  "batch_id": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='batch_id') }}",
+                  "name": "Submit_Job",
+                  "nodeId": "Submit_Job_run_pipelines_fidelis_en_4",
+                  "pool_enabled": false
+                },
+                {
+                  "task_id": "run_pipelines_pdalgcrpdt_273",
+                  "type": "SubmitJob",
+                  "depends_on": [
+                    "run_pipelines_fidelis_en_4"
                   ],
                   "bh_project_name": "local",
                   "pipeline_key": "pdalgcrpdt_273",
@@ -487,7 +522,7 @@
                   "airflow_connection_id": "databricks_default",
                   "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
                   "batch_id": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='batch_id') }}",
-                  "name": "Submit_Job",
+                  "name": "Submit_Job_2",
                   "nodeId": "Submit_Job_run_pipelines_pdalgcrpdt_273",
                   "pool_enabled": false
                 },
@@ -510,7 +545,7 @@
                   "airflow_connection_id": "databricks_default",
                   "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
                   "batch_id": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='batch_id') }}",
-                  "name": "Submit_Job_2",
+                  "name": "Submit_Job_3",
                   "nodeId": "Submit_Job_run_pipelines_pdalgcrpdt_1_273",
                   "pool_enabled": false
                 },
