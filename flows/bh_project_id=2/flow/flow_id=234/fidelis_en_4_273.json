@@ -1,0 +1,586 @@
+{
+  "created_at": "2026-11-12T07:12:08.064255Z",
+  "updated_at": "2026-11-12T07:12:15.532963Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 1,
+  "flow_id": 234,
+  "flow_name": "fidelis-en-4_273",
+  "flow_key": "fidelis_en_4_273",
+  "recipient_email": {},
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "bh_project_name": "local",
+  "bh_project_id": 2,
+  "alert_settings": {
+    "on_job_start": false,
+    "on_job_failure": false,
+    "on_job_success": false,
+    "long_running": false
+  },
+  "_graph": {
+    "root": {
+      "model": "Flow",
+      "pk": 234
+    },
+    "nodes": [
+      {
+        "model": "Flow",
+        "pk": 234,
+        "data": {
+          "flow_id": 234,
+          "flow_name": "fidelis-en-4_273",
+          "flow_key": "fidelis_en_4_273",
+          "bh_project_id": 2,
+          "recipient_email": {},
+          "notes": null,
+          "tags": null,
+          "status": "active",
+          "alert_settings": {
+            "on_job_start": false,
+            "on_job_failure": false,
+            "on_job_success": false,
+            "long_running": false
+          },
+          "bh_bundle_id": null,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
+        "pk": 176,
+        "data": {
+          "flow_pipeline_mapping_id": 176,
+          "flow_id": 234,
+          "pipeline_id": 44,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
+        "pk": 175,
+        "data": {
+          "flow_pipeline_mapping_id": 175,
+          "flow_id": 234,
+          "pipeline_id": 43,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 702,
+        "data": {
+          "flow_parameter_id": 702,
+          "flow_id": 234,
+          "parameter_name": "use_valid_files_manifest",
+          "parameter_value": false,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 696,
+        "data": {
+          "flow_parameter_id": 696,
+          "flow_id": 234,
+          "parameter_name": "sources",
+          "parameter_value": "[{\"source_name\": \"pdalgcrpdt\", \"prefix\": \"bhargs/1-Enrollment/1-Enrollment/D0284/Batch\", \"filename_regex\": \"^P[.]D[0-9]{4}[.]ALGC[0-9]{2}[.]RP[.]D[0-9]{6}[.]T[0-9]{7} [0-9]{1}[.]xlsx$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"pdalgcrpdt_1\", \"prefix\": \"bhargs/1-Enrollment/1-Enrollment/D0284/Batch\", \"filename_regex\": \"^P[.]D[0-9]{4}[.]ALGC[0-9]{2}[.]RP[.]D[0-9]{6}[.]T[0-9]{7} [0-9]{1}[.]xlsx$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 705,
+        "data": {
+          "flow_parameter_id": 705,
+          "flow_id": 234,
+          "parameter_name": "source_prefix",
+          "parameter_value": "bhargs/1-Enrollment/1-Enrollment/D0284/Batch",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 703,
+        "data": {
+          "flow_parameter_id": 703,
+          "flow_id": 234,
+          "parameter_name": "runtime_params_base_path",
+          "parameter_value": "/Workspace/Shared/runtime_params",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 701,
+        "data": {
+          "flow_parameter_id": 701,
+          "flow_id": 234,
+          "parameter_name": "pipelines",
+          "parameter_value": "[{\"id\": 43, \"name\": \"pdalgcrpdt_273\", \"pipeline_name\": \"pdalgcrpdt_273\"}, {\"id\": 44, \"name\": \"pdalgcrpdt_1_273\", \"pipeline_name\": \"pdalgcrpdt_1_273\"}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 693,
+        "data": {
+          "flow_parameter_id": 693,
+          "flow_id": 234,
+          "parameter_name": "parallelization_factor",
+          "parameter_value": 1,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 698,
+        "data": {
+          "flow_parameter_id": 698,
+          "flow_id": 234,
+          "parameter_name": "files",
+          "parameter_value": "[{\"key\": \"bhargs/1-Enrollment/1-Enrollment/D0284/Batch/P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"base_name\": \"P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"source_name\": \"pdalgcrpdt\", \"relative_key\": \"P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"size_bytes\": 3176288}, {\"key\": \"bhargs/1-Enrollment/1-Enrollment/D0284/Batch/P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"base_name\": \"P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"source_name\": \"pdalgcrpdt_1\", \"relative_key\": \"P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"size_bytes\": 3176288}]",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 697,
+        "data": {
+          "flow_parameter_id": 697,
+          "flow_id": 234,
+          "parameter_name": "fail_on_invalid",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 692,
+        "data": {
+          "flow_parameter_id": 692,
+          "flow_id": 234,
+          "parameter_name": "execute_in_parallel",
+          "parameter_value": false,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 699,
+        "data": {
+          "flow_parameter_id": 699,
+          "flow_id": 234,
+          "parameter_name": "delete_source",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 695,
+        "data": {
+          "flow_parameter_id": 695,
+          "flow_id": 234,
+          "parameter_name": "compute_type",
+          "parameter_value": "DATABRICKS_CLUSTER",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 694,
+        "data": {
+          "flow_parameter_id": 694,
+          "flow_id": 234,
+          "parameter_name": "cloud_type",
+          "parameter_value": "databricks",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 704,
+        "data": {
+          "flow_parameter_id": 704,
+          "flow_id": 234,
+          "parameter_name": "bucket_name",
+          "parameter_value": "my-test-bucket",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 706,
+        "data": {
+          "flow_parameter_id": 706,
+          "flow_id": 234,
+          "parameter_name": "archive_prefix",
+          "parameter_value": "Archive/bhargs/1-Enrollment/1-Enrollment/D0284/Batch",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 700,
+        "data": {
+          "flow_parameter_id": 700,
+          "flow_id": 234,
+          "parameter_name": "allow_empty",
+          "parameter_value": true,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDefinition",
+        "pk": 234,
+        "data": {
+          "flow_definition_id": 234,
+          "flow_id": 234,
+          "flow_json": {
+            "flowJson": {
+              "$schema": "https://json-schema.org/draft-07/schema#",
+              "name": "fidelis_en_4_273",
+              "flow_name": "fidelis-en-4_273",
+              "flow_id": 234,
+              "flow_key": "fidelis_en_4_273",
+              "flow_type": "DATA_PIPELINE",
+              "description": "en-1",
+              "version": "1.0.0",
+              "project_id": 2,
+              "project_name": "local",
+              "cron_expression": null,
+              "tenant_id": 1,
+              "flow_tags": [
+                {
+                  "key": "environment",
+                  "value": "dev"
+                }
+              ],
+              "parameters": [
+                {
+                  "key": "allow_empty",
+                  "value": true
+                },
+                {
+                  "key": "archive_prefix",
+                  "value": "Archive/bhargs/1-Enrollment/1-Enrollment/D0284/Batch"
+                },
+                {
+                  "key": "bucket_name",
+                  "value": "my-test-bucket"
+                },
+                {
+                  "key": "cloud_type",
+                  "value": "databricks"
+                },
+                {
+                  "key": "compute_type",
+                  "value": "DATABRICKS_CLUSTER"
+                },
+                {
+                  "key": "delete_source",
+                  "value": true
+                },
+                {
+                  "key": "execute_in_parallel",
+                  "value": false
+                },
+                {
+                  "key": "fail_on_invalid",
+                  "value": true
+                },
+                {
+                  "key": "files",
+                  "value": "[{\"key\": \"bhargs/1-Enrollment/1-Enrollment/D0284/Batch/P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"base_name\": \"P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"source_name\": \"pdalgcrpdt\", \"relative_key\": \"P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"size_bytes\": 3176288}, {\"key\": \"bhargs/1-Enrollment/1-Enrollment/D0284/Batch/P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"base_name\": \"P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"source_name\": \"pdalgcrpdt_1\", \"relative_key\": \"P.D0284.ALGC26.RP.D260916.T1829195 1.xlsx\", \"size_bytes\": 3176288}]"
+                },
+                {
+                  "key": "parallelization_factor",
+                  "value": 1
+                },
+                {
+                  "key": "pipelines",
+                  "value": "[{\"id\": 43, \"name\": \"pdalgcrpdt_273\", \"pipeline_name\": \"pdalgcrpdt_273\"}, {\"id\": 44, \"name\": \"pdalgcrpdt_1_273\", \"pipeline_name\": \"pdalgcrpdt_1_273\"}]"
+                },
+                {
+                  "key": "runtime_params_base_path",
+                  "value": "/Workspace/Shared/runtime_params"
+                },
+                {
+                  "key": "source_prefix",
+                  "value": "bhargs/1-Enrollment/1-Enrollment/D0284/Batch"
+                },
+                {
+                  "key": "sources",
+                  "value": "[{\"source_name\": \"pdalgcrpdt\", \"prefix\": \"bhargs/1-Enrollment/1-Enrollment/D0284/Batch\", \"filename_regex\": \"^P[.]D[0-9]{4}[.]ALGC[0-9]{2}[.]RP[.]D[0-9]{6}[.]T[0-9]{7} [0-9]{1}[.]xlsx$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}, {\"source_name\": \"pdalgcrpdt_1\", \"prefix\": \"bhargs/1-Enrollment/1-Enrollment/D0284/Batch\", \"filename_regex\": \"^P[.]D[0-9]{4}[.]ALGC[0-9]{2}[.]RP[.]D[0-9]{6}[.]T[0-9]{7} [0-9]{1}[.]xlsx$\", \"ignore_subfolders\": true, \"is_required\": true, \"min_bytes\": 10, \"min_files\": 1}]"
+                },
+                {
+                  "key": "use_valid_files_manifest",
+                  "value": false
+                }
+              ],
+              "tasks": [
+                {
+                  "task_id": "validate_inbound_files",
+                  "type": "ValidateInboundFiles",
+                  "depends_on": [],
+                  "bucket_name": "my-test-bucket",
+                  "source_prefix": "bhargs/1-Enrollment/1-Enrollment/D0284/Batch",
+                  "cloud_type": "databricks",
+                  "airflow_connection_id": "databricks_default",
+                  "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+                  "fail_on_invalid": true,
+                  "sources": [
+                    {
+                      "source_name": "pdalgcrpdt",
+                      "prefix": "bhargs/1-Enrollment/1-Enrollment/D0284/Batch",
+                      "filename_regex": "^P[.]D[0-9]{4}[.]ALGC[0-9]{2}[.]RP[.]D[0-9]{6}[.]T[0-9]{7} [0-9]{1}[.]xlsx$",
+                      "ignore_subfolders": true,
+                      "is_required": true,
+                      "min_bytes": 10,
+                      "min_files": 1
+                    },
+                    {
+                      "source_name": "pdalgcrpdt_1",
+                      "prefix": "bhargs/1-Enrollment/1-Enrollment/D0284/Batch",
+                      "filename_regex": "^P[.]D[0-9]{4}[.]ALGC[0-9]{2}[.]RP[.]D[0-9]{6}[.]T[0-9]{7} [0-9]{1}[.]xlsx$",
+                      "ignore_subfolders": true,
+                      "is_required": true,
+                      "min_bytes": 10,
+                      "min_files": 1
+                    }
+                  ],
+                  "feed_name": "fidelis-en-4",
+                  "use_valid_files_manifest": false,
+                  "runtime_params_base_path": "/Workspace/Shared/runtime_params",
+                  "name": "Validate",
+                  "nodeId": "validate_validate_inbound_files"
+                },
+                {
+                  "task_id": "create_compute",
+                  "type": "CreateCompute",
+                  "depends_on": [
+                    "validate_inbound_files"
+                  ],
+                  "cluster_name": "Databricks_AK_Local_0303_V1",
+                  "compute_config": {
+                    "compute_config_id": 2,
+                    "compute_config_name": "Databricks_AK_Local_0303_V1",
+                    "compute_type": "DATABRICKS_CLUSTER",
+                    "bh_env_id": 4,
+                    "compute_config": {
+                      "cluster_name": "Databricks_SV_Local_0303_V1",
+                      "spark_version": "15.4.x-scala2.12",
+                      "node_type_id": "Standard_D4s_v3",
+                      "num_workers": 0,
+                      "autoscale": null,
+                      "driver_node_type_id": null,
+                      "runtime_engine": null,
+                      "data_security_mode": "SINGLE_USER",
+                      "single_user_name": "sathish@bighammer.ai",
+                      "policy_id": null,
+                      "apply_policy_default_values": true,
+                      "idempotency_token": null,
+                      "aws_attributes": null,
+                      "azure_attributes": null,
+                      "gcp_attributes": null,
+                      "single_node": true,
+                      "autotermination_minutes": 30,
+                      "enable_elastic_disk": true,
+                      "spark_conf": {},
+                      "spark_env_vars": {},
+                      "custom_tags": {},
+                      "cluster_log_conf": null,
+                      "init_scripts": [
+                        "/Workspace/Shared/dev-utils/scripts/bh_databricks_grpc_server.sh"
+                      ],
+                      "libraries": [],
+                      "databricks_region": null,
+                      "bh_tags": []
+                    }
+                  },
+                  "cloud_type": "databricks",
+                  "compute_type": "DATABRICKS_CLUSTER",
+                  "airflow_connection_id": "databricks_default",
+                  "output_variables": [
+                    {
+                      "id": "compute_id",
+                      "label": "Cluster / job identifier",
+                      "xcom_key": "return_value"
+                    }
+                  ],
+                  "name": "Create_Compute",
+                  "nodeId": "create_compute_create_compute",
+                  "compute_config_id": 2,
+                  "pool_enabled": false
+                },
+                {
+                  "task_id": "run_pipelines_pdalgcrpdt_273",
+                  "type": "SubmitJob",
+                  "depends_on": [
+                    "create_compute"
+                  ],
+                  "bh_project_name": "local",
+                  "pipeline_key": "pdalgcrpdt_273",
+                  "pipeline_name": "pdalgcrpdt_273",
+                  "pipeline_id": 43,
+                  "compute_binding": {
+                    "source_task_id": "create_compute",
+                    "source_output_id": "compute_id"
+                  },
+                  "compute_type": "DATABRICKS_CLUSTER",
+                  "cloud_type": "databricks",
+                  "airflow_connection_id": "databricks_default",
+                  "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
+                  "batch_id": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='batch_id') }}",
+                  "name": "Submit_Job",
+                  "nodeId": "Submit_Job_run_pipelines_pdalgcrpdt_273",
+                  "pool_enabled": false
+                },
+                {
+                  "task_id": "run_pipelines_pdalgcrpdt_1_273",
+                  "type": "SubmitJob",
+                  "depends_on": [
+                    "run_pipelines_pdalgcrpdt_273"
+                  ],
+                  "bh_project_name": "local",
+                  "pipeline_key": "pdalgcrpdt_1_273",
+                  "pipeline_name": "pdalgcrpdt_1_273",
+                  "pipeline_id": 44,
+                  "compute_binding": {
+                    "source_task_id": "create_compute",
+                    "source_output_id": "compute_id"
+                  },
+                  "compute_type": "DATABRICKS_CLUSTER",
+                  "cloud_type": "databricks",
+                  "airflow_connection_id": "databricks_default",
+                  "valid_files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
+                  "batch_id": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='batch_id') }}",
+                  "name": "Submit_Job_2",
+                  "nodeId": "Submit_Job_run_pipelines_pdalgcrpdt_1_273",
+                  "pool_enabled": false
+                },
+                {
+                  "task_id": "archive_processed_files",
+                  "type": "ArchiveProcessedFiles",
+                  "depends_on": [
+                    "run_pipelines_pdalgcrpdt_1_273"
+                  ],
+                  "bucket_name": "my-test-bucket",
+                  "cloud_type": "databricks",
+                  "archive_prefix": "Archive/bhargs/1-Enrollment/1-Enrollment/D0284/Batch",
+                  "files": "{{ task_instance.xcom_pull(task_ids='validate_inbound_files', key='valid_files') }}",
+                  "airflow_connection_id": "databricks_default",
+                  "secret_name": "bh-dev-westus3-kv-key-scope/bh-azureblob-azurebloblocal",
+                  "delete_source": true,
+                  "allow_empty": true,
+                  "name": "Archive",
+                  "nodeId": "archive_archive_processed_files"
+                },
+                {
+                  "task_id": "delete_compute",
+                  "type": "DeleteCompute",
+                  "depends_on": [
+                    "archive_processed_files"
+                  ],
+                  "cloud_type": "databricks",
+                  "compute_type": "DATABRICKS_CLUSTER",
+                  "airflow_connection_id": "databricks_default",
+                  "compute_binding": {
+                    "source_task_id": "create_compute",
+                    "source_output_id": "compute_id"
+                  },
+                  "name": "Delete_Compute",
+                  "nodeId": "delete_compute_delete_compute",
+                  "pool_enabled": false
+                }
+              ],
+              "bh_environment_id": 4,
+              "ingestion_group_id": 273,
+              "bh_project_id": 2,
+              "bh_environment_name": "local-databricks-sv-2",
+              "cloud_provider": "databricks",
+              "vault_url": "https://bh-dev-westus3-kv-key.vault.azure.net/",
+              "bh_kc_secret_url": "bh-app-local-azure-keycloak-1-v1-secrets"
+            }
+          },
+          "schema_id": null,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDeployment",
+        "pk": 234,
+        "data": {
+          "flow_deployment_id": 234,
+          "flow_id": 234,
+          "bh_env_id": 4,
+          "bh_airflow_id": null,
+          "flow_version_id": null,
+          "schema_id": null,
+          "cron_expression": null,
+          "last_deployed_at": null,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      }
+    ]
+  }
+}
