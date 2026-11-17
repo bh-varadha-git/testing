@@ -1,0 +1,395 @@
+{
+  "created_at": "2026-11-17T07:24:41.233126Z",
+  "updated_at": "2026-11-17T07:24:45.237021Z",
+  "created_by": "srinivas@bighammer.ai",
+  "updated_by": "srinivas@bighammer.ai",
+  "is_deleted": false,
+  "deleted_by": null,
+  "tenant_id": 1,
+  "flow_id": 236,
+  "flow_name": "aws-2_276",
+  "flow_key": "aws_2_276",
+  "recipient_email": {},
+  "notes": null,
+  "tags": null,
+  "status": "active",
+  "bh_project_name": "local",
+  "bh_project_id": 2,
+  "alert_settings": {
+    "on_job_start": false,
+    "on_job_failure": false,
+    "on_job_success": false,
+    "long_running": false
+  },
+  "_graph": {
+    "root": {
+      "model": "Flow",
+      "pk": 236
+    },
+    "nodes": [
+      {
+        "model": "Flow",
+        "pk": 236,
+        "data": {
+          "flow_id": 236,
+          "flow_name": "aws-2_276",
+          "flow_key": "aws_2_276",
+          "bh_project_id": 2,
+          "recipient_email": {},
+          "notes": null,
+          "tags": null,
+          "status": "active",
+          "alert_settings": {
+            "on_job_start": false,
+            "on_job_failure": false,
+            "on_job_success": false,
+            "long_running": false
+          },
+          "bh_bundle_id": null,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowPipelineMapping",
+        "pk": 178,
+        "data": {
+          "flow_pipeline_mapping_id": 178,
+          "flow_id": 236,
+          "pipeline_id": 48,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 716,
+        "data": {
+          "flow_parameter_id": 716,
+          "flow_id": 236,
+          "parameter_name": "service_role",
+          "parameter_value": "EMR_DefaultRole",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 720,
+        "data": {
+          "flow_parameter_id": 720,
+          "flow_id": 236,
+          "parameter_name": "pipeline_engine_version",
+          "parameter_value": "1.0.0",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 715,
+        "data": {
+          "flow_parameter_id": 715,
+          "flow_id": 236,
+          "parameter_name": "job_flow_role",
+          "parameter_value": "EMR_EC2_DefaultRole",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 717,
+        "data": {
+          "flow_parameter_id": 717,
+          "flow_id": 236,
+          "parameter_name": "idle_timeout_seconds",
+          "parameter_value": 300,
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 722,
+        "data": {
+          "flow_parameter_id": 722,
+          "flow_id": 236,
+          "parameter_name": "compute_type",
+          "parameter_value": "EMR",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 721,
+        "data": {
+          "flow_parameter_id": 721,
+          "flow_id": 236,
+          "parameter_name": "cloud_type",
+          "parameter_value": "aws",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 719,
+        "data": {
+          "flow_parameter_id": 719,
+          "flow_id": 236,
+          "parameter_name": "bh_schema_bucket",
+          "parameter_value": "bh-dev-schemas",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowParameter",
+        "pk": 718,
+        "data": {
+          "flow_parameter_id": 718,
+          "flow_id": 236,
+          "parameter_name": "bh_app_bucket",
+          "parameter_value": "bh-dev-utils",
+          "parameter_type": "USER",
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDefinition",
+        "pk": 236,
+        "data": {
+          "flow_definition_id": 236,
+          "flow_id": 236,
+          "flow_json": {
+            "flowJson": {
+              "$schema": "https://json-schema.org/draft-07/schema#",
+              "name": "aws_2_276",
+              "flow_name": "aws-2_276",
+              "flow_id": 236,
+              "flow_key": "aws_2_276",
+              "flow_type": "DATA_PIPELINE",
+              "description": "aws-1",
+              "version": "1.0.0",
+              "project_id": 2,
+              "project_name": "local",
+              "cron_expression": null,
+              "tenant_id": 1,
+              "flow_tags": [
+                {
+                  "key": "drn",
+                  "value": "12346"
+                },
+                {
+                  "key": "environment",
+                  "value": "dev"
+                }
+              ],
+              "parameters": [
+                {
+                  "key": "bh_app_bucket",
+                  "value": "bh-dev-utils"
+                },
+                {
+                  "key": "bh_schema_bucket",
+                  "value": "bh-dev-schemas"
+                },
+                {
+                  "key": "cloud_type",
+                  "value": "aws"
+                },
+                {
+                  "key": "compute_type",
+                  "value": "EMR"
+                },
+                {
+                  "key": "idle_timeout_seconds",
+                  "value": 300
+                },
+                {
+                  "key": "job_flow_role",
+                  "value": "EMR_EC2_DefaultRole"
+                },
+                {
+                  "key": "pipeline_engine_version",
+                  "value": "1.0.0"
+                },
+                {
+                  "key": "service_role",
+                  "value": "EMR_DefaultRole"
+                }
+              ],
+              "tasks": [
+                {
+                  "task_id": "Create Compute",
+                  "type": "CreateCompute",
+                  "depends_on": [],
+                  "cluster_name": "sv-aws-2",
+                  "aws_conn_id": null,
+                  "emr_version": "emr-7.6.0",
+                  "aws_logs_uri": "s3://default-logs-emr/",
+                  "instance_type": "m5.xlarge",
+                  "worker_count": 1,
+                  "ec2_subnet_id": "subnet-09dd221f1b7a3dafe",
+                  "emr_master_security_group": "sg-052149f1ee34ff1cd",
+                  "emr_slave_security_group": "sg-035d8021138605cf8",
+                  "service_access_security_group": null,
+                  "job_flow_role": "EMR_EC2_DefaultRole",
+                  "service_role": "EMR_DefaultRole",
+                  "ec2_key_name": "bh-client-keypair",
+                  "idle_timeout_seconds": 300,
+                  "bh_app_bucket": "bh-dev-utils",
+                  "bh_schema_bucket": "bh-dev-schemas",
+                  "pipeline_engine_version": "1.0.0",
+                  "cloud_type": "aws",
+                  "compute_type": "EMR",
+                  "output_variables": [
+                    {
+                      "id": "compute_id",
+                      "label": "Cluster / job identifier",
+                      "xcom_key": "return_value"
+                    }
+                  ],
+                  "name": "Create_Compute",
+                  "nodeId": "create_compute_Create Compute",
+                  "compute_config_id": 16,
+                  "compute_config": {
+                    "compute_config_id": 16,
+                    "compute_config_name": "sv-aws-2",
+                    "compute_type": "EMR",
+                    "bh_env_id": 7,
+                    "compute_config": {
+                      "emr_version": "emr-7.6.0",
+                      "custom_image_uri": null,
+                      "instance_type": "m5.xlarge",
+                      "master_instance_type": null,
+                      "core_instance_type": "m5.xlarge",
+                      "worker_count": 1,
+                      "idle_timeout_seconds": 300,
+                      "aws_logs_uri": "s3://default-logs-emr/",
+                      "ec2_subnet_id": "subnet-09dd221f1b7a3dafe",
+                      "emr_master_security_group": "sg-052149f1ee34ff1cd",
+                      "emr_slave_security_group": "sg-035d8021138605cf8",
+                      "service_access_security_group": null,
+                      "job_flow_role": "EMR_EC2_DefaultRole",
+                      "service_role": "EMR_DefaultRole",
+                      "additional_master_security_groups": [],
+                      "additional_slave_security_groups": [],
+                      "ec2_key_name": "bh-client-keypair",
+                      "init_script_file_name": null,
+                      "applications": [
+                        "Spark"
+                      ],
+                      "aws_cloud_connection": null,
+                      "region": "us-east-1",
+                      "existing_cluster_id": null,
+                      "emr_deployment_type": "EMR_ON_EC2",
+                      "auto_scaling_role": null,
+                      "bh_tags": [],
+                      "pool_enabled": false,
+                      "pool_max_size": 2,
+                      "pool_max_concurrent_leases": 1,
+                      "pool_lease_ttl_minutes": 30,
+                      "pool_heartbeat_interval_seconds": 120,
+                      "pool_starting_timeout_minutes": 30,
+                      "pool_acquire_wait_seconds": 300,
+                      "additional_properties": null,
+                      "additional_config": null
+                    }
+                  },
+                  "pool_enabled": false,
+                  "airflow_connection_id": "aws_default"
+                },
+                {
+                  "task_id": "Run Job",
+                  "type": "SubmitJob",
+                  "depends_on": [
+                    "Create Compute"
+                  ],
+                  "pipeline_name": "input_276",
+                  "job_flow_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}",
+                  "cloud_type": "aws",
+                  "compute_type": "EMR",
+                  "pipeline_id": 48,
+                  "compute_task_id": "Create Compute",
+                  "pool_enabled": false,
+                  "stage_name": "landing_bronze",
+                  "run_data_intelligence": false,
+                  "di_policy_enabled": false,
+                  "di_intelligence_state": "NOT_EVALUATED"
+                },
+                {
+                  "task_id": "Delete Compute",
+                  "type": "DeleteCompute",
+                  "depends_on": [
+                    "Run Job"
+                  ],
+                  "job_flow_id": "{{ task_instance.xcom_pull(task_ids='Create Compute', key='return_value') }}",
+                  "cloud_type": "aws",
+                  "compute_type": "EMR",
+                  "aws_conn_id": null,
+                  "compute_binding": {
+                    "source_task_id": "Create Compute",
+                    "source_output_id": "compute_id"
+                  },
+                  "name": "Delete_Compute",
+                  "nodeId": "delete_compute_Delete Compute",
+                  "pool_enabled": false,
+                  "airflow_connection_id": "aws_default"
+                }
+              ],
+              "bh_environment_id": 7,
+              "ingestion_group_id": 276,
+              "bh_project_id": 2,
+              "bh_environment_name": "sv-aws-env-2",
+              "cloud_provider": "aws",
+              "vault_url": "https://bh-dev-westus3-kv-key.vault.azure.net/",
+              "bh_kc_secret_url": "/bh/app/local/aws/keycloak/7/v4/secrets"
+            }
+          },
+          "schema_id": null,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      },
+      {
+        "model": "FlowDeployment",
+        "pk": 236,
+        "data": {
+          "flow_deployment_id": 236,
+          "flow_id": 236,
+          "bh_env_id": 7,
+          "bh_airflow_id": null,
+          "flow_version_id": null,
+          "schema_id": null,
+          "cron_expression": null,
+          "last_deployed_at": null,
+          "tenant_id": 1,
+          "is_deleted": false,
+          "deleted_by": null
+        }
+      }
+    ]
+  }
+}
